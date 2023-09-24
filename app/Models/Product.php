@@ -20,7 +20,15 @@ class Product extends Model
      */
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class,'category_id');
+    }
+
+    public function images(){
+        return $this->hasMany(ProductImage::class,'product_id');
+    }
+
+    public function tags(){
+        return $this->belongsToMany(Tag::class,'product_tags','product_id','tag_id');
     }
 
     /**
@@ -28,12 +36,12 @@ class Product extends Model
      *
      * @return string
      */
-    protected function avatar(): Attribute
-    {
-        return Attribute::make(
-            get: fn($value) => file_exists("upload/product/{$value}") && !empty($value) ? "upload/product/{$value}" : "img/default.png",
-        );
-    }
+//    protected function avatar(): Attribute
+//    {
+//        return Attribute::make(
+//            get: fn($value) => file_exists("upload/product/{$value}") && !empty($value) ? "upload/product/{$value}" : "img/default.png",
+//        );
+//    }
 
     protected function price(): Attribute
     {

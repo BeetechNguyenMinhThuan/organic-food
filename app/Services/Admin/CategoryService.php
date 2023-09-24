@@ -33,11 +33,11 @@ class CategoryService
             ->get();
     }
 
-    public function getCategory()
+    public function getCategory($parentId = "")
     {
         $data = $this->get();
         $recursive = new Recursive($data);
-        return $recursive->categoryRecursive($parentId = "");
+        return $recursive->categoryRecursive($parentId);
     }
 
     /**

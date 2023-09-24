@@ -2,20 +2,38 @@
 
 namespace App\Services\Admin;
 
+use App\Models\Image;
 use App\Models\Product;
+use App\Models\ProductImage;
+use App\Models\ProductTag;
+use App\Models\Tag;
 use App\Traits\StorageImageTrait;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Nette\FileNotFoundException;
 
 class ProductService
 {
     use StorageImageTrait;
 
+    const PRODUCT_PAGINATE = 15;
     private Product $product;
-    public function __construct(Product $product)
+    private ProductImage $productImage;
+    private Image $image;
+    private Tag $tag;
+    private ProductTag $productTag;
+
+
+    public function __construct(Product $product, Image $image, ProductImage $productImage, Tag $tag, ProductTag $productTag)
     {
         $this->product = $product;
+        $this->productImage = $productImage;
+        $this->image = $image;
+        $this->tag = $tag;
+        $this->productTag = $productTag;
     }
 
     /**
@@ -26,25 +44,24 @@ class ProductService
     public function get()
     {
         $query = Product::query()
-            ->select(['id', 'name', 'stock', 'avatar', 'category_id', 'sku', 'expired_at', 'price'])
             ->latest()
-            ->with('category');
+            ->with(['category', 'tags', 'images']);
 
-        if ($searchByStock = request('filter_stock')) {
-            $this->filterByStock($searchByStock, $query, [10, 100, 200]);
-        }
+//        if ($searchByStock = request('filter_stock')) {
+//            $this->filterByStock($searchByStock, $query, [10, 100, 200]);
+//        }
+//
+//        $search = request('search');
+//        $query->when($search, function ($query1) use ($search) {
+//            $query1->whereHas('category', function ($query2) use ($search) {
+//                $query2
+//                    ->Where('product_categories.name', 'LIKE', "%{$search}%")
+//                    ->orWhere('products.name', 'LIKE', "%{$search}%");
+//            });
+//        });
 
-        $search = request('search');
-        $query->when($search, function ($query1) use ($search) {
-            $query1->whereHas('category', function ($query2) use ($search) {
-                $query2
-                    ->Where('product_categories.name', 'LIKE', "%{$search}%")
-                    ->orWhere('products.name', 'LIKE', "%{$search}%");
-            });
-        });
 
-
-        return $query->paginate(15);
+        return $query->paginate(self::PRODUCT_PAGINATE);
     }
 
     /**
@@ -67,17 +84,63 @@ class ProductService
 
     /**
      * Insert Product
-     * @param StoreProductRequest $request
      * @param ImageService $imageService
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
      */
-    public function createProduct($data,$avatar = null)
+    public function createProduct($request)
     {
+        $data = [
+            'sku' => $request->sku,
+            'name' => $request->name,
+            'stock' => $request->stock,
+            'expired_at' => $request->expired_at,
+            'category_id' => $request->category_id,
+            'description' => $request->description,
+            'price' => $request->price,
+            'user_id' => auth()->id(),
+            'sale_price' => $request->sale_price,
+            'sale_status' => $request->sale_status,
+            'status' => $request->status
+        ];
         // Store avatar image
-        if ($avatar) {
-            $data['avatar'] = $this->uploadFile($avatar, PRODUCT_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $avatar->getClientOriginalExtension());
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->avatar;
+            $data['avatar'] = $this->uploadFile($avatar, 'public/' . PRODUCT_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $avatar->getClientOriginalExtension());
         }
-        return $this->product->query()->create($data);
+
+        $product = $this->product->query()->create($data);
+
+        // Insert data to images table
+        if ($request->hasFile('image_path')) {
+            $imagePath = $request->image_path;
+            foreach ($imagePath as $index => $image) {
+                $dataProductImageDetail = $this->uploadFile($image, 'public/' . PRODUCT_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $image->getClientOriginalExtension());
+                $imageCreated = $this->image->create([
+                    'name' => $image->getClientOriginalName(),
+                    'image_path' => $dataProductImageDetail,
+                    'size' => $image->getSize() / 1024   // KB
+                ]);
+
+                // Insert data to product_images table
+                $product->images()->create([
+                    'image_id' => $imageCreated->id,
+                    'sort_order' => $index + 1
+                ]);
+            }
+        }
+
+        // Insert data to tags table
+        $tags = $request->tags;
+        if (!empty($tags)) {
+            foreach ($tags as $tag) {
+                $idTags[] = $this->tag->firstOrCreate(['name' => $tag])->id;
+            }
+            $product->tags()->attach($idTags);
+        }
+
+
+        // Insert to tags table
+        return $product;
     }
 
     /**
@@ -87,7 +150,7 @@ class ProductService
      */
     public function findItem($id)
     {
-        return Product::query()->findOrFail($id);
+        return Product::query()->with(['category', 'tags', 'images'])->findOrFail($id);
     }
 
     /**
@@ -97,34 +160,70 @@ class ProductService
      * @param ImageService $imageService
      * @return bool
      */
-    public function update($request, $id, $imageService)
+    public function updateProduct($request, $id)
     {
-        DB::beginTransaction();
-        try {
-            $product = $this->findItem($id);
-            $productUpdate = [
-                'sku' => $request->sku,
-                'name' => $request->name,
-                'stock' => $request->stock,
-                'expired_at' => $request->expired_at,
-                'category_id' => $request->category_id,
-                'price' => $request->price,
-            ];
-            $dataFileImage = $imageService->uploadImage($request, "avatar", "upload/product");
-            if (!empty($dataFileImage)) {
-                $productUpdate['avatar'] = $dataFileImage['file_name_hash'];
-                if (file_exists($product->avatar)) {
-                    unlink($product->avatar);
-                }
-            }
+        //--- 1. Update user ---
+        $product = $this->product->findOrFail($id);
+        $data = [
+            'sku' => $request->sku,
+            'name' => $request->name,
+            'stock' => $request->stock,
+            'expired_at' => $request->expired_at,
+            'category_id' => $request->category_id,
+            'description' => $request->description,
+            'price' => $request->price,
+            'user_id' => auth()->id(),
+            'sale_price' => $request->sale_price,
+            'sale_status' => $request->sale_status,
+            'status' => $request->status
+        ];
 
-            $product->update($productUpdate);
-            DB::commit();
-            return true;
-        } catch (Exception $e) {
-            DB::rollBack();
-            Log::error("Message: {$e->getMessage()}. Line: {$e->getLine()}");
-            return false;
+        $old_avatar_path = null;
+        if ($request->hasFile('avatar')) {
+            $old_avatar_path = $product->avatar;
+            $avatar = $request->avatar;
+            $data['avatar'] = $this->uploadFile($avatar, 'public/' . PRODUCT_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $avatar->getClientOriginalExtension());
+        }
+
+        $product->update($data);
+
+        // --- 2.Remove old file avatar ---
+        if ($old_avatar_path) {
+            // Remove old file
+            $this->deleteFile("public" . $old_avatar_path);
+        }
+
+        // Insert data to images table
+        $old_image_detail_path = [];
+        if ($request->hasFile('image_path')) {
+            $old_image_detail_path = $this->productImage->where('product_id', $id)->get()->pluck('image_id')->toArray();
+            $this->image->whereIn('image_path', $old_image_detail_path)->delete();
+            $this->productImage->where('product_id', $id)->delete();
+            $imagePath = $request->image_path;
+            foreach ($imagePath as $index => $image) {
+                $dataProductImageDetail = $this->uploadFile($image, 'public/' . PRODUCT_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $image->getClientOriginalExtension());
+                $imageCreated = $this->image->create([
+                    'name' => $image->getClientOriginalName(),
+                    'image_path' => $dataProductImageDetail,
+                    'size' => $image->getSize() / 1024   // KB
+                ]);
+
+                // Insert data to product_images table
+                $product->images()->create([
+                    'image_id' => $imageCreated->id,
+                    'sort_order' => $index + 1
+                ]);
+            }
+        }
+
+        // Insert data to tags table
+        $tags = $request->tags;
+
+        if (!empty($tags)) {
+            foreach ($tags as $tag) {
+                $idTags[] = $this->tag->firstOrCreate(['name' => $tag])->id;
+            }
+            $product->tags()->sync($idTags);
         }
     }
 
@@ -140,7 +239,7 @@ class ProductService
             $this->findItem($id)->delete();
             DB::commit();
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
             Log::error("Message: {$e->getMessage()}. Line: {$e->getLine()}");
             return false;
@@ -189,6 +288,30 @@ class ProductService
             $query->WhereBetween('stock', [$range[1], $range[2]]);
         } else {
             $query->where('stock', '>', $range[2]);
+        }
+    }
+
+    public function getImage($id, $typeImage = 'avatar')
+    {
+        try {
+            $user = $this->product::withTrashed()->find($id, [$typeImage . ' as image']);
+            if (empty($user)) {
+                return response()->file(base_path() . '/public/images/user-default.png');
+            }
+
+//            if (empty($user->image)){
+//                if ($user->gender == GenderEnum::MALE){
+//                    $image = response()->file(base_path() . '/public/images/default-male.jpg');
+//                }else if ($user->gender == GenderEnum::FEMALE){
+//                    $image = response()->file(base_path() . '/public/images/default-female.jpg');
+//                }else{
+//                    $image = response()->file(base_path() . '/public/images/user-default.png');
+//                }
+//            } else {
+//            }
+            return Storage::disk(FILESYSTEM)->response($user->image);
+        } catch (FileNotFoundException $e) {
+            return null;
         }
     }
 }

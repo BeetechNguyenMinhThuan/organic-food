@@ -4,7 +4,10 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Rap2hpoutre\LaravelLogViewer\LogViewerController;
+use UniSharp\LaravelFilemanager\Lfm;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +24,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
-    \UniSharp\LaravelFilemanager\Lfm::routes();
+    Lfm::routes();
+});
+Route::get('logs', [LogViewerController::class, 'index']);
+Route::get('/test',function () {
+    Storage::disk('local')->put('example.txt', 'Contents');
 });

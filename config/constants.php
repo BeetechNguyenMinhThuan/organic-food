@@ -2,4 +2,4 @@
 const FILESYSTEM = 'local';
 
 // Upload directories
-const PRODUCT_DIR = 'public/products';
+const PRODUCT_DIR = 'products';

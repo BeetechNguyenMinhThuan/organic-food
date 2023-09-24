@@ -12,6 +12,7 @@ export function select2Tag(selector, multiple = false) {
             addCssClass: "error",
             // language: language,
             tags: true,
+            allowClear: true,
             multiple: multiple,
             tokenSeparators: [',', ' ']
         });

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Services\Admin\CategoryService;
 use App\Services\Admin\ProductService;
+use App\Services\Admin\TagService;
 use App\Traits\StorageImageTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,12 +15,15 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    private $categoryService;
-    private $productService;
-    public function __construct(ProductService $productService, CategoryService $categoryService)
+    private CategoryService $categoryService;
+    private ProductService $productService;
+    private TagService $tagService;
+
+    public function __construct(ProductService $productService, CategoryService $categoryService, TagService $tagService)
     {
         $this->categoryService = $categoryService;
         $this->productService = $productService;
+        $this->tagService = $tagService;
     }
 
     /**
@@ -27,8 +31,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-
-        return view('backend.products.index');
+        $products = $this->productService->get();
+        return view('backend.products.index', [
+            'products' => $products
+        ]);
     }
 
     /**
@@ -37,8 +43,10 @@ class ProductController extends Controller
     public function create()
     {
         $htmlOption = $this->categoryService->getCategory();
+        $tags = $this->tagService->getTags();
         return view('backend.products.create', [
-            'htmlOption' => $htmlOption
+            'htmlOption' => $htmlOption,
+            'tags' => $tags
         ]);
     }
 
@@ -49,24 +57,10 @@ class ProductController extends Controller
     {
         DB::beginTransaction();
         try {
-            $data = [
-                'sku' => $request->sku,
-                'name' => $request->name,
-                'stock' => $request->stock,
-                'expired_at' => $request->expired_at,
-                'category_id' => $request->category_id,
-                'description' => $request->description,
-                'price' => $request->price,
-                'user_id' => auth()->id(),
-                'sale_price' => $request->sale_price,
-                'sale_status' => $request->sale_status,
-                'status' => $request->status
-            ];
-
-            $this->productService->createProduct($data,$request->avatar);
+            $this->productService->createProduct($request);
             DB::commit();
             return redirect()->route('admin.products.create')->with([
-                'status_succeed' => trans('messages.create_succeed')
+                'status_succeed' => trans('messages.create_product_succeed')
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -90,7 +84,14 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $tags = $this->tagService->getTags();
+        $product = $this->productService->findItem($id);
+        $htmlOption = $this->categoryService->getCategory($product->category_id);
+        return view('backend.products.edit', [
+            'htmlOption' => $htmlOption,
+            'tags' => $tags,
+            'product' => $product
+        ]);
     }
 
     /**
@@ -98,7 +99,20 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $this->productService->updateProduct($request, $id);
+            DB::commit();
+            return redirect()->route('admin.products.index')->with([
+                'status_succeed' => trans('messages.edit_product_succeed')
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("File: " . $e->getFile() . '---Line: ' . $e->getLine() . "---Message: " . $e->getMessage());
+            return redirect()->route('admin.products.index')->with([
+                'status_failed' => trans('messages.server_error')
+            ]);
+        }
     }
 
     /**
@@ -106,6 +120,12 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $productDelete = $this->productService->delete($id);
+        if ($productDelete) {
+            return response()->json(['status' => 200, 'message' => "Success"]);
+        }
+        return response()->json(['status' => 500, 'message' => "Fail"], 500);
     }
+
+
 }

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     private $categoryService;
+
     public function __construct(CategoryService $categoryService)
     {
         $this->categoryService = $categoryService;
@@ -27,7 +28,7 @@ class CategoryController extends Controller
 
         // Get full category
         $categories = $this->categoryService->getPaginate();
-        return view('backend.categories.index',[
+        return view('backend.categories.index', [
             'htmlOption' => $htmlOption,
             'categories' => $categories
         ]);
@@ -49,9 +50,13 @@ class CategoryController extends Controller
     {
         $categoryInsert = $this->categoryService->insert($request);
         if ($categoryInsert) {
-            return redirect()->route('admin.categories.index')->with('success', 'Successfully Added');
+            return redirect()->route('admin.categories.index')->with([
+                'status_succeed' => trans('messages.create_category_succeed')
+            ]);
         }
-        return redirect()->route('admin.categories.index')->with('error', 'Fail Added');
+        return redirect()->route('admin.categories.index')->with([
+            'status_failed' => trans('messages.server_error')
+        ]);
     }
 
     /**
@@ -87,6 +92,6 @@ class CategoryController extends Controller
         if ($categoryDelete) {
             return response()->json(['status' => 200, 'message' => "Success"]);
         }
-        return response()->json(['status' => 500, 'message' => "Fail"],500);
+        return response()->json(['status' => 500, 'message' => "Fail"], 500);
     }
 }

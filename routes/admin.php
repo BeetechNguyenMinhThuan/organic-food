@@ -26,8 +26,10 @@ Route::middleware(['CheckIsAdmin'])->group(function () {
         Route::get('/create', [ProductController::class, 'create'])->name('admin.products.create');
         Route::post('/store', [ProductController::class, 'store'])->name('admin.products.store');
         Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('admin.products.edit');
-        Route::post('/update/{id}', [ProductController::class, 'update'])->name('admin.products.update');
+        Route::put('/update/{id}', [ProductController::class, 'update'])->name('admin.products.update');
         Route::delete('/destroy/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
+        Route::get('{id}/avatar',  [ProductController::class, 'getImage'])->name('admin.product.avatar');
+
     });
 });
 
