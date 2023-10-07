@@ -7,5 +7,6 @@ return [
     // Create Product
     'create_succeed' => 'Thêm thành công',
     'nothing_data' => 'Không có dữ liệu',
-    'save' => 'Lưu'
+    'save' => 'Lưu',
+    'nothing_data' => 'Không có dữ liệu',
 ];

@@ -1,18 +1,4 @@
-import {select2Base, select2Tag} from "../../plugins/select2.js";
-import {tinymce5} from "../../plugins/tinymce5.js";
-$(function () {
-    $(document).on('click', '.action_delete', actionDeleteAjax)
-
-    // select2 plugin
-    select2Base('.select2-base');
-    select2Tag('.select2-multi-tag', true);
-
-    // tinymce plugin
-    tinymce5('.tinymce5')
-});
-
-
-function actionDeleteAjax(e) {
+export function actionDeleteAjax(e) {
     let url = $(this).data('url')
     let that = $(this);
     e.preventDefault();
@@ -50,4 +36,17 @@ function actionDeleteAjax(e) {
             })
         }
     })
+}
+
+export function actionChangeImageUploadFile(classInput, classImg) {
+    let avatar = $(classInput);
+    let imgProduct = $(classImg);
+    if (avatar.length && imgProduct.length) {
+        avatar.onchange = evt => {
+            const [file] = avatar.files
+            if (file) {
+                imgProduct.src = URL.createObjectURL(file)
+            }
+        }
+    }
 }

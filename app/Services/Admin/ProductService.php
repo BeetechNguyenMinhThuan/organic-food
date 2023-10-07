@@ -105,7 +105,7 @@ class ProductService
         // Store avatar image
         if ($request->hasFile('avatar')) {
             $avatar = $request->avatar;
-            $data['avatar'] = $this->uploadFile($avatar, 'public/' . PRODUCT_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $avatar->getClientOriginalExtension());
+            $data['avatar'] = $this->uploadFile($avatar, PRODUCT_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $avatar->getClientOriginalExtension());
         }
 
         $product = $this->product->query()->create($data);
@@ -114,7 +114,7 @@ class ProductService
         if ($request->hasFile('image_path')) {
             $imagePath = $request->image_path;
             foreach ($imagePath as $index => $image) {
-                $dataProductImageDetail = $this->uploadFile($image, 'public/' . PRODUCT_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $image->getClientOriginalExtension());
+                $dataProductImageDetail = $this->uploadFile($image, PRODUCT_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $image->getClientOriginalExtension());
                 $imageCreated = $this->image->create([
                     'name' => $image->getClientOriginalName(),
                     'image_path' => $dataProductImageDetail,
@@ -182,7 +182,7 @@ class ProductService
         if ($request->hasFile('avatar')) {
             $old_avatar_path = $product->avatar;
             $avatar = $request->avatar;
-            $data['avatar'] = $this->uploadFile($avatar, 'public/' . PRODUCT_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $avatar->getClientOriginalExtension());
+            $data['avatar'] = $this->uploadFile($avatar, PRODUCT_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $avatar->getClientOriginalExtension());
         }
 
         $product->update($data);
@@ -190,18 +190,22 @@ class ProductService
         // --- 2.Remove old file avatar ---
         if ($old_avatar_path) {
             // Remove old file
-            $this->deleteFile("public" . $old_avatar_path);
+            $this->deleteFile($old_avatar_path);
         }
 
         // Insert data to images table
-        $old_image_detail_path = [];
         if ($request->hasFile('image_path')) {
             $old_image_detail_path = $this->productImage->where('product_id', $id)->get()->pluck('image_id')->toArray();
+
+            // Remove old file image detail
             $this->image->whereIn('image_path', $old_image_detail_path)->delete();
             $this->productImage->where('product_id', $id)->delete();
+
             $imagePath = $request->image_path;
             foreach ($imagePath as $index => $image) {
-                $dataProductImageDetail = $this->uploadFile($image, 'public/' . PRODUCT_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $image->getClientOriginalExtension());
+                $dataProductImageDetail = $this->uploadFile($image, PRODUCT_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $image->getClientOriginalExtension());
+
+                // Insert data to images table
                 $imageCreated = $this->image->create([
                     'name' => $image->getClientOriginalName(),
                     'image_path' => $dataProductImageDetail,
@@ -218,7 +222,6 @@ class ProductService
 
         // Insert data to tags table
         $tags = $request->tags;
-
         if (!empty($tags)) {
             foreach ($tags as $tag) {
                 $idTags[] = $this->tag->firstOrCreate(['name' => $tag])->id;
@@ -288,30 +291,6 @@ class ProductService
             $query->WhereBetween('stock', [$range[1], $range[2]]);
         } else {
             $query->where('stock', '>', $range[2]);
-        }
-    }
-
-    public function getImage($id, $typeImage = 'avatar')
-    {
-        try {
-            $user = $this->product::withTrashed()->find($id, [$typeImage . ' as image']);
-            if (empty($user)) {
-                return response()->file(base_path() . '/public/images/user-default.png');
-            }
-
-//            if (empty($user->image)){
-//                if ($user->gender == GenderEnum::MALE){
-//                    $image = response()->file(base_path() . '/public/images/default-male.jpg');
-//                }else if ($user->gender == GenderEnum::FEMALE){
-//                    $image = response()->file(base_path() . '/public/images/default-female.jpg');
-//                }else{
-//                    $image = response()->file(base_path() . '/public/images/user-default.png');
-//                }
-//            } else {
-//            }
-            return Storage::disk(FILESYSTEM)->response($user->image);
-        } catch (FileNotFoundException $e) {
-            return null;
         }
     }
 }

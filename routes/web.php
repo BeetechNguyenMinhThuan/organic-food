@@ -28,5 +28,5 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']
 });
 Route::get('logs', [LogViewerController::class, 'index']);
 Route::get('/test',function () {
-    Storage::disk('local')->put('example.txt', 'Contents');
-});
+    return Storage::disk(FILESYSTEM)->response('sliders/1/zAR1y0dN145BQrM1KdznIPuXJIDTeH.jpg');
+})->name('testimg');

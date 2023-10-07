@@ -23,7 +23,7 @@ trait StorageImageTrait
         // Store file
         Storage::disk(FILESYSTEM)->put($filePath, file_get_contents($file));
 
-        return Storage::url($filePath);
+        return $filePath;
     }
 
 

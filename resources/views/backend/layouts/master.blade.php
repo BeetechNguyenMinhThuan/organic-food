@@ -25,6 +25,8 @@
     <link rel="stylesheet" href="{{ asset('vendor/sweetalert2/sweetalert2.css') }}">
 {{--    <link rel="stylesheet" href="{{ asset('vendor/select2/select2.min.css') }}">--}}
     <link rel="stylesheet" href="{{ asset('vendor/toastr/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/common/css/admin.css') }}">
+
 
     @yield('addCss')
 
@@ -152,7 +154,7 @@
 
 <!-- demo app -->
 <!-- end demo js-->
-<script type="module" src="{{ asset('backend/common/common.js') }}"></script>
+<script type="module" src="{{ asset('backend/common/js/common.js') }}"></script>
 <script src="{{ asset('vendor/sweetalert2/sweetalert2.min.js') }}"></script>
 {{--<script src="{{ asset('vendor/select2/select2.min.js') }}"></script>--}}
 <script src="{{ asset('vendor/toastr/toastr.min.js') }}"></script>

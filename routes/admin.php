@@ -3,22 +3,35 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\RoleAndPermissionController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/login', [AuthController::class, 'login'])->name('admin.login');
-Route::post('/doLogin', [AuthController::class, 'doLogin'])->name('admin.doLogin');
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/doLogin', [AuthController::class, 'doLogin'])->name('doLogin');
 Route::get('/doLogout', [AuthController::class, 'doLogout'])->name('admin.doLogout');
 
-Route::middleware(['CheckIsAdmin'])->group(function () {
+Route::middleware(['auth:admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard.index');
 
-    Route::prefix('categories')->group(function () {
+    Route::prefix('categories')->middleware(['can:module category'])->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('admin.categories.index');
         Route::post('/store', [CategoryController::class, 'store'])->name('admin.categories.store');
         Route::post('/update/{id}', [CategoryController::class, 'update'])->name('admin.categories.update');
         Route::delete('/destroy/{id}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
+    });
+
+    Route::prefix('sliders')->group(function () {
+        Route::get('/', [SliderController::class, 'index'])->name('admin.sliders.index');
+        Route::post('/store', [SliderController::class, 'store'])->name('admin.sliders.store');
+        Route::post('/update/{id}', [SliderController::class, 'update'])->name('admin.sliders.update');
+        Route::delete('/destroy/{id}', [SliderController::class, 'destroy'])->name('admin.sliders.destroy');
     });
 
     Route::prefix('products')->group(function () {
@@ -29,7 +42,42 @@ Route::middleware(['CheckIsAdmin'])->group(function () {
         Route::put('/update/{id}', [ProductController::class, 'update'])->name('admin.products.update');
         Route::delete('/destroy/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
         Route::get('{id}/avatar',  [ProductController::class, 'getImage'])->name('admin.product.avatar');
+    });
 
+    Route::prefix('settings')->group(function () {
+        Route::get('/', [SettingController::class, 'index'])->name('admin.settings.index');
+        Route::get('/create', [SettingController::class, 'create'])->name('admin.settings.create');
+        Route::post('/store', [SettingController::class, 'store'])->name('admin.settings.store');
+        Route::get('/edit/{id}', [SettingController::class, 'edit'])->name('admin.settings.edit');
+        Route::put('/update/{id}', [SettingController::class, 'update'])->name('admin.settings.update');
+        Route::delete('/destroy/{id}', [SettingController::class, 'destroy'])->name('admin.settings.destroy');
+    });
+
+    Route::prefix('roles')->group(function () {
+        Route::get('/', [RoleController::class, 'index'])->name('admin.roles.index');
+        Route::get('/create', [RoleController::class, 'create'])->name('admin.roles.create');
+        Route::post('/store', [RoleController::class, 'store'])->name('admin.roles.store');
+        Route::get('/edit/{id}', [RoleController::class, 'edit'])->name('admin.roles.edit');
+        Route::put('/update/{id}', [RoleController::class, 'update'])->name('admin.roles.update');
+        Route::delete('/destroy/{id}', [RoleController::class, 'destroy'])->name('admin.roles.destroy');
+    });
+
+    Route::prefix('permissions')->group(function () {
+        Route::get('/', [PermissionController::class, 'index'])->name('admin.permissions.index');
+        Route::get('/create', [PermissionController::class, 'create'])->name('admin.permissions.create');
+        Route::post('/store', [PermissionController::class, 'store'])->name('admin.permissions.store');
+        Route::get('/edit/{id}', [PermissionController::class, 'edit'])->name('admin.permissions.edit');
+        Route::put('/update/{id}', [PermissionController::class, 'update'])->name('admin.permissions.update');
+        Route::delete('/destroy/{id}', [PermissionController::class, 'destroy'])->name('admin.permissions.destroy');
+    });
+
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('admin.users.index');
+        Route::get('/create', [UserController::class, 'create'])->name('admin.users.create');
+        Route::post('/store', [UserController::class, 'store'])->name('admin.users.store');
+        Route::get('/edit/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
+        Route::put('/update/{id}', [UserController::class, 'update'])->name('admin.users.update');
+        Route::delete('/destroy/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
     });
 });
 

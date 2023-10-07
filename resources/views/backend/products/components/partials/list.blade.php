@@ -80,7 +80,7 @@
                                     </td>
                                     <td>
                                         <img
-                                            src="{{ asset($product->avatar)}}"
+                                            src="{{ \App\Helpers\Common::getImage($product->avatar)}}"
                                             alt="contact-img"
                                             title="contact-img"
                                             class="rounded mr-3"

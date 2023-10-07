@@ -64,6 +64,19 @@
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
                     <i class="uil-store"></i>
+                    <span> Sliders </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <ul class="side-nav-second-level" aria-expanded="false">
+                    <li>
+                        <a href="{{route('admin.sliders.index')}}">List Slider</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="javascript: void(0);" class="side-nav-link">
+                    <i class="uil-store"></i>
                     <span> Products </span>
                     <span class="menu-arrow"></span>
                 </a>
@@ -73,6 +86,60 @@
                     </li>
                     <li>
                         <a href="{{route('admin.products.create')}}">Add Product</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="javascript: void(0);" class="side-nav-link">
+                    <i class="uil-store"></i>
+                    <span> Settings </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <ul class="side-nav-second-level" aria-expanded="false">
+                    <li>
+                        <a href="{{route('admin.settings.index')}}">List Setting</a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.settings.create')}}">Add Setting</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="javascript: void(0);" class="side-nav-link">
+                    <i class="uil-store"></i>
+                    <span> Roles</span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <ul class="side-nav-second-level" aria-expanded="false">
+                    <li>
+                        <a href="{{route('admin.roles.index')}}">List Roles</a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.roles.create')}}">Add Role</a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.permissions.index')}}">List Permission</a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.permissions.create')}}">Add Permission</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="javascript: void(0);" class="side-nav-link">
+                    <i class="uil-store"></i>
+                    <span> Users </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <ul class="side-nav-second-level" aria-expanded="false">
+                    <li>
+                        <a href="{{route('admin.users.index')}}">List User</a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.users.create')}}">Add User</a>
                     </li>
                 </ul>
             </li>

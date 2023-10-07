@@ -12,6 +12,11 @@ return [
     'create_category_succeed' => 'Create a new category successful',
     'edit_category_succeed' => 'Edit a category successful',
     // Project edit
-    'save' => 'Save'
+    'save' => 'Save',
+    'nothing_data' => 'No data found',
+
+    // Manage User
+    'create_user_succeed' => 'Create a new user successful',
+    'edit_user_succeed' => 'Edit a user successful'
 
 ];

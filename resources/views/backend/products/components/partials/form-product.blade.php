@@ -18,26 +18,45 @@
                         <div class="col-xl-6">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="product_name" class="col-form-label">Product title</label>
-                                    <input name="name" type="text" placeholder="Type here" class="form-control"
+                                    <label for="product_name" class="col-form-label">Product title <sup
+                                            style="color: red">*</sup></label>
+                                    <input name="name" type="text" placeholder="Type here"
+                                           class="form-control @error('name') is-invalid @enderror"
                                            id="product_name"
                                            value="{{ old('name') ? old('name') : (isset($product->name) ? $product->name : '') }}"/>
+                                    @error('name')
+                                    <div class="text-danger mt-1">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label for="product_sku" class="col-form-label">Product Sku</label>
-                                    <input name="sku" type="text" placeholder="Type here" class="form-control"
+                                    <label for="product_sku" class="col-form-label">Product Sku <sup style="color: red">*</sup></label>
+                                    <input name="sku" type="text" placeholder="Type here"
+                                           class="form-control @error('sku') is-invalid @enderror"
                                            id="product_sku"
                                            value="{{ old('sku') ? old('sku') : (isset($product->sku) ? $product->sku : '') }}"/>
+                                    @error('sku')
+                                    <div class="text-danger mt-1">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="form-row">
                                 <div class="form-group col-md-4">
-                                    <label class="col-form-label">Regular price</label>
+                                    <label class="col-form-label">Regular price <sup style="color: red">*</sup></label>
                                     <input
                                         value="{{ old('price') ? old('price') : (isset($product->price) ? $product->price : '') }}"
-                                        name="price" placeholder="$" type="text" class="form-control"/>
+                                        name="price" placeholder="$" type="text"
+                                        class="form-control @error('price') is-invalid @enderror"/>
+                                    @error('price')
+                                    <div class="text-danger mt-1">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
 
                                 <div class="form-group col-md-4">
@@ -93,7 +112,7 @@
                                 <label class="col-form-label">Ảnh đại diện</label>
                                 <div class="">
                                     <img class="img-product d-flex" style="margin: 0 auto" height="250px"
-                                         src="{{isset($product) ? $product->avatar : asset('backend/assets/images/upload.svg')}}"
+                                         src="{{isset($product) ? \App\Helpers\Common::getImage($product->avatar) : asset('backend/assets/images/upload.svg')}}"
                                          alt=""/>
                                     <div class="input-group mt-2">
                                         <div class="custom-file">
@@ -159,189 +178,4 @@
         </div> <!-- end col-->
     </div>
 
-
-{{--    <div class="row">--}}
-{{--        <div class="col-9">--}}
-{{--            <div class="content-header">--}}
-{{--                <h2 class="content-title">{{ $title }}</h2>--}}
-{{--                <div>--}}
-{{--                    <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>--}}
-{{--                    <button class="btn btn-md rounded font-sm hover-up">{{trans('messages.save')}}</button>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-6">--}}
-{{--            <div class="card mb-4">--}}
-{{--                <div class="card-header">--}}
-{{--                    <h4>Basic</h4>--}}
-{{--                </div>--}}
-{{--                <div class="card-body">--}}
-{{--                    <div>--}}
-{{--                        <div class="row">--}}
-{{--                            <div class="mb-4 col-xl-6">--}}
-{{--                                <label for="product_name" class="form-label">Product title</label>--}}
-{{--                                <input name="name" type="text" placeholder="Type here" class="form-control"--}}
-{{--                                       id="product_name"--}}
-{{--                                       value="{{ old('name') ? old('name') : (isset($product->name) ? $product->name : '') }}"/>--}}
-{{--                            </div>--}}
-{{--                            <div class="mb-4 col-xl-6">--}}
-{{--                                <label for="product_sku" class="form-label">Product Sku</label>--}}
-{{--                                <input name="sku" type="text" placeholder="Type here" class="form-control"--}}
-{{--                                       id="product_sku"--}}
-{{--                                       value="{{ old('sku') ? old('sku') : (isset($product->sku) ? $product->sku : '') }}"/>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="mb-4">--}}
-{{--                            <label class="form-label">Full description</label>--}}
-{{--                            <textarea name="description" placeholder="Type here" class="form-control tinymce5"--}}
-{{--                                      rows="4">{{ old('description') ? old('description') : (isset($product->description) ? $product->description : '') }}</textarea>--}}
-{{--                        </div>--}}
-{{--                        <div class="row">--}}
-{{--                            <div class="col-lg-4">--}}
-{{--                                <div class="mb-4">--}}
-{{--                                    <label class="form-label">Regular price</label>--}}
-{{--                                    <div class="row gx-2">--}}
-{{--                                        <input--}}
-{{--                                            value="{{ old('price') ? old('price') : (isset($product->price) ? $product->price : '') }}"--}}
-{{--                                            name="price" placeholder="$" type="text" class="form-control"/>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div class="col-lg-4">--}}
-{{--                                <div class="mb-4">--}}
-{{--                                    <label class="form-label">Promotional price</label>--}}
-{{--                                    <input--}}
-{{--                                        value="{{ old('sale_price') ? old('sale_price') : (isset($product->sale_price) ? $product->sale_price : '') }}"--}}
-{{--                                        name="sale_price" placeholder="$" type="text" class="form-control"/>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
-{{--                            <div class="col-lg-4">--}}
-{{--                                <div class="mb-4">--}}
-{{--                                    <label class="form-label">Stock</label>--}}
-{{--                                    <input--}}
-{{--                                        value="{{ old('stock') ? old('stock') : (isset($product->stock) ? $product->stock : '') }}"--}}
-{{--                                        name="stock" placeholder="" type="number" class="form-control"/>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
-{{--                        </div>--}}
-{{--                        <label class="form-check mb-4">--}}
-{{--                            <input class="form-check-input" type="checkbox" value=""/>--}}
-{{--                            <span class="form-check-label"> Make a template </span>--}}
-{{--                        </label>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <!-- card end// -->--}}
-{{--            <div class="card mb-4">--}}
-{{--                <div class="card-header">--}}
-{{--                    <h4>Shipping</h4>--}}
-{{--                </div>--}}
-{{--                <div class="card-body">--}}
-{{--                    <form>--}}
-{{--                        <div class="row">--}}
-{{--                            <div class="col-lg-6">--}}
-{{--                                <div class="mb-4">--}}
-{{--                                    <label for="product_name" class="form-label">Width</label>--}}
-{{--                                    <input type="text" placeholder="inch" class="form-control" id="product_name"/>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div class="col-lg-6">--}}
-{{--                                <div class="mb-4">--}}
-{{--                                    <label for="product_name" class="form-label">Height</label>--}}
-{{--                                    <input type="text" placeholder="inch" class="form-control" id="product_name"/>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="mb-4">--}}
-{{--                            <label for="product_name" class="form-label">Weight</label>--}}
-{{--                            <input type="text" placeholder="gam" class="form-control" id="product_name"/>--}}
-{{--                        </div>--}}
-{{--                        <div class="mb-4">--}}
-{{--                            <label for="product_name" class="form-label">Shipping fees</label>--}}
-{{--                            <input type="text" placeholder="$" class="form-control" id="product_name"/>--}}
-{{--                        </div>--}}
-{{--                    </form>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <!-- card end// -->--}}
-{{--        </div>--}}
-{{--        <div class="col-lg-3">--}}
-{{--            <div class="card mb-4">--}}
-{{--                <div class="card-header">--}}
-{{--                    <h4>Ảnh đại diện</h4>--}}
-{{--                </div>--}}
-{{--                <div class="card-body">--}}
-{{--                    <div class="input-upload">--}}
-{{--                        <img class="img-product"--}}
-{{--                             src="{{isset($product) ? $product->avatar : asset('backend/assets/imgs/theme/upload.svg')}}"--}}
-{{--                             alt=""/>--}}
-{{--                        <input name="avatar" class="form-control avatar" type="file"/>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <!-- card end// -->--}}
-{{--            <div class="card mb-4">--}}
-{{--                <div class="card-header">--}}
-{{--                    <h4>Ảnh chi tiết</h4>--}}
-{{--                </div>--}}
-{{--                <div class="card-body">--}}
-{{--                    <div class="row">--}}
-{{--                        @php--}}
-{{--                            if (isset($product)){--}}
-{{--                                $imageDetail = [];--}}
-{{--                                $productImages = $product->images;--}}
-{{--                                foreach($productImages as $images){--}}
-{{--                                    $imageDetail[] = \App\Models\Image::query()->where('id',$images->id)->first();--}}
-{{--                                }--}}
-{{--                            }--}}
-{{--                        @endphp--}}
-{{--                        @if(isset($imageDetail))--}}
-{{--                            @foreach( $imageDetail as $imageItem)--}}
-{{--                                <div class="col-md-12 col-lg-12 col-xl-4">--}}
-{{--                                    <div class="input-upload">--}}
-{{--                                        <img class="img-product-detail"--}}
-{{--                                             src="{{ !empty($imageItem->image_path) ? $imageItem->image_path :  asset('backend/assets/imgs/theme/upload.svg')}}"--}}
-{{--                                             alt=""/>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            @endforeach--}}
-{{--                        @endif--}}
-{{--                        <input name="image_path[]" multiple class="form-control img-product-detail" type="file"/>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <!-- card end// -->--}}
-{{--            <div class="card mb-4">--}}
-{{--                <div class="card-header">--}}
-{{--                    <h4>Organization</h4>--}}
-{{--                </div>--}}
-{{--                <div class="card-body">--}}
-{{--                    <div class="row gx-2">--}}
-{{--                        <div class="col-md-12 mb-3">--}}
-{{--                            <label class="form-label">Category</label>--}}
-{{--                            <select name="category_id" class="form-select select2-base">--}}
-{{--                                {!! $htmlOption !!}--}}
-{{--                            </select>--}}
-{{--                        </div>--}}
-{{--                        <div class="mb-4">--}}
-{{--                            @php--}}
-{{--                                $choose_tags = old('tags') ? old('tags') : (isset($product->tags )?$product->tags->pluck('id'):collect());--}}
-{{--                            @endphp--}}
-{{--                            <label for="product_name" class="form-label">Tags</label>--}}
-{{--                            <select name="tags[]" class="form-control select2-multi-tag" multiple>--}}
-{{--                                @foreach($tags as $tag)--}}
-{{--                                    <option--}}
-{{--                                        value="{{$tag->name}}" {{ $choose_tags->contains($tag->id) ?'selected':'' }} >{{$tag->name}}</option>--}}
-{{--                                @endforeach--}}
-{{--                            </select>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <!-- row.// -->--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <!-- card end// -->--}}
-{{--        </div>--}}
-{{--    </div>--}}
 </form>

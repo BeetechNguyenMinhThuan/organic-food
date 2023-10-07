@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
+use Nette\FileNotFoundException;
 
 class Product extends Model
 {
@@ -48,6 +50,30 @@ class Product extends Model
         return Attribute::make(
             set: fn($value) => implode("", explode(",", $value)),
         );
+    }
+
+    public function getImage($id, $typeImage = 'avatar')
+    {
+        try {
+            $user = $this::withTrashed()->find($id, [$typeImage . ' as image']);
+            if (empty($user)) {
+                return response()->file(base_path() . '/public/images/user-default.png');
+            }
+
+//            if (empty($user->image)){
+//                if ($user->gender == GenderEnum::MALE){
+//                    $image = response()->file(base_path() . '/public/images/default-male.jpg');
+//                }else if ($user->gender == GenderEnum::FEMALE){
+//                    $image = response()->file(base_path() . '/public/images/default-female.jpg');
+//                }else{
+//                    $image = response()->file(base_path() . '/public/images/user-default.png');
+//                }
+//            } else {
+//            }
+            return Storage::disk(FILESYSTEM)->response($user->image);
+        } catch (FileNotFoundException $e) {
+            return null;
+        }
     }
 
     /**
