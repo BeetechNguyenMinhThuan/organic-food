@@ -1,16 +1,18 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\RoleAndPermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
+use UniSharp\LaravelFilemanager\Lfm;
 
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -18,6 +20,7 @@ Route::post('/doLogin', [AuthController::class, 'doLogin'])->name('doLogin');
 Route::get('/doLogout', [AuthController::class, 'doLogout'])->name('admin.doLogout');
 
 Route::middleware(['auth:admin'])->group(function () {
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard.index');
 
     Route::prefix('categories')->middleware(['can:module category'])->group(function () {
@@ -25,6 +28,13 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::post('/store', [CategoryController::class, 'store'])->name('admin.categories.store');
         Route::post('/update/{id}', [CategoryController::class, 'update'])->name('admin.categories.update');
         Route::delete('/destroy/{id}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
+    });
+
+    Route::prefix('menus')->middleware([])->group(function () {
+        Route::get('/', [MenuController::class, 'index'])->name('admin.menus.index');
+        Route::post('/store', [MenuController::class, 'store'])->name('admin.menus.store');
+        Route::post('/update/{id}', [MenuController::class, 'update'])->name('admin.menus.update');
+        Route::delete('/destroy/{id}', [MenuController::class, 'destroy'])->name('admin.menus.destroy');
     });
 
     Route::prefix('sliders')->group(function () {
@@ -78,6 +88,13 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::get('/edit/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
         Route::put('/update/{id}', [UserController::class, 'update'])->name('admin.users.update');
         Route::delete('/destroy/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    });
+
+    Route::prefix('brands')->group(function () {
+        Route::get('/', [BrandController::class, 'index'])->name('admin.brands.index');
+        Route::post('/store', [BrandController::class, 'store'])->name('admin.brands.store');
+        Route::post('/update/{id}', [BrandController::class, 'update'])->name('admin.brands.update');
+        Route::delete('/destroy/{id}', [BrandController::class, 'destroy'])->name('admin.brands.destroy');
     });
 });
 

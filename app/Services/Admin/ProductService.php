@@ -22,18 +22,48 @@ class ProductService
     const PRODUCT_PAGINATE = 15;
     private Product $product;
     private ProductImage $productImage;
-    private Image $image;
     private Tag $tag;
     private ProductTag $productTag;
 
 
-    public function __construct(Product $product, Image $image, ProductImage $productImage, Tag $tag, ProductTag $productTag)
+    public function __construct(Product $product, ProductImage $productImage, Tag $tag, ProductTag $productTag)
     {
         $this->product = $product;
         $this->productImage = $productImage;
-        $this->image = $image;
         $this->tag = $tag;
         $this->productTag = $productTag;
+    }
+
+    public function getModel()
+    {
+        return $this->product;
+    }
+
+    public function search(Request $request)
+    {
+        $keyword = $request->get('keyword');
+        if ($request->sort_price == 1) {
+            $sort = ['product_attributes.promotional_price', 'desc'];
+        } else if ($request->sort_price == 2) {
+            $sort = ['product_attributes.promotional_price', 'asc'];
+        } else {
+            $sort = ['product_attributes.created_at', 'desc'];
+        }
+        $product = ProductsModel::join('product_attributes', 'products.id', '=', 'product_attributes.product_id')
+            ->orderBy($sort[0], $sort[1])
+            ->select('products.*', DB::raw('MAX(product_attributes.promotional_price) as max_promotional_price'))
+            ->where('products.name', 'like', '%' . $keyword . '%')
+            ->groupBy('product_attributes.product_id', 'product_attributes.created_at','product_attributes.promotional_price')
+            ->orderBy('max_promotional_price', 'desc')
+            ->paginate(20);
+        foreach ($product as $item) {
+            $item->infor = ProductInformationModel::find($item->product_infor_id);
+            $item->type_product = ProductsModel::where('product_infor_id', $item->product_infor_id)->get();
+            $item->price = ProductAttributesModel::where('product_id', $item->id)->first()->price;
+            $this->flashSale($item);
+            $this->starReview($item);
+        }
+        return view('web.product.search', compact('product', 'keyword'));
     }
 
     /**
@@ -43,7 +73,7 @@ class ProductService
      */
     public function get()
     {
-        $query = Product::query()
+        $query = $this->product::query()
             ->latest()
             ->with(['category', 'tags', 'images']);
 
@@ -82,6 +112,23 @@ class ProductService
         return $query;
     }
 
+    private function prepairData($request)
+    {
+        $params = $request->only([
+            'name',
+            'slug',
+            'parent_id',
+            'thumbnail',
+            'status',
+            'description'
+        ]);
+        if (!isset($request->parent_id)) {
+            $params['parent_id'] = 0;
+        }
+        $params['slug'] = Str::slug($request->name);
+        return $params;
+    }
+
     /**
      * Insert Product
      * @param ImageService $imageService
@@ -92,6 +139,7 @@ class ProductService
         $data = [
             'sku' => $request->sku,
             'name' => $request->name,
+            'slug' => Str::slug($request->name),
             'stock' => $request->stock,
             'expired_at' => $request->expired_at,
             'category_id' => $request->category_id,
@@ -148,9 +196,9 @@ class ProductService
      * @param int $id
      * @return Builder|Builder[]|Collection|Model
      */
-    public function findItem($id)
+    public function findItem($column, $value)
     {
-        return Product::query()->with(['category', 'tags', 'images'])->findOrFail($id);
+        return $this->product::query()->with(['category', 'tags', 'images', 'brand'])->where($column, $value)->first();
     }
 
     /**
@@ -167,6 +215,7 @@ class ProductService
         $data = [
             'sku' => $request->sku,
             'name' => $request->name,
+            'slug' => Str::slug($request->name),
             'stock' => $request->stock,
             'expired_at' => $request->expired_at,
             'category_id' => $request->category_id,
@@ -198,23 +247,17 @@ class ProductService
             $old_image_detail_path = $this->productImage->where('product_id', $id)->get()->pluck('image_id')->toArray();
 
             // Remove old file image detail
-            $this->image->whereIn('image_path', $old_image_detail_path)->delete();
             $this->productImage->where('product_id', $id)->delete();
 
             $imagePath = $request->image_path;
             foreach ($imagePath as $index => $image) {
                 $dataProductImageDetail = $this->uploadFile($image, PRODUCT_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $image->getClientOriginalExtension());
 
-                // Insert data to images table
-                $imageCreated = $this->image->create([
-                    'name' => $image->getClientOriginalName(),
-                    'image_path' => $dataProductImageDetail,
-                    'size' => $image->getSize() / 1024   // KB
-                ]);
-
                 // Insert data to product_images table
                 $product->images()->create([
-                    'image_id' => $imageCreated->id,
+                    'name' => $image->getClientOriginalName(),
+                    'image_path' => $dataProductImageDetail,
+                    'size' => $image->getSize() / 1024,   // KB
                     'sort_order' => $index + 1
                 ]);
             }
@@ -239,7 +282,7 @@ class ProductService
     {
         DB::beginTransaction();
         try {
-            $this->findItem($id)->delete();
+            $this->findItem('id', $id)->delete();
             DB::commit();
             return true;
         } catch (\Exception $e) {
@@ -247,6 +290,10 @@ class ProductService
             Log::error("Message: {$e->getMessage()}. Line: {$e->getLine()}");
             return false;
         }
+    }
+
+    public function getProductRelated($id, $categoryId){
+        return $this->product->query()->where('category_id',$categoryId)->where('id','!=', $id)->get();
     }
 
     /**

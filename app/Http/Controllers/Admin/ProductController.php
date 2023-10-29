@@ -86,7 +86,7 @@ class ProductController extends Controller
     public function edit(string $id)
     {
         $tags = $this->tagService->getTags();
-        $product = $this->productService->findItem($id);
+        $product = $this->productService->findItem('id',$id);
         $htmlOption = $this->categoryService->getCategory($product->category_id);
         return view('backend.products.edit', [
             'htmlOption' => $htmlOption,

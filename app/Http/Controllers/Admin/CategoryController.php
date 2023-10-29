@@ -80,7 +80,15 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = $this->categoryService->update($request,$id);
+        if ($data) {
+            return redirect()->route('admin.categories.index')->with([
+                'status_succeed' => trans('messages.edit_category_succeed')
+            ]);
+        }
+        return redirect()->route('admin.categories.index')->with([
+            'status_failed' => trans('messages.server_error')
+        ]);
     }
 
     /**

@@ -10,7 +10,7 @@ class Category extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $fillable = ['name', 'parent_id','slug','sort_key'];
+    protected $guarded = [];
 
     const CATEGORY_PARENT_ID = 0;
 
@@ -32,5 +32,9 @@ class Category extends Model
     public function children()
     {
         return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    public function products(){
+        return $this->hasMany(Product::class,'category_id');
     }
 }

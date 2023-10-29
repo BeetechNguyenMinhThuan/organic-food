@@ -27,47 +27,18 @@
                     <div class="row mb-2">
                         <div class="col-sm-4">
                             <a
-                                data-toggle="modal" data-target="#bs-example-modal-lg"
+                                data-toggle="modal" data-target="#modalCategoryManager"
                                 href="javascript:void(0);"
                                 class="btn btn-danger mb-2"
                             ><i class="mdi mdi-plus-circle mr-2"></i> Add
                                 Category</a
                             >
-                            <div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog"
-                                 aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title" id="myLargeModalLabel">Large modal</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                                ×
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form method="POST" action="{{ route('admin.categories.store') }}">
-                                                @csrf
-                                                <div class="form-group">
-                                                    <label for="name" class="form-label">Name</label>
-                                                    <input name="name" type="text" placeholder="Type here"
-                                                           class="form-control"
-                                                           id="name">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="form-label">Parent</label>
-                                                    <select name="parent_id" class="form-control select2-base">
-                                                        <option value="0">Danh mục cha</option>
-                                                        {!! $htmlOption !!}
-                                                    </select>
-                                                </div>
-                                                <div class="form-group text-right">
-                                                    <button class="btn btn-primary"
-                                                            type="submit">{{trans('messages.save')}}</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div><!-- /.modal-content -->
-                                </div><!-- /.modal-dialog -->
-                            </div><!-- /.modal -->
+                            @include('backend.categories.modal',[
+                                'idModal' => 'modalCategoryManager',
+                                'category'=>null,
+                                'route' => route('admin.categories.store'),
+                                'title'=> "Add category"
+                            ])
 
                         </div>
                         <!-- end col-->
@@ -98,7 +69,8 @@
                                         <a href="javascript:void(0);" class="action-icon">
                                             <i class="mdi mdi-eye"></i
                                             ></a>
-                                        <a href="javascript:void(0);" class="action-icon">
+                                        <a href="javascript:void(0);" class="action-icon" data-toggle="modal"
+                                           data-target="{{"#modalCategoryManager".$category->id}}">
                                             <i class="mdi mdi-square-edit-outline"></i
                                             ></a>
                                         <a data-url="{{route('admin.categories.destroy',['id'=>$category->id])}}"
@@ -106,7 +78,14 @@
                                             <i class="mdi mdi-delete"></i
                                             ></a>
                                     </td>
+                                    @include('backend.categories.modal',[
+                                           'idModal' => 'modalCategoryManager'.$category->id,
+                                           'category'=>$category,
+                                           'route' => route('admin.categories.update',['id'=>$category->id]),
+                                           'title'=> "Edit category"
+                                       ])
                                 </tr>
+
                             @endforeach
                             </tbody>
                         </table>

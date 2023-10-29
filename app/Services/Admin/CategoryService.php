@@ -5,18 +5,26 @@ namespace App\Services\Admin;
 use App\Components\Recursive;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Traits\StorageImageTrait;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class CategoryService
 {
-    private $category;
+    use StorageImageTrait;
+    private Category $category;
 
     public function __construct(Category $category)
     {
         $this->category = $category;
+    }
+
+    public function getModel()
+    {
+        return $this->category;
     }
 
     const PAGINATE_CATEGORY = '15';
@@ -29,7 +37,17 @@ class CategoryService
     public function get()
     {
         return $this->category->query()
+            ->with(['parent', 'children'])
             ->select(['id', 'name', 'parent_id', 'slug', 'sort_key'])
+            ->get();
+    }
+
+    public function getParent()
+    {
+        return $this->category->query()
+            ->where('parent_id',0)
+            ->with(['children'])
+            ->select(['id', 'name', 'parent_id', 'slug', 'sort_key','avatar'])
             ->get();
     }
 
@@ -67,6 +85,10 @@ class CategoryService
                 'slug' => Str::slug($request->name),
                 'parent_id' => $request->parent_id
             ];
+            if ($request->hasFile('avatar')) {
+                $image = $request->avatar;
+                $categoryCreate['avatar'] = $this->uploadFile($image, CATEGORY_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $image->getClientOriginalExtension());
+            }
             $this->category->query()->create($categoryCreate);
             DB::commit();
             return true;
@@ -103,6 +125,10 @@ class CategoryService
                 'parent_id' => $request->parent_id
             ];
             $category = $this->findItem($id);
+            if ($request->hasFile('avatar')) {
+                $image = $request->avatar;
+                $categoryUpdate['avatar'] = $this->uploadFile($image, CATEGORY_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $image->getClientOriginalExtension());
+            }
             $category->update($categoryUpdate);
             DB::commit();
             return true;

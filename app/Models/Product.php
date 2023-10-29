@@ -33,6 +33,10 @@ class Product extends Model
         return $this->belongsToMany(Tag::class,'product_tags','product_id','tag_id');
     }
 
+    public function brand(){
+        return $this->belongsTo(Brand::class,'brand_id');
+    }
+
     /**
      * Handle avatar product
      *
@@ -50,6 +54,21 @@ class Product extends Model
         return Attribute::make(
             set: fn($value) => implode("", explode(",", $value)),
         );
+    }
+
+    public function getPrice($value = '') {
+        if($this->price != '') {
+            return $this->format_price($this->price,$value);
+        }else{
+            return 'Liên hệ';
+        }
+    }
+    public function format_price($price) {
+        if ($price == 0) {
+            return "Liên hệ";
+        }else{
+            return number_format($price).'<sup>₫</sup>';
+        }
     }
 
     public function getImage($id, $typeImage = 'avatar')
