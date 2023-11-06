@@ -16,7 +16,7 @@
             asNavFor: '.product-image-slider',
             dots: false,
             focusOnSelect: true,
-            
+
             prevArrow: '<button type="button" class="slick-prev"><i class="fi-rs-arrow-small-left"></i></button>',
             nextArrow: '<button type="button" class="slick-next"><i class="fi-rs-arrow-small-right"></i></button>'
         });
@@ -45,7 +45,7 @@
             });
         });
         //Elevate Zoom
-        if ( $(".product-image-slider").length ) {
+        if ($(".product-image-slider").length) {
             $('.product-image-slider .slick-active img').elevateZoom({
                 zoomType: "inner",
                 cursor: "crosshair",
@@ -64,26 +64,22 @@
             });
         });
         //Qty Up-Down
-        $('.detail-qty').each(function () {
-            var qtyval = parseInt($(this).find(".qty-val").val(), 10);
+        // Sử dụng delegation cho sự kiện click trên phần tử có class 'qty-up' hoặc 'qty-down'
+        $('.cart-product-list').on('click', '.cart-qty-up, .cart-qty-down', function (event) {
+            event.preventDefault();
+            var qtyInput = $(this).closest('.detail-qty').find('.qty-val');
+            var qtyval = parseInt(qtyInput.val(), 10);
 
-            $('.qty-up').on('click', function (event) {
-                event.preventDefault();
-                qtyval = qtyval + 1;   
-                $(this).prev().val(qtyval);
-            });
+            if ($(this).hasClass('qty-up')) {
+                qtyval = qtyval + 1;
+            } else if ($(this).hasClass('qty-down')) {
+                qtyval = qtyval - 1;
+                qtyval = qtyval > 1 ? qtyval : 1;
+            }
 
-             $(".qty-down").on("click", function (event) {
-                 event.preventDefault(); 
-                 qtyval = qtyval - 1;
-                 if (qtyval > 1) {
-                     $(this).next().val(qtyval);
-                 } else {
-                     qtyval = 1;
-                     $(this).next().val(qtyval);
-                 }
-             });
+            qtyInput.val(qtyval);
         });
+
 
         $('.dropdown-menu .cart_list').on('click', function (event) {
             event.stopPropagation();

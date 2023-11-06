@@ -47,13 +47,13 @@
                                             <div class="product-category">
                                                 <a href="{{route('products.detail',$product->slug)}}">{{optional($product->category)->name}}</a>
                                             </div>
-                                            <h2><a href="shop-product-right.html">{{$product->name}}</a></h2>
+                                            <h2><a href="{{route('products.detail',$product->slug)}}">{{$product->name}}</a></h2>
                                             <div class="product-rate d-inline-block">
                                                 <div class="product-rating" style="width: 80%"></div>
                                             </div>
                                             <div class="product-price mt-10">
                                                 <span>{{number_format($product->sale_price)}} VNĐ</span>
-                                                <span class="old-price">{{number_format($product->price)}} VNĐ</span>
+                                                <span class="old-price">{!! $product->getPrice() !!}</span>
                                             </div>
                                             <div class="sold mt-15 mb-15">
                                                 <div class="progress mb-5">

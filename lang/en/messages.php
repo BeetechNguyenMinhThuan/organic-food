@@ -17,6 +17,8 @@ return [
 
     // Manage User
     'create_user_succeed' => 'Create a new user successful',
-    'edit_user_succeed' => 'Edit a user successful'
+    'edit_user_succeed' => 'Edit a user successful',
+    'delete_all_product_cart_success' => "Xoá toàn bộ sản phẩm khỏi giỏ hàng thành công"
+
 
 ];

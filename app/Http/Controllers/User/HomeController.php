@@ -8,6 +8,7 @@ use App\Services\Admin\MenuService;
 use App\Services\Admin\ProductService;
 use App\Services\Admin\SliderService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
@@ -31,6 +32,20 @@ class HomeController extends Controller
         $menus = $this->menuService->getParent();
         $products = $this->productService->get();
         return view('frontend.home.index', [
+            'sliders' => $sliders,
+            'categories' => $categories,
+            'products' => $products,
+            'menus' => $menus,
+        ]);
+    }
+
+    public function contact()
+    {
+        $sliders = $this->sliderService->get();
+        $categories = $this->categoryService->getParent();
+        $menus = $this->menuService->getParent();
+        $products = $this->productService->get();
+        return view('frontend.contact.index', [
             'sliders' => $sliders,
             'categories' => $categories,
             'products' => $products,

@@ -77,10 +77,12 @@
                             <select name="category" class="select-active">
                                 <option value="0">All Categories</option>
                                 @foreach($categories as $category)
-                                    <option {{request()->get('category') == $category->id ? 'selected' : ''}} value="{{$category->id}}">{{$category->name}}</option>
+                                    <option
+                                        {{request()->get('category') == $category->id ? 'selected' : ''}} value="{{$category->id}}">{{$category->name}}</option>
                                 @endforeach
                             </select>
-                            <input value="{{request()->get('search') ? request()->get('search') : "" }}" type="text" name="search" placeholder="Search for items..."/>
+                            <input value="{{request()->get('search') ? request()->get('search') : "" }}" type="text"
+                                   name="search" placeholder="Search for items..."/>
                         </form>
                     </div>
                     <div class="header-action-right">
@@ -101,52 +103,8 @@
                                 </a>
                                 <a href="shop-wishlist.html"><span class="lable">Wishlist</span></a>
                             </div>
-                            <div class="header-action-icon-2">
-                                <a class="mini-cart-icon" href="shop-cart.html">
-                                    <img alt="Nest" src="{{asset('frontend/assets/imgs/theme/icons/icon-cart.svg')}}"/>
-                                    <span class="pro-count blue">2</span>
-                                </a>
-                                <a href="shop-cart.html"><span class="lable">Cart</span></a>
-                                <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                    <ul>
-                                        <li>
-                                            <div class="shopping-cart-img">
-                                                <a href="shop-product-right.html"><img alt="Nest"
-                                                                                       src="{{asset('frontend/assets/imgs/shop/thumbnail-3.jpg')}}"/></a>
-                                            </div>
-                                            <div class="shopping-cart-title">
-                                                <h4><a href="shop-product-right.html">Daisy Casual Bag</a></h4>
-                                                <h4><span>1 × </span>$800.00</h4>
-                                            </div>
-                                            <div class="shopping-cart-delete">
-                                                <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="shopping-cart-img">
-                                                <a href="shop-product-right.html"><img alt="Nest"
-                                                                                       src="assets/imgs/shop/thumbnail-2.jpg"/></a>
-                                            </div>
-                                            <div class="shopping-cart-title">
-                                                <h4><a href="shop-product-right.html">Corduroy Shirts</a></h4>
-                                                <h4><span>1 × </span>$3200.00</h4>
-                                            </div>
-                                            <div class="shopping-cart-delete">
-                                                <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <div class="shopping-cart-footer">
-                                        <div class="shopping-cart-total">
-                                            <h4>Total <span>$4000.00</span></h4>
-                                        </div>
-                                        <div class="shopping-cart-button">
-                                            <a href="shop-cart.html" class="outline">View cart</a>
-                                            <a href="shop-checkout.html">Checkout</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @include('frontend.carts.components.cart-header-dropdown')
+
                             <div class="header-action-icon-2">
                                 <a href="page-account.html">
                                     <img class="svgInject" alt="Nest"
@@ -228,13 +186,43 @@
                     <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block font-heading">
                         <nav>
                             <ul>
-                                @foreach($menus as $menu)
-                                    {{--                                    <li class="hot-deals"><img--}}
-                                    {{--                                            src="{{asset('frontend/assets/imgs/theme/icons/icon-hot.svg')}}"--}}
-                                    {{--                                            alt="hot deals"/><a href="shop-grid-right.html">Deals</a>--}}
-                                    {{--                                    </li>--}}
+                                @foreach($menus as $key => $menu)
+                                    @php
+                                        $classActive = "";
+                                        $url = "";
+                                                switch ($menu->name) {
+                                                    case "Home":
+                                                        $classActive = $nameRoute == "home" ? "active" : "";
+                                                        $url = route('home');
+                                                        break;
+                                                    case "Shop":
+                                                        $classActive = $nameRoute == "shop" ? "active" : "";
+                                                        $url = route('shop');
+                                                        break;
+                                                    case "Contact":
+                                                        $classActive = $nameRoute == "contact" ? "active" : "";
+                                                        $url = route('contact');
+                                                        break;
+                                                    case "Blogs":
+                                                        $classActive = $nameRoute == "blogs" ? "active" : "";
+                                                        $url = route('blogs');
+                                                        break;
+                                                    case "FAQ":
+                                                        $classActive = $nameRoute == "faq" ? "active" : "";
+                                                        $url = route('faq');
+                                                        break;
+                                                    case "Brands":
+                                                        $classActive = $nameRoute == "brands" ? "active" : "";
+                                                        $url = route('brands');
+                                                        break;
+                                                    default:
+                                                        $classActive = $nameRoute == "home" ? "active" : "";
+                                                        $url = route('home');
+                                                }
+                                    @endphp
                                     <li>
-                                        <a class="active" href="index.html">{{$menu->name}}
+                                        <a class="{{$classActive}}"
+                                           href="{{$url}}">{{$menu->name}}
                                             @if($menu->children->isNotEmpty())
                                                 <i class="fi-rs-angle-down"></i>
                                             @endif
@@ -456,7 +444,7 @@
                             <a href="#">Pages</a>
                             <ul class="dropdown">
                                 <li><a href="page-about.html">About Us</a></li>
-                                <li><a href="page-contact.html">Contact</a></li>
+                                <li><a href="{{route('contact')}}">Contact</a></li>
                                 <li><a href="page-account.html">My Account</a></li>
                                 <li><a href="page-login.html">Login</a></li>
                                 <li><a href="page-register.html">Register</a></li>

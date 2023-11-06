@@ -27,8 +27,7 @@
     /*------ ScrollUp -------- */
     $.scrollUp({
         scrollText: '<i class="fi-rs-arrow-small-up"></i>',
-        easingType: "linear",
-        scrollSpeed: 900,
+        scrollSpeed: 300,
         animation: "fade"
     });
 
@@ -477,7 +476,7 @@
     }
 
     /*-----------------------
-        Shop filter active 
+        Shop filter active
     ------------------------- */
     $(".shop-filter-toogle").on("click", function (e) {
         e.preventDefault();

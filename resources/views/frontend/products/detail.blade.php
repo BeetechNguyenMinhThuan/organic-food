@@ -80,20 +80,26 @@
                                             <p class="font-lg">{!! $product->description !!}</p>
                                         </div>
                                         <div class="detail-extralink mb-50">
-                                            <div class="detail-qty border radius">
-                                                <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
-                                                <input type="text" name="quantity" class="qty-val" value="1" min="1">
-                                                <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
-                                            </div>
-                                            <div class="product-extra-link2">
-                                                <button type="submit" class="button button-add-to-cart"><i
-                                                        class="fi-rs-shopping-cart"></i>Add to cart
-                                                </button>
-                                                <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                   href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                                <a aria-label="Compare" class="action-btn hover-up"
-                                                   href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
-                                            </div>
+                                            <form action="{{ route('cart.add',['productId'=>$product->id])}}"
+                                                  method="GET" class="d-flex">
+                                                <div class="detail-qty border radius">
+                                                    <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
+                                                    <input type="text" name="quantity" class="qty-val" value="1"
+                                                           min="1">
+                                                    <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                                </div>
+                                                <div class="product-extra-link2">
+                                                    <button
+                                                        data-url="{{ route('cart.add',['productId'=>$product->id])}}"
+                                                        type="submit" class="button button-add-to-cart"><i
+                                                            class="fi-rs-shopping-cart"></i>Add to cart
+                                                    </button>
+                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                                       href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                    <a aria-label="Compare" class="action-btn hover-up"
+                                                       href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                                </div>
+                                            </form>
                                         </div>
                                         <div class="font-xs">
                                             <ul class="float-start">
@@ -528,4 +534,5 @@
     </div>
 @endsection
 @section('addJs')
+    <script src="{{asset('frontend/detail/detail.js')}}"></script>
 @endsection

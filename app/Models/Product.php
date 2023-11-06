@@ -22,19 +22,22 @@ class Product extends Model
      */
     public function category()
     {
-        return $this->belongsTo(Category::class,'category_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
-    public function images(){
-        return $this->hasMany(ProductImage::class,'product_id');
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class, 'product_id');
     }
 
-    public function tags(){
-        return $this->belongsToMany(Tag::class,'product_tags','product_id','tag_id');
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'product_tags', 'product_id', 'tag_id');
     }
 
-    public function brand(){
-        return $this->belongsTo(Brand::class,'brand_id');
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
     }
 
     /**
@@ -58,16 +61,18 @@ class Product extends Model
 
     public function getPrice($value = '') {
         if($this->price != '') {
-            return $this->format_price($this->price,$value);
+            return $this->formatPrice($this->price,$value);
         }else{
             return 'Liên hệ';
         }
     }
-    public function format_price($price) {
+
+    public function formatPrice($price)
+    {
         if ($price == 0) {
             return "Liên hệ";
-        }else{
-            return number_format($price).'<sup>₫</sup>';
+        } else {
+            return number_format($price) . '<sup>₫</sup>';
         }
     }
 

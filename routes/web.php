@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,27 @@ Route::get('/', [HomeController::class,'index'])->name('home');
 Route::get('/products/{name}', [ProductController::class,'detail'])->name('products.detail');
 Route::get('/products-categories/{slug}', [ProductController::class,'listProduct'])->name('products.listProduct');
 Route::get('/products', [ProductController::class,'search'])->name('products.search');
+Route::get('/shop', [ProductController::class,'shop'])->name('shop');
+Route::get('/blogs', [ProductController::class,'shop'])->name('blogs');
+Route::get('/brands', [ProductController::class,'shop'])->name('brands');
+Route::get('/faq', [ProductController::class,'shop'])->name('faq');
+Route::get('/about-us', [ProductController::class,'shop'])->name('faq');
+Route::get('/privacy-policy', [ProductController::class,'shop'])->name('faq');
+Route::get('/term-conditions', [ProductController::class,'shop'])->name('faq');
+Route::get('/purchase-guide', [ProductController::class,'shop'])->name('faq');
+Route::get('/faq', [ProductController::class,'shop'])->name('faq');
+
+// Page Contact
+Route::get('/contact', [HomeController::class,'contact'])->name('contact');
+
+
+// Cart
+Route::get("/add-cart/{productId}",[CartController::class,'addToCart'])->name('cart.add');
+Route::get("/show-cart",[CartController::class,'showCart'])->name('cart.show');
+Route::put("/update-cart",[CartController::class,'updateCart'])->name('cart.update');
+Route::delete("/delete-cart",[CartController::class,'deleteCart'])->name('cart.delete');
+Route::get("/delete-all-cart",[CartController::class,'deleteAllCart'])->name('cart.allDelete');
+
 
 
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth:admin']], function () {

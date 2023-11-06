@@ -88,4 +88,8 @@ class ProductController extends Controller
             'products' => $products
         ]);
     }
+
+    public function shop(){
+
+    }
 }

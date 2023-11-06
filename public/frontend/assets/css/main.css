@@ -3486,7 +3486,7 @@ table .product-thumbnail img {
   border-radius: 15px;
   overflow: hidden;
   height: 520px;
-  background: url(../imgs/banner/banner-4.png) no-repeat center bottom;
+  background: url(../imgs/deal-of-the-day/bring.png) no-repeat center bottom;
   background-size: cover;
   width: 100%;
 }
@@ -10527,7 +10527,7 @@ footer .hotline img {
 }
 
 /***************************
-    Page section margin 
+    Page section margin
 ****************************/
 .mtb-0 {
   margin: 0;
