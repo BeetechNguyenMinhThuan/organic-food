@@ -13,7 +13,7 @@
         <img alt="Nest" src="{{asset('frontend/assets/imgs/theme/icons/icon-cart.svg')}}"/>
          <span class="pro-count blue">{{$totalQuantity}}</span>
     </a>
-    <a href="{{route('cart.show')}}"><span class="lable">Cart</span></a>
+    <a href="{{route('cart.show')}}"><span class="lable">{{ trans('messages.header.cart') }}</span></a>
 
     @if(!empty($carts))
         <div class="cart-dropdown-wrap cart-dropdown-hm2">

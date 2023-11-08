@@ -1,6 +1,3 @@
-.section-padding .product-cart-wrap{
-    height: 535px;
-}
 .product-tabs .product-cart-wrap{
     height: calc(100% - 30px);
 }

@@ -26,10 +26,11 @@
                      role="tabpanel"
                      aria-labelledby="tab-{{$key}}">
                     <div class="row product-grid-4">
-                        @foreach($category->products as $product)
+                        @foreach($category->products as $key => $product)
                             <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
-                                <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn"
-                                     data-wow-delay=".1s">
+                                <div
+                                    class="product-cart-wrap d-flex flex-column justify-content-between mb-30 wow animate__animated animate__fadeIn"
+                                    data-wow-delay=".1s">
                                     <div class="product-img-action-wrap">
                                         <div class="product-img product-img-zoom">
                                             <a href="{{route('products.detail',['name'=>$product->slug])}}">
@@ -44,7 +45,7 @@
                                             <a aria-label="Compare" class="action-btn" href="shop-compare.html"><i
                                                     class="fi-rs-shuffle"></i></a>
                                             <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal"
-                                               data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                               data-bs-target="#quickViewModal{{$key}}"><i class="fi-rs-eye"></i></a>
                                         </div>
                                         <div class="product-badges product-badges-position product-badges-mrg">
                                             <span class="hot">Hot</span>
@@ -69,8 +70,9 @@
                                         </div>
                                         <div class="product-card-bottom">
                                             <div class="product-price">
-                                                <span>{{number_format($product->sale_price)}} VNĐ</span>
-                                                <span class="old-price">{{number_format($product->price)}} VNĐ</span>
+                                                <span>{!!$product->getPrice()!!}</span>
+                                                <span
+                                                    class="old-price">{{number_format($product->price)}}<sup>₫</sup></span>
                                             </div>
                                             <div class="add-cart">
                                                 <a class="add button-add-to-cart"
@@ -82,6 +84,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @include('frontend.products.modal-quick-view',['item' =>$product,'key' =>$key])
                         @endforeach
                         <!--end product card-->
                     </div>

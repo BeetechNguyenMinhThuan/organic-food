@@ -9,5 +9,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Brand extends Model
 {
     use HasFactory, SoftDeletes;
+
     protected $guarded = []; //
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'brand_id');
+    }
+
 }

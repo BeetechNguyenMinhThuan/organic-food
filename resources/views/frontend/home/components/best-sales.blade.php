@@ -1,4 +1,4 @@
-<section class="section-padding pb-5">
+<section class="section-padding pb-5 mb-20">
     <div class="container">
         <div class="section-title wow animate__animated animate__fadeIn">
             <h3 class="">Daily Best Sells</h3>
@@ -22,7 +22,7 @@
                                  id="carausel-4-columns-arrows"></div>
                             <div class="carausel-4-columns carausel-arrow-center" id="carausel-4-columns">
                                 @foreach($products as $product)
-                                    <div class="product-cart-wrap">
+                                    <div class="product-cart-wrap d-flex flex-column justify-content-between">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
                                                 <a href="{{route('products.detail',$product->slug)}}">
@@ -55,7 +55,7 @@
                                                 <div class="product-rating" style="width: 80%"></div>
                                             </div>
                                             <div class="product-price mt-10 mb-10">
-                                                <span>{{number_format($product->sale_price)}} VNĐ</span>
+                                                <span>{!!$product->getPrice()!!}</span>
                                                 <span class="old-price">{!! $product->getPrice() !!}</span>
                                             </div>
                                             <a href="shop-cart.html"

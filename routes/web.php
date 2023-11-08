@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\User\BrandController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\ProductController;
@@ -22,6 +23,10 @@ use UniSharp\LaravelFilemanager\Lfm;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+// Change Language
+Route::get('change-language/{locale}', [HomeController::class,'changeLanguage'])->name('user.change-language');
+
 // Auth
 Route::get('/login', [AuthController::class, 'login'])->name('user.login');
 Route::get('/register', [AuthController::class, 'register'])->name('user.register');
@@ -36,7 +41,6 @@ Route::get('/products-categories/{slug}', [ProductController::class,'listProduct
 Route::get('/products', [ProductController::class,'search'])->name('products.search');
 Route::get('/shop', [ProductController::class,'shop'])->name('shop');
 Route::get('/blogs', [ProductController::class,'shop'])->name('blogs');
-Route::get('/brands', [ProductController::class,'shop'])->name('brands');
 Route::get('/faq', [ProductController::class,'shop'])->name('faq');
 Route::get('/about-us', [ProductController::class,'shop'])->name('faq');
 Route::get('/privacy-policy', [ProductController::class,'shop'])->name('faq');
@@ -46,6 +50,11 @@ Route::get('/faq', [ProductController::class,'shop'])->name('faq');
 
 // Page Contact
 Route::get('/contact', [HomeController::class,'contact'])->name('contact');
+
+// Brands
+Route::get('/brands', [BrandController::class,'index'])->name('brands.index');
+Route::get('/brand/{slug}', [BrandController::class,'detail'])->name('brands.detail');
+
 
 
 // Cart

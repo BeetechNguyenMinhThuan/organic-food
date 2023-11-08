@@ -23,6 +23,11 @@ class BrandService
 
     const PAGINATE_CATEGORY = '15';
 
+
+    public function getModel()
+    {
+        return $this->brand;
+    }
     /**
      * Display a listing of Products
      *
@@ -55,6 +60,7 @@ class BrandService
     {
         $data = [
             'name' => $request->name,
+            'slug' => Str::slug($request->name),
             'description' => $request->description,
         ];
         // Store avatar image
@@ -111,7 +117,7 @@ class BrandService
         DB::beginTransaction();
         try {
             $brand = $this->brand->query()->findOrFail($id);
-            if (!empty($brand->image)){
+            if (!empty($brand->image)) {
                 $this->deleteFile($brand->image);
             }
             $brand->delete();

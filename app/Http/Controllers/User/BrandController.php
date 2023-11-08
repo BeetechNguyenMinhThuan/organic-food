@@ -3,26 +3,22 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Services\Admin\BrandService;
 use App\Services\Admin\CategoryService;
 use App\Services\Admin\MenuService;
 use App\Services\Admin\ProductService;
 use App\Services\Admin\SliderService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
-class HomeController extends Controller
+class BrandController extends Controller
 {
-    private $sliderService;
-    private $categoryService;
-    private $productService;
-    private $menuService;
-
-    public function __construct(SliderService $sliderService, CategoryService $categoryService, ProductService $productService, MenuService $menuService)
+    public function __construct(BrandService $brandService, SliderService $sliderService, CategoryService $categoryService, ProductService $productService, MenuService $menuService)
     {
         $this->sliderService = $sliderService;
         $this->categoryService = $categoryService;
         $this->productService = $productService;
         $this->menuService = $menuService;
+        $this->brandService = $brandService;
     }
 
     public function index()
@@ -30,31 +26,28 @@ class HomeController extends Controller
         $sliders = $this->sliderService->get();
         $categories = $this->categoryService->getParent();
         $menus = $this->menuService->getParent();
-        $products = $this->productService->get();
-        return view('frontend.home.index', [
+        $brands = $this->brandService->getPaginate();
+        return view('frontend.brands.index', [
             'sliders' => $sliders,
             'categories' => $categories,
-            'products' => $products,
             'menus' => $menus,
+            'brands' => $brands
         ]);
     }
 
-    public function contact()
+    public function detail($slug)
     {
+        $brand = $this->brandService->getModel()->where('slug', $slug)->first();
         $sliders = $this->sliderService->get();
         $categories = $this->categoryService->getParent();
         $menus = $this->menuService->getParent();
-        $products = $this->productService->get();
-        return view('frontend.contact.index', [
+        $products = $brand->products()->paginate(15);
+        return view('frontend.brands.detail', [
             'sliders' => $sliders,
             'categories' => $categories,
-            'products' => $products,
-            'menus' => $menus
+            'menus' => $menus,
+            'brand' => $brand,
+            'products' => $products
         ]);
-    }
-
-    public function changeLanguage($language){
-        Session::put('website_language', $language);
-        return redirect()->back();
     }
 }

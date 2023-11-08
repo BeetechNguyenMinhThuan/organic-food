@@ -220,7 +220,6 @@
                 <!--product grid-->
                 <div class="pagination-area mt-20 mb-20">
                     {!! $products->links('vendor.pagination.default') !!}
-
                 </div>
                 @endif
             </div>
