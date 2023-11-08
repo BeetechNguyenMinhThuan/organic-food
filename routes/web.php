@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\ProductController;
@@ -22,6 +22,13 @@ use UniSharp\LaravelFilemanager\Lfm;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+// Auth
+Route::get('/login', [AuthController::class, 'login'])->name('user.login');
+Route::get('/register', [AuthController::class, 'register'])->name('user.register');
+Route::post('/doLogin', [AuthController::class, 'doLogin'])->name('user.doLogin');
+Route::post('/doRegister', [AuthController::class, 'doRegister'])->name('user.doRegister');
+Route::get('/doLogout', [AuthController::class, 'doLogout'])->name('user.logout');
+
 
 Route::get('/', [HomeController::class,'index'])->name('home');
 Route::get('/products/{name}', [ProductController::class,'detail'])->name('products.detail');

@@ -55,32 +55,49 @@ class CartService
     /**
      * Insert Product
      * @param CategoryRequest $request
-     * @return bool
+     * @return \Illuminate\Http\JsonResponse
      */
     public function create($request, $productId)
     {
+        try {
 //        Session::flush('carts');
-        $quantity = (int)$request->quantity;
-        if ($quantity <= 0 || !$productId) {
-            session()->flash('error', 'Số lượng hoặc sản phẩm không chính xác');
-            return false;
-        }
-        $product = $this->product->findOrFail($productId);
-        $carts = Session::get('carts');
+            $quantity = (int)$request->quantity;
+            if (!$quantity){
+                $quantity = 1;
+            }
+            if (!$productId) {
+                return response()->json([
+                    'code' => 500,
+                    'data' => trans('messages.server_error'),
+                ], 500);
+            }
+            $product = $this->product->findOrFail($productId);
+            $carts = Session::get('carts');
 
-        if (isset($carts[$productId])) {
-            $carts[$productId]['quantity'] = $carts[$productId]['quantity'] + $quantity;
-        } else {
-            $carts[$productId] = [
-                'product' => $product,
-                'quantity' => $quantity
-            ];
+            if (isset($carts[$productId])) {
+                $carts[$productId]['quantity'] = $carts[$productId]['quantity'] + $quantity;
+            } else {
+                $carts[$productId] = [
+                    'product' => $product,
+                    'quantity' => $quantity
+                ];
+            }
+            Session::put('carts', $carts);
+            $carts = Session::get('carts');
+            $cartDropdownComponent = view('frontend.carts.components.cart-header-dropdown', compact('carts'))->render();
+
+            return response()->json([
+                'code' => 200,
+                'message' => 'success',
+                'cartListDropdown' => $cartDropdownComponent
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'data' => trans('messages.server_error'),
+            ], 500);
         }
-        Session::put('carts', $carts);
-        return response()->json([
-            'code' => 200,
-            'message' => 'success'
-        ], 200);
+
     }
 
     public function updateCart($request)

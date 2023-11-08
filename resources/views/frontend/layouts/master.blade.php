@@ -19,7 +19,10 @@
     <link rel="stylesheet" href="{{asset('frontend/assets/css/plugins/slider-range.css')}}"/>
     <link rel="stylesheet" href="{{asset('frontend/assets/css/main.css?v=5.3')}}"/>
     <link rel="stylesheet" href="{{ asset('vendor/sweetalert2/sweetalert2.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/toastr/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/toastr/toastr.min.css') }}"> <link
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        rel="stylesheet"
+    />
     <link rel="stylesheet" href="{{asset('frontend/assets/css/common.css')}}"/>
     @php
         $nameRoute = Route::currentRouteName();

@@ -8,7 +8,7 @@
     @include('frontend.home.components.banner')
     @include('frontend.home.components.product-tabs')
     @include('frontend.home.components.best-sales')
-    @include('frontend.home.components.deals')
+{{--    @include('frontend.home.components.deals')--}}
     @include('frontend.home.components.featured')
 @endsection
 @section('addJs')

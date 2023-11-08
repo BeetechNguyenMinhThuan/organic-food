@@ -26,7 +26,8 @@
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
                                                 <a href="{{route('products.detail',$product->slug)}}">
-                                                    <img class="default-img" src="{{\App\Helpers\Common::getImage($product->avatar)}}"
+                                                    <img class="default-img"
+                                                         src="{{\App\Helpers\Common::getImage($product->avatar)}}"
                                                          alt=""/>
                                                 </a>
                                             </div>
@@ -47,22 +48,19 @@
                                             <div class="product-category">
                                                 <a href="{{route('products.detail',$product->slug)}}">{{optional($product->category)->name}}</a>
                                             </div>
-                                            <h2><a href="{{route('products.detail',$product->slug)}}">{{$product->name}}</a></h2>
+                                            <h2>
+                                                <a href="{{route('products.detail',$product->slug)}}">{{$product->name}}</a>
+                                            </h2>
                                             <div class="product-rate d-inline-block">
                                                 <div class="product-rating" style="width: 80%"></div>
                                             </div>
-                                            <div class="product-price mt-10">
+                                            <div class="product-price mt-10 mb-10">
                                                 <span>{{number_format($product->sale_price)}} VNĐ</span>
                                                 <span class="old-price">{!! $product->getPrice() !!}</span>
                                             </div>
-                                            <div class="sold mt-15 mb-15">
-                                                <div class="progress mb-5">
-                                                    <div class="progress-bar" role="progressbar" style="width: 50%"
-                                                         aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                                <span class="font-xs text-heading"> Sold: 90/{{$product->stock}}</span>
-                                            </div>
-                                            <a href="shop-cart.html" class="btn w-100 hover-up"><i
+                                            <a href="shop-cart.html"
+                                               data-url="{{ route('cart.add',['productId'=>$product->id])}}"
+                                               class="btn w-100 hover-up button-add-to-cart"><i
                                                     class="fi-rs-shopping-cart mr-5"></i>Add To Cart</a>
                                         </div>
                                     </div>

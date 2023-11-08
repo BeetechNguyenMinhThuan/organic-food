@@ -1,11 +1,17 @@
 @php
     $carts = \Illuminate\Support\Facades\Session::get('carts');
-    $totalPrice = 0
+    $totalPrice = 0;
+    $totalQuantity = 0;
+    if (!empty($carts)){
+        foreach ($carts as $cart){
+            $totalQuantity += $cart['quantity'];
+        }
+    }
 @endphp
 <div class="header-action-icon-2 header-cart-list" data-url="{{route('cart.delete')}}">
     <a class="mini-cart-icon" href="{{route('cart.show')}}">
         <img alt="Nest" src="{{asset('frontend/assets/imgs/theme/icons/icon-cart.svg')}}"/>
-        <span class="pro-count blue">{{count(\Illuminate\Support\Facades\Session::get('carts'))}}</span>
+         <span class="pro-count blue">{{$totalQuantity}}</span>
     </a>
     <a href="{{route('cart.show')}}"><span class="lable">Cart</span></a>
 
