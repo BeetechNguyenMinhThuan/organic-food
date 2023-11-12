@@ -55,8 +55,8 @@
                                                 <div class="product-rating" style="width: 80%"></div>
                                             </div>
                                             <div class="product-price mt-10 mb-10">
-                                                <span>{!!$product->getPrice()!!}</span>
-                                                <span class="old-price">{!! $product->getPrice() !!}</span>
+                                                <span>{!!$product->formatPrice()!!}</span>
+                                                <span class="old-price">{!! $product->formatPrice() !!}</span>
                                             </div>
                                             <a href="shop-cart.html"
                                                data-url="{{ route('cart.add',['productId'=>$product->id])}}"

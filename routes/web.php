@@ -25,7 +25,7 @@ use UniSharp\LaravelFilemanager\Lfm;
 */
 
 // Change Language
-Route::get('change-language/{locale}', [HomeController::class,'changeLanguage'])->name('user.change-language');
+Route::get('change-language/{locale}', [HomeController::class, 'changeLanguage'])->name('user.change-language');
 
 // Auth
 Route::get('/login', [AuthController::class, 'login'])->name('user.login');
@@ -35,35 +35,37 @@ Route::post('/doRegister', [AuthController::class, 'doRegister'])->name('user.do
 Route::get('/doLogout', [AuthController::class, 'doLogout'])->name('user.logout');
 
 
-Route::get('/', [HomeController::class,'index'])->name('home');
-Route::get('/products/{name}', [ProductController::class,'detail'])->name('products.detail');
-Route::get('/products-categories/{slug}', [ProductController::class,'listProduct'])->name('products.listProduct');
-Route::get('/products', [ProductController::class,'search'])->name('products.search');
-Route::get('/shop', [ProductController::class,'shop'])->name('shop');
-Route::get('/blogs', [ProductController::class,'shop'])->name('blogs');
-Route::get('/faq', [ProductController::class,'shop'])->name('faq');
-Route::get('/about-us', [ProductController::class,'shop'])->name('faq');
-Route::get('/privacy-policy', [ProductController::class,'shop'])->name('faq');
-Route::get('/term-conditions', [ProductController::class,'shop'])->name('faq');
-Route::get('/purchase-guide', [ProductController::class,'shop'])->name('faq');
-Route::get('/faq', [ProductController::class,'shop'])->name('faq');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/products/{name}', [ProductController::class, 'detail'])->name('products.detail');
+Route::get('/products-categories/{slug}', [ProductController::class, 'listProduct'])->name('products.listProduct');
+Route::get('/products', [ProductController::class, 'search'])->name('products.search');
+Route::get('/shop', [ProductController::class, 'shop'])->name('shop');
+Route::get('/blogs', [ProductController::class, 'shop'])->name('blogs');
+Route::get('/faq', [ProductController::class, 'shop'])->name('faq');
+Route::get('/about-us', [ProductController::class, 'shop'])->name('faq');
+Route::get('/privacy-policy', [ProductController::class, 'shop'])->name('faq');
+Route::get('/term-conditions', [ProductController::class, 'shop'])->name('faq');
+Route::get('/purchase-guide', [ProductController::class, 'shop'])->name('faq');
+Route::get('/faq', [ProductController::class, 'shop'])->name('faq');
 
 // Page Contact
-Route::get('/contact', [HomeController::class,'contact'])->name('contact');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 
 // Brands
-Route::get('/brands', [BrandController::class,'index'])->name('brands.index');
-Route::get('/brand/{slug}', [BrandController::class,'detail'])->name('brands.detail');
-
+Route::get('/brands', [BrandController::class, 'index'])->name('brands.index');
+Route::get('/brand/{slug}', [BrandController::class, 'detail'])->name('brands.detail');
 
 
 // Cart
-Route::get("/add-cart/{productId}",[CartController::class,'addToCart'])->name('cart.add');
-Route::get("/show-cart",[CartController::class,'showCart'])->name('cart.show');
-Route::put("/update-cart",[CartController::class,'updateCart'])->name('cart.update');
-Route::delete("/delete-cart",[CartController::class,'deleteCart'])->name('cart.delete');
-Route::get("/delete-all-cart",[CartController::class,'deleteAllCart'])->name('cart.allDelete');
-
+Route::get("/add-cart/{productId}", [CartController::class, 'addToCart'])->name('cart.add');
+Route::get("/show-cart", [CartController::class, 'showCart'])->name('cart.show');
+Route::put("/update-cart", [CartController::class, 'updateCart'])->name('cart.update');
+Route::delete("/delete-cart", [CartController::class, 'deleteCart'])->name('cart.delete');
+Route::get("/delete-all-cart", [CartController::class, 'deleteAllCart'])->name('cart.allDelete');
+Route::middleware('CheckUserLogin')->group(function () {
+    Route::post("/checkout-Cart", [CartController::class, 'checkoutCart'])->name('cart.checkout');
+    Route::post("/add-shipping-address", [CartController::class, 'addShippingAddress'])->name('cart.addShippingAddress');
+});
 
 
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth:admin']], function () {
@@ -71,8 +73,7 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth:a
 });
 
 
-
 Route::get('logs', [LogViewerController::class, 'index']);
-Route::get('/test',function () {
+Route::get('/test', function () {
     return Storage::disk(FILESYSTEM)->response('sliders/1/zAR1y0dN145BQrM1KdznIPuXJIDTeH.jpg');
 })->name('testimg');

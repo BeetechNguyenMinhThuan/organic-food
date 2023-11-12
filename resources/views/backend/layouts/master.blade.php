@@ -14,6 +14,8 @@
     <link href="{{asset('backend/assets/css/vendor/jquery-jvectormap-1.2.2.css')}}" rel="stylesheet" type="text/css"/>
     <link href="{{asset('backend/assets/css/vendor/dataTables.bootstrap4.css')}}" rel="stylesheet" type="text/css"/>
     <link href="{{asset('backend/assets/css/vendor/responsive.bootstrap4.css')}}" rel="stylesheet" type="text/css"/>
+
+
     <!-- third party css end -->
 
     <!-- App css -->
@@ -22,11 +24,9 @@
     <link href="{{asset('backend/assets/css/app-modern-dark.min.css')}}" rel="stylesheet" type="text/css"
           id="dark-style"/>
 
-    <link rel="stylesheet" href="{{ asset('vendor/sweetalert2/sweetalert2.css') }}">
-{{--    <link rel="stylesheet" href="{{ asset('vendor/select2/select2.min.css') }}">--}}
-    <link rel="stylesheet" href="{{ asset('vendor/toastr/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/common/css/admin.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
 
     @yield('addCss')
 
@@ -151,13 +151,12 @@
 <script src="{{asset('backend/assets/js/vendor/dropzone.min.js')}}"></script>
 <script src="{{asset('backend/assets/js/ui/component.fileupload.js')}}"></script>
 <!-- third party js ends -->
-
+<script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 <!-- demo app -->
 <!-- end demo js-->
 <script type="module" src="{{ asset('backend/common/js/common.js') }}"></script>
-<script src="{{ asset('vendor/sweetalert2/sweetalert2.min.js') }}"></script>
 {{--<script src="{{ asset('vendor/select2/select2.min.js') }}"></script>--}}
-<script src="{{ asset('vendor/toastr/toastr.min.js') }}"></script>
 <script src="https://cdn.tiny.cloud/1/o9bdykr38uld5i7zkhn4eqt5oap4d75v9kp7uv58fvs3aijf/tinymce/5/tinymce.min.js"
         referrerpolicy="origin"></script>
 <script type="module">

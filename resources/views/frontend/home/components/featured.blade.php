@@ -23,7 +23,7 @@
                                     <span class="font-small ml-5 text-muted"> (4.0)</span>
                                 </div>
                                 <div class="product-price">
-                                    <span>{!!$product->getPrice()!!}</span>
+                                    <span>{!!$product->formatPrice()!!}</span>
                                     <span
                                         class="old-price">{{number_format($product->price)}}<sup>₫</sup></span>
                                 </div>
@@ -54,7 +54,7 @@
                                     <span class="font-small ml-5 text-muted"> (4.0)</span>
                                 </div>
                                 <div class="product-price">
-                                    <span>{!!$product->getPrice()!!}</span>
+                                    <span>{!!$product->formatPrice()!!}</span>
                                     <span
                                         class="old-price">{{number_format($product->price)}}<sup>₫</sup></span>
                                 </div>
@@ -85,7 +85,7 @@
                                     <span class="font-small ml-5 text-muted"> (4.0)</span>
                                 </div>
                                 <div class="product-price">
-                                    <span>{!!$product->getPrice()!!}</span>
+                                    <span>{!!$product->formatPrice()!!}</span>
                                     <span
                                         class="old-price">{{number_format($product->price)}}<sup>₫</sup></span>
                                 </div>
@@ -116,7 +116,7 @@
                                     <span class="font-small ml-5 text-muted"> (4.0)</span>
                                 </div>
                                 <div class="product-price">
-                                    <span>{!!$product->getPrice()!!}</span>
+                                    <span>{!!$product->formatPrice()!!}</span>
                                     <span
                                         class="old-price">{{number_format($product->price)}}<sup>₫</sup></span>
                                 </div>

@@ -118,7 +118,7 @@
                                     </div>
                                     <div class="product-card-bottom">
                                         <div class="product-price">
-                                            <span>{!!$product->getPrice()!!}</span>
+                                            <span>{!!$product->formatPrice()!!}</span>
                                             <span
                                                 class="old-price">{{number_format($product->price)}}<sup>₫</sup></span>
                                         </div>

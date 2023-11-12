@@ -65,7 +65,7 @@
         });
         //Qty Up-Down
         // Sử dụng delegation cho sự kiện click trên phần tử có class 'qty-up' hoặc 'qty-down'
-        $('.cart-product-list').on('click', '.cart-qty-up, .cart-qty-down', function (event) {
+        $(document).on('click', '.cart-qty-up, .cart-qty-down', function (event) {
             event.preventDefault();
             var qtyInput = $(this).closest('.detail-qty').find('.qty-val');
             var qtyval = parseInt(qtyInput.val(), 10);
@@ -74,10 +74,23 @@
                 qtyval = qtyval + 1;
             } else if ($(this).hasClass('qty-down')) {
                 qtyval = qtyval - 1;
+                if (qtyval < 1) {
+                    alert("Số lượng phải lớn hơn hoặc bằng 1!");
+                    $(this).val(1)
+
+                }
                 qtyval = qtyval > 1 ? qtyval : 1;
             }
 
             qtyInput.val(qtyval);
+        });
+        $(document).on('change', ".qty-val", function (event) {
+            let value = $(this).val();
+
+            if (value < 1) {
+                alert("Số lượng phải lớn hơn hoặc bằng 1!");
+                $(this).val(1)
+            }
         });
 
 

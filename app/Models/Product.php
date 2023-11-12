@@ -59,15 +59,33 @@ class Product extends Model
         );
     }
 
-    public function getPrice($value = '') {
-        if($this->price != '') {
-            return $this->formatPrice($this->price,$value);
-        }else{
-            return 'Liên hệ';
-        }
+    public function formatPrice()
+    {
+        $price = $this->getPrice();
+        return $this->handleFormatPrice($price);
     }
 
-    public function formatPrice($price)
+    public function getPrice()
+    {
+        return $this->sale_status ? $this->sale_price : $this->price;
+    }
+
+    public function getBasePrice(){
+        $price = $this->price;
+        return $this->handleFormatPrice($price);
+    }
+
+    public function showDiscount()
+    {
+        return ($this->sale_status && $this->discount) ? $this->discount . "% Off" : "";
+    }
+
+    public function handleCalculatePriceCart($price)
+    {
+        return $this->handleFormatPrice($price);
+    }
+
+    public function handleFormatPrice($price)
     {
         if ($price == 0) {
             return "Liên hệ";
@@ -76,7 +94,8 @@ class Product extends Model
         }
     }
 
-    public function getImage($id, $typeImage = 'avatar')
+    public
+    function getImage($id, $typeImage = 'avatar')
     {
         try {
             $user = $this::withTrashed()->find($id, [$typeImage . ' as image']);

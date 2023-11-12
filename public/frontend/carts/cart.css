@@ -1,0 +1,65 @@
+.cart-pick-payment .card-body{
+    padding: 1rem 0;
+}
+.action_method{
+    gap: 75px;
+}
+.tab-content .pick_store, .pick_ship,.info_ship{
+    padding: 20px 0;
+    background-color: #EDEAE6;
+}
+.tab-content .pick_store .form-control, .pick_ship .form-control{
+    background: white;
+}
+.datepicker-days td,th{
+    padding: 0
+}
+.tab-content .info_ship{
+    margin-top: 20px;
+}
+.box-log{
+    padding: 15px 340px;
+}
+.list-account-shipping .form-check-label{
+    padding-left: 35px;
+}
+.list-account-shipping .form-check{
+    padding: 10px;
+    background-color: #F1F1F1;
+    position: relative;
+    font-size: 17px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+.list-account-shipping .form-check .edit-info{
+    position: absolute;
+    right: 26px;
+    top: 12px;
+    font-size: 16px;
+}
+.checked{
+    background-color: #fff !important;
+    border: 1px dashed #0fb346;
+}
+
+
+.tab-content .ship-note{
+    margin-top: 30px;
+    background-color: #EDEAE6;
+}
+.tab-content .message-note{
+    padding: 0 170px 30px 170px;
+}
+.tab-content .textarea-style{
+    background-color: #ffffff;
+
+}
+
+.ship-note .header-bar{
+    padding: 15px 20px;
+}
+@media screen and (max-width: 991px) {
+    .box-log{
+        padding: 15px 150px;
+    }
+}

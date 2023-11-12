@@ -44,11 +44,14 @@ class CartController extends Controller
         $categories = $this->categoryService->getParent();
         $menus = $this->menuService->getParent();
         $carts = Session::get('carts');
+        $cartShippingAddress = $this->cartService->getShippingAddressUser();
+
         return view("frontend.carts.show", [
             'sliders' => $sliders,
             'categories' => $categories,
             'menus' => $menus,
             'carts' => $carts,
+            'cartShippingAddress' => $cartShippingAddress
         ]);
     }
 
@@ -67,56 +70,23 @@ class CartController extends Controller
         $cartDeleteAll = $this->cartService->deleteAllCart();
         if ($cartDeleteAll) {
             return redirect()->route('cart.show')->with([
-                'status_succeed' => trans('messages.delete_all_product_cart_success')
+                'status_succeed' => trans('messages.cart.delete_all_product_cart_success')
             ]);
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function addShippingAddress(Request $request)
     {
-
+        return $this->cartService->addShippingAddress($request);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function checkoutCart(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $cart = $this->cartService->checkoutCart($request);
+        if ($cart) {
+            return redirect()->route('cart.show')->with([
+                'success' => trans('messages.cart.order_success')
+            ]);
+        }
     }
 }

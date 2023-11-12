@@ -3,16 +3,34 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\Admin\OrderService;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    private OrderService $orderService;
+
+    public function __construct(OrderService $orderService)
+    {
+        $this->orderService = $orderService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $orders = $this->orderService->getPaginate();
+        return view('backend.orders.index', [
+            'orders' => $orders
+        ]);
+    }
+
+    public function detail($id)
+    {
+        $order = $this->orderService->findItem($id);
+        $orderDetail = $order->orderDetail;
+        return view('backend.orders.detail', compact('order','orderDetail'));
     }
 
     /**

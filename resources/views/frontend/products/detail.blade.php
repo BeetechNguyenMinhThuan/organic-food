@@ -56,8 +56,10 @@
                                 </div>
                                 <div class="col-md-6 col-sm-12 col-xs-12">
                                     <div class="detail-info pr-30 pl-30">
-                                        <span class="stock-status out-stock"> Sale Off </span>
-                                        <h2 class="title-detail">{{$product->name}}</h2>
+                                        @if($product->sale_status)
+                                            <span class="stock-status out-stock"> Sale Off </span>
+                                        @endif
+                                        <h2 class="title-detail">{{$product->name}} / {{$product->weight}}</h2>
                                         <div class="product-detail-rating">
                                             <div class="product-rate-cover text-end">
                                                 <div class="product-rate d-inline-block">
@@ -69,11 +71,16 @@
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left">
                                                 <span
-                                                    class="current-price text-brand">{!! $product->getPrice() !!}</span>
+                                                    class="current-price text-brand">{!! $product->formatPrice() !!}</span>
                                                 <span>
-                                                        <span class="save-price font-md color3 ml-15">26% Off</span>
-                                                        <span class="old-price font-md ml-15">$52</span>
-                                                    </span>
+                                                        <span class="save-price font-md color3 ml-15">
+                                                            {{$product->showDiscount()}}
+                                                        </span>
+                                                    @if($product->sale_status)
+                                                        <span
+                                                            class="old-price font-md ml-15">{!!$product->getBasePrice()!!}</span>
+                                                    @endif
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="short-desc mb-30">
@@ -83,10 +90,10 @@
                                             <form action="{{ route('cart.add',['productId'=>$product->id])}}"
                                                   method="GET" class="d-flex">
                                                 <div class="detail-qty border radius">
-                                                    <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
+                                                    <a href="#" class="qty-down cart-qty-down"><i class="fi-rs-angle-small-down"></i></a>
                                                     <input type="text" name="quantity" class="qty-val" value="1"
                                                            min="1">
-                                                    <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                                    <a href="#" class="qty-up cart-qty-up"><i class="fi-rs-angle-small-up"></i></a>
                                                 </div>
                                                 <div class="product-extra-link2">
                                                     <button

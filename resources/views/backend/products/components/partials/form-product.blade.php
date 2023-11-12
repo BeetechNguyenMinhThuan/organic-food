@@ -1,5 +1,5 @@
 <form method="POST" action="{{ $action }}" enctype="multipart/form-data"
-      data-plugin="dropzone" data-previews-container="#file-previews"
+      data-previews-container="#file-previews"
       data-upload-preview-template="#uploadPreviewTemplate">
     @if(isset($method))
         @method($method)
@@ -17,7 +17,7 @@
                     <div class="row">
                         <div class="col-xl-6">
                             <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label for="product_name" class="col-form-label">Product title <sup
                                             style="color: red">*</sup></label>
                                     <input name="name" type="text" placeholder="Type here"
@@ -31,13 +31,26 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label for="product_sku" class="col-form-label">Product Sku <sup style="color: red">*</sup></label>
                                     <input name="sku" type="text" placeholder="Type here"
                                            class="form-control @error('sku') is-invalid @enderror"
                                            id="product_sku"
                                            value="{{ old('sku') ? old('sku') : (isset($product->sku) ? $product->sku : '') }}"/>
                                     @error('sku')
+                                    <div class="text-danger mt-1">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="weight" class="col-form-label">Weight <sup
+                                            style="color: red">*</sup></label>
+                                    <input name="weight" type="text" placeholder="Type here"
+                                           class="form-control @error('weight') is-invalid @enderror"
+                                           id="weight"
+                                           value="{{ old('weight') ? old('weight') : (isset($product->weight) ? $product->weight : '') }}"/>
+                                    @error('weight')
                                     <div class="text-danger mt-1">
                                         {{ $message }}
                                     </div>
@@ -50,7 +63,7 @@
                                     <label class="col-form-label">Regular price <sup style="color: red">*</sup></label>
                                     <input
                                         value="{{ old('price') ? old('price') : (isset($product->price) ? $product->price : '') }}"
-                                        name="price" placeholder="$" type="text"
+                                        name="price" placeholder="$" type="number"
                                         class="form-control @error('price') is-invalid @enderror"/>
                                     @error('price')
                                     <div class="text-danger mt-1">
@@ -60,10 +73,15 @@
                                 </div>
 
                                 <div class="form-group col-md-4">
-                                    <label class="col-form-label">Promotional price</label>
+                                    <label class="col-form-label">Discount Percent</label>
                                     <input
-                                        value="{{ old('sale_price') ? old('sale_price') : (isset($product->sale_price) ? $product->sale_price : '') }}"
-                                        name="sale_price" placeholder="$" type="text" class="form-control"/>
+                                        value="{{ old('discount') ? old('discount') : (isset($product->discount) ? $product->discount : '') }}"
+                                        name="discount" placeholder="%" type="number" class="form-control"/>
+                                    @error('discount')
+                                    <div class="text-danger mt-1">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
 
                                 <div class="form-group col-md-4">
@@ -71,6 +89,11 @@
                                     <input
                                         value="{{ old('stock') ? old('stock') : (isset($product->stock) ? $product->stock : '') }}"
                                         name="stock" placeholder="" type="number" class="form-control"/>
+                                    @error('stock')
+                                    <div class="text-danger mt-1">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -84,20 +107,30 @@
 
                                 <div class="form-group col-md-6">
                                     @php
-                                        $choose_tags = old('tags') ? old('tags') : (isset($product->tags )?$product->tags->pluck('id'):collect());
+                                        $choose_tags = old('tags') ? old('tags') : (isset($product->tags )?$product->tags->pluck('id')->toArray():[]);
                                     @endphp
                                     <label for="product_name" class="col-form-label">Tags</label>
                                     <select name="tags[]" class="form-control select2-multi-tag" multiple
                                             data-placeholder="Choose ...">
                                         @foreach($tags as $tag)
                                             <option
-                                                value="{{$tag->name}}" {{ $choose_tags->contains($tag->id) ?'selected':'' }} >{{$tag->name}}</option>
+                                                value="{{$tag->name}}" {{ in_array($tag->id, $choose_tags) ?'selected':'' }} >{{$tag->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
                             </div>
+                            <div class="form-row" style="margin-left: 20px;float: right">
+                                <div class="custom-control custom-checkbox col-md-12">
+                                    <input value="1"
+                                           {{isset($product) && $product->sale_status ? 'checked' : ''}} name="sale_status"
+                                           type="checkbox" class="custom-control-input"
+                                           id="permission_1" multiple="">
+                                    <label class="custom-control-label" for="permission_1">Áp dụng giảm giá</label>
+                                </div>
 
+
+                            </div>
                             <div class="form-group">
                                 <label class="col-form-label">Full description</label>
                                 <textarea name="description" placeholder="Type here" class="form-control tinymce5"
@@ -121,6 +154,11 @@
                                             <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
                                         </div>
                                     </div>
+                                    @error('avatar')
+                                    <div class="text-danger mt-1">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-group col-md-6">
@@ -131,7 +169,8 @@
                                          alt=""/>
                                     <div class="input-group mt-2">
                                         <div class="custom-file">
-                                            <input name="image_path[]" type="file" id="inputGroupFile05" class="img-product-detail-slide" multiple />
+                                            <input name="image_path[]" type="file" id="inputGroupFile05"
+                                                   class="img-product-detail-slide" multiple/>
                                             <label class="custom-file-label" for="inputGroupFile05">Choose file</label>
                                         </div>
                                     </div>

@@ -1,5 +1,5 @@
-import {select2Base, select2Tag} from "../../../plugins/select2.js";
-import {tinymce5} from "../../../plugins/tinymce5.js";
+import {select2Base, select2Tag} from "../../../FuncPlugins/select2.js";
+import {tinymce5} from "../../../FuncPlugins/tinymce5.js";
 import {actionDeleteAjax,actionChangeImageUploadFile} from "./functions.js";
 
 $(function () {

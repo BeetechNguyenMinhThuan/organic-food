@@ -56,7 +56,8 @@
                                             <a href="{{route('products.detail',['name'=>$product->slug])}}">{{optional($product->category)->name}}</a>
                                         </div>
                                         <h2>
-                                            <a href="{{route('products.detail',['name'=>$product->slug])}}">{{$product->name}}</a>
+                                            <a href="{{route('products.detail',['name'=>$product->slug])}}">{{$product->name}}
+                                                / {{$product->weight}}</a>
                                         </h2>
                                         <div class="product-rate-cover">
                                             <div class="product-rate d-inline-block">
@@ -66,19 +67,23 @@
                                         </div>
                                         <div>
                                                 <span class="font-small text-muted">By <a
-                                                        href="vendor-details-1.html">NestFood</a></span>
+                                                        href="vendor-details-1.html">{{$product->category->name}}</a></span>
                                         </div>
                                         <div class="product-card-bottom">
+
                                             <div class="product-price">
-                                                <span>{!!$product->getPrice()!!}</span>
-                                                <span
-                                                    class="old-price">{{number_format($product->price)}}<sup>₫</sup></span>
+                                                <span>{!!$product->formatPrice()!!}</span>
+                                                @if($product->sale_status)
+                                                    <span
+                                                        class="old-price">{!!$product->getBasePrice()!!}</span>
+                                                @endif
                                             </div>
                                             <div class="add-cart">
                                                 <a class="add button-add-to-cart"
                                                    data-url="{{ route('cart.add',['productId'=>$product->id])}}"
                                                    href="shop-cart.html"><i
-                                                        class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                                                        class="fi-rs-shopping-cart mr-5"></i>{{trans('messages.common.add')}}
+                                                </a>
                                             </div>
                                         </div>
                                     </div>

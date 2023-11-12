@@ -53,7 +53,7 @@ class ProductService
             ->orderBy($sort[0], $sort[1])
             ->select('products.*', DB::raw('MAX(product_attributes.promotional_price) as max_promotional_price'))
             ->where('products.name', 'like', '%' . $keyword . '%')
-            ->groupBy('product_attributes.product_id', 'product_attributes.created_at','product_attributes.promotional_price')
+            ->groupBy('product_attributes.product_id', 'product_attributes.created_at', 'product_attributes.promotional_price')
             ->orderBy('max_promotional_price', 'desc')
             ->paginate(20);
         foreach ($product as $item) {
@@ -129,6 +129,11 @@ class ProductService
         return $params;
     }
 
+    public function calculatePriceDiscount($price, $percent)
+    {
+        return $price - ($price * ($percent / 100));
+    }
+
     /**
      * Insert Product
      * @param ImageService $imageService
@@ -146,7 +151,8 @@ class ProductService
             'description' => $request->description,
             'price' => $request->price,
             'user_id' => auth()->id(),
-            'sale_price' => $request->sale_price,
+            'discount' => $request->discount,
+            'weight' => $request->weight,
             'sale_status' => $request->sale_status,
             'status' => $request->status
         ];
@@ -157,6 +163,12 @@ class ProductService
         }
 
         $product = $this->product->query()->create($data);
+
+        // Sale Price
+        if ($product->discount) {
+            $product->sale_price = $this->calculatePriceDiscount($product->price, $product->discount);
+            $product->save();
+        }
 
         // Insert data to images table
         if ($request->hasFile('image_path')) {
@@ -198,7 +210,7 @@ class ProductService
      */
     public function findItem($column, $value)
     {
-        return $this->product::query()->with(['category', 'tags', 'images', 'brand'])->where($column, $value)->first();
+        return $this->product::query()->with(['category', 'tags', 'images', 'brand'])->where($column, $value)->firstOrFail();
     }
 
     /**
@@ -221,8 +233,9 @@ class ProductService
             'category_id' => $request->category_id,
             'description' => $request->description,
             'price' => $request->price,
+            'discount' => $request->discount,
+            'weight' => $request->weight,
             'user_id' => auth()->id(),
-            'sale_price' => $request->sale_price,
             'sale_status' => $request->sale_status,
             'status' => $request->status
         ];
@@ -235,6 +248,13 @@ class ProductService
         }
 
         $product->update($data);
+
+        // Sale Price
+        if ($product->discount) {
+            $product->sale_price = $this->calculatePriceDiscount($product->price, $product->discount);
+            $product->save();
+        }
+
 
         // --- 2.Remove old file avatar ---
         if ($old_avatar_path) {
@@ -292,8 +312,9 @@ class ProductService
         }
     }
 
-    public function getProductRelated($id, $categoryId){
-        return $this->product->query()->where('category_id',$categoryId)->where('id','!=', $id)->get();
+    public function getProductRelated($id, $categoryId)
+    {
+        return $this->product->query()->where('category_id', $categoryId)->where('id', '!=', $id)->get();
     }
 
     /**

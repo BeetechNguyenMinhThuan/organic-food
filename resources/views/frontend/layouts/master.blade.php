@@ -18,17 +18,19 @@
     <link rel="stylesheet" href="{{asset('frontend/assets/css/plugins/animate.min.css')}}"/>
     <link rel="stylesheet" href="{{asset('frontend/assets/css/plugins/slider-range.css')}}"/>
     <link rel="stylesheet" href="{{asset('frontend/assets/css/main.css?v=5.3')}}"/>
-    <link rel="stylesheet" href="{{ asset('vendor/sweetalert2/sweetalert2.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/toastr/toastr.min.css') }}"> <link
+    <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+    <link
         href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
         rel="stylesheet"
     />
     <link rel="stylesheet" href="{{asset('frontend/assets/css/common.css')}}"/>
+    <!-- import CSS Library -->
+    @yield('css_library')
+    @yield('addCss')
     @php
         $nameRoute = Route::currentRouteName();
     @endphp
-    @yield('addCss')
-
 </head>
 
 <body>
@@ -62,8 +64,10 @@
 <script src="{{asset('frontend/assets/js/plugins/jquery.vticker-min.js')}}"></script>
 <script src="{{asset('frontend/assets/js/plugins/jquery.theia.sticky.js')}}"></script>
 <script src="{{asset('frontend/assets/js/plugins/jquery.elevatezoom.js')}}"></script>
-<script src="{{ asset('vendor/sweetalert2/sweetalert2.min.js') }}"></script>
-<script src="{{ asset('vendor/toastr/toastr.min.js') }}"></script>
+<script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+<script src="{{asset('plugins/moment/moment.min.js')}}"></script>
+<script src="{{asset('plugins/moment/locales.js')}}"></script>
 <!-- Template  JS -->
 <script src="{{asset('frontend/assets/js/main.js?v=5.3')}}"></script>
 <script src="{{asset('frontend/assets/js/shop.js?v=5.3')}}"></script>
@@ -76,6 +80,7 @@
     toastr.error('{{session('status_failed')}}', {timeOut: 5000})
     @endif
 </script>
+@yield('js_library')
 @yield('addJs')
 </body>
 

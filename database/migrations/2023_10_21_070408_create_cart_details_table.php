@@ -12,15 +12,14 @@ return new class extends Migration {
     {
         Schema::create('cart_details', function (Blueprint $table) {
             $table->id();
-            $table->integer('order_id')->nullable();
-            $table->string('hash_id')->nullable();
+            $table->integer('cart_id');
+            $table->integer('product_id');
             $table->decimal('price');
             $table->integer('quantity');
             $table->decimal('sub_total')->nullable();
             $table->decimal('ship_fee')->nullable();
             $table->decimal('total_price')->nullable();
-            $table->integer('status')->nullable();
-            $table->integer('shipping_address_id');
+            $table->integer('user_address_id')->nullable();
             $table->string('cancel_reason')->nullable();
             $table->timestamp('cancel_at')->nullable();
             $table->timestamps();

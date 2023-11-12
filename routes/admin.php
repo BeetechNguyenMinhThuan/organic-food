@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
@@ -95,6 +96,12 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::post('/store', [BrandController::class, 'store'])->name('admin.brands.store');
         Route::post('/update/{id}', [BrandController::class, 'update'])->name('admin.brands.update');
         Route::delete('/destroy/{id}', [BrandController::class, 'destroy'])->name('admin.brands.destroy');
+    });
+
+    // Orders
+    Route::prefix('orders')->group(function () {
+        Route::get('/', [OrderController::class, 'index'])->name('admin.orders.index');
+        Route::get('/detail/{id}', [OrderController::class, 'detail'])->name('admin.orders.detail');
     });
 });
 

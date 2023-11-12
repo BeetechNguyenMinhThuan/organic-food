@@ -13,13 +13,11 @@ return new class extends Migration
     {
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
-            $table->integer('discount_id');
             $table->string('name');
-            $table->timestamp('start_at');
+            $table->timestamp('start_at')->nullable();
             $table->timestamp('end_at')->nullable();
             $table->integer('max_use');
-            $table->integer('used');
-            $table->integer('percent');
+            $table->integer('percent')->nullable();
             $table->timestamps();
         });
     }

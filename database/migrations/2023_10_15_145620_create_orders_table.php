@@ -14,18 +14,22 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('cart_id');
-            $table->timestamp('order_at');
-            $table->tinyInteger('order_status');
+            $table->integer('user_id');
+            $table->tinyInteger('order_status')->nullable();
             $table->tinyInteger('payment_method');
-            $table->decimal('price');
+            $table->tinyInteger('delivery_method')->nullable();
+            $table->integer('discount_id')->nullable();
             $table->decimal('sub_total')->nullable();
-            $table->decimal('total_discount')->nullable();
             $table->decimal('total_price')->nullable();
             $table->string('cancel_reason')->nullable();
             $table->timestamp('cancel_at')->nullable();
             $table->decimal('ship_fee')->nullable();
             $table->text('user_comment')->nullable();
-            $table->string('hash_order_id');
+            $table->integer('user_address_id')->nullable();
+            $table->integer('delivery_time')->nullable();
+            $table->date('shipping_date')->nullable();
+            $table->time('shipping_hours')->nullable();
+            $table->string('hash_order_id')->nullable();
             $table->timestamps();
         });
     }

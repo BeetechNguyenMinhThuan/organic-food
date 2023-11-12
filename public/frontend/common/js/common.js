@@ -2,23 +2,35 @@ function cartDelete(e) {
     e.preventDefault();
     let productId = $(this).data('id')
     let urlCartDelete = $('.header-cart-list').data('url')
-    $.ajax({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        type: 'DELETE',
-        url: urlCartDelete,
-        dataType: 'json',
-        data: {productId: productId},
-        success: function (data) {
-            if (data.status === 200) {
-                $('.cart-product-list').html(data.cartList)
-                $('.header-cart-list').html(data.cartListDropdown)
-                toastr.success('Xoá sản phẩm khỏi giỏ hàng thành công', {timeOut: 500})
-            }
-        },
-        error: function (error) {
-
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'delete',
+                url: urlCartDelete,
+                data: {productId: productId},
+                cache: false,
+                success: function (data) {
+                    if (data.status === 200) {
+                        $('.cart-product-list').html(data.cartList)
+                        $('.header-cart-list').html(data.cartListDropdown)
+                        toastr.success('Xoá sản phẩm khỏi giỏ hàng thành công', {timeOut: 500})
+                    }
+                },
+                error: function (error) {
+                    console.error('error', error);
+                }
+            })
         }
     })
 }
@@ -26,6 +38,9 @@ function cartDelete(e) {
 function addToCart(e) {
     e.preventDefault();
     let quantity = $(".qty-val").val()
+    if (quantity < 1){
+        return;
+    }
     let urlAddCart = $(this).data('url');
     $.ajax({
         type: 'GET',
