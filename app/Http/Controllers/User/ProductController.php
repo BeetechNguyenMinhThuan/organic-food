@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Services\Admin\BrandService;
-use App\Services\Admin\CategoryService;
-use App\Services\Admin\MenuService;
-use App\Services\Admin\ProductService;
-use App\Services\Admin\SliderService;
-use App\Services\Admin\TagService;
+use App\Services\BrandService;
+use App\Services\CategoryService;
+use App\Services\MenuService;
+use App\Services\ProductService;
+use App\Services\SliderService;
+use App\Services\TagService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -49,7 +49,8 @@ class ProductController extends Controller
         $categories = $this->categoryService->getParent();
         $brands = $this->brandService->get();
         $tags = $this->tagService->getTags();
-        $categoryBySlug = $this->categoryService->getModel()->where('slug', $slug)->first();
+        $categoryBySlug = $this->categoryService->getModel()->where('slug', $slug)->firstOrFail();
+        $products = $categoryBySlug->products()->paginate(10);
         $menus = $this->menuService->getParent();
         return view('frontend.products.list', [
             'sliders' => $sliders,
@@ -57,7 +58,8 @@ class ProductController extends Controller
             'menus' => $menus,
             'categoryBySlug' => $categoryBySlug,
             'brands' => $brands,
-            'tags' => $tags
+            'tags' => $tags,
+            'products' => $products
         ]);
     }
 
@@ -89,7 +91,29 @@ class ProductController extends Controller
         ]);
     }
 
-    public function shop(){
+    public function shop()
+    {
 
+    }
+
+    public function createFavoriteProduct($productId)
+    {
+        return $this->productService->createFavoriteProduct($productId);
+    }
+
+    public function removeFavoriteProduct($productId)
+    {
+        return $this->productService->removeFavoriteProduct($productId);
+
+    }
+
+    public function checkFavoriteProduct($productId)
+    {
+        return $this->productService->checkFavoriteProduct($productId);
+    }
+
+    public function filterProductCategory(Request $request, $categoryId)
+    {
+        return $this->productService->filterProductCategory($request, $categoryId);
     }
 }

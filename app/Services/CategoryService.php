@@ -1,10 +1,14 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services;
 
 use App\Components\Recursive;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Services\Admin\Builder;
+use App\Services\Admin\Collection;
+use App\Services\Admin\LengthAwarePaginator;
+use App\Services\Admin\UpdateCategoryRequest;
 use App\Traits\StorageImageTrait;
 use Exception;
 use Illuminate\Database\Eloquent\Model;

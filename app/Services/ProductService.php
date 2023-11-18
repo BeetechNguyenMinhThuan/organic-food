@@ -1,19 +1,33 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services;
 
-use App\Models\Image;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductTag;
 use App\Models\Tag;
+use App\Models\UserFavorite;
+use App\Services\Admin\BinaryFileResponse;
+use App\Services\Admin\Builder;
+use App\Services\Admin\Carbon;
+use App\Services\Admin\Collection;
+use App\Services\Admin\Excel;
+use App\Services\Admin\ImageService;
+use App\Services\Admin\Model;
+use App\Services\Admin\Pdf;
+use App\Services\Admin\ProductAttributesModel;
+use App\Services\Admin\ProductExport;
+use App\Services\Admin\ProductInformationModel;
+use App\Services\Admin\ProductsModel;
+use App\Services\Admin\UpdateProductRequest;
 use App\Traits\StorageImageTrait;
 use Illuminate\Http\Client\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Nette\FileNotFoundException;
 
 class ProductService
 {
@@ -24,14 +38,18 @@ class ProductService
     private ProductImage $productImage;
     private Tag $tag;
     private ProductTag $productTag;
+    private UserFavorite $userFavorite;
+    private Category $category;
 
 
-    public function __construct(Product $product, ProductImage $productImage, Tag $tag, ProductTag $productTag)
+    public function __construct(Category $category, Product $product, ProductImage $productImage, Tag $tag, ProductTag $productTag, UserFavorite $userFavorite)
     {
         $this->product = $product;
         $this->productImage = $productImage;
         $this->tag = $tag;
         $this->productTag = $productTag;
+        $this->userFavorite = $userFavorite;
+        $this->category = $category;
     }
 
     public function getModel()
@@ -75,6 +93,28 @@ class ProductService
     {
         $query = $this->product::query()
             ->latest()
+            ->with(['category', 'tags', 'images']);
+
+//        if ($searchByStock = request('filter_stock')) {
+//            $this->filterByStock($searchByStock, $query, [10, 100, 200]);
+//        }
+//
+//        $search = request('search');
+//        $query->when($search, function ($query1) use ($search) {
+//            $query1->whereHas('category', function ($query2) use ($search) {
+//                $query2
+//                    ->Where('product_categories.name', 'LIKE', "%{$search}%")
+//                    ->orWhere('products.name', 'LIKE', "%{$search}%");
+//            });
+//        });
+
+
+        return $query->paginate(self::PRODUCT_PAGINATE);
+    }
+    public function getRandom()
+    {
+        $query = $this->product::query()
+            ->inRandomOrder()
             ->with(['category', 'tags', 'images']);
 
 //        if ($searchByStock = request('filter_stock')) {
@@ -360,5 +400,139 @@ class ProductService
         } else {
             $query->where('stock', '>', $range[2]);
         }
+    }
+
+    public function getProductFavorite()
+    {
+        $user = Auth::user();
+        return $user->favorites;
+    }
+
+    public function createFavoriteProduct($productId)
+    {
+        DB::beginTransaction();
+        try {
+            $productFavorite = $this->userFavorite::query()->create([
+                'user_id' => Auth::user()->id,
+                'product_id' => $productId
+            ]);
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'data' => $productFavorite
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Message: {$e->getMessage()}. Line: {$e->getLine()}");
+            return response()->json([
+                'status' => 500,
+                'data' => []
+            ], 500);
+        }
+    }
+
+    public function removeFavoriteProduct($productId)
+    {
+        DB::beginTransaction();
+        try {
+            $user = Auth::user();
+            $this->userFavorite::query()->where([
+                'product_id' => $productId,
+                'user_id' => $user->id
+            ])->delete();
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'data' => true
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Message: {$e->getMessage()}. Line: {$e->getLine()}");
+            return response()->json([
+                'status' => 500,
+                'data' => trans('messages.server_error')
+            ], 500);
+        }
+    }
+
+    public function checkFavoriteProduct($productId)
+    {
+        try {
+            if(!Auth::check()){
+                return response()->json([
+                    'status' => Response::HTTP_NOT_FOUND,
+                ]);
+            }
+            $favoriteProduct = $this->userFavorite::query()->where([
+                'user_id' => Auth::user()->id,
+                'product_id' => $productId
+            ])->first();
+            if ($favoriteProduct) {
+                return response()->json([
+                    'status' => 200,
+                    'data' => true
+                ]);
+            }
+            return response()->json([
+                'status' => 200,
+                'data' => false
+            ]);
+
+
+        } catch (\Exception $e) {
+            Log::error("Message: {$e->getMessage()}. Line: {$e->getLine()}");
+            return response()->json([
+                'status' => 500,
+                'data' => trans('messages.server_error')
+            ], 500);
+        }
+    }
+
+    public function filterProductCategory($request, $categoryId)
+    {
+        try {
+            $tagsId = $request->tagsId ?? [];
+            $brandsId = $request->brandsId ?? [];
+            $orderPrice = $request->orderPrice;
+            $categoryBySlug = $this->category->where('id', $categoryId)->firstOrFail();
+            $products = $this->product::query()->where('category_id', $categoryId);
+            if (!empty($tagsId)) {
+                $products->whereHas('tags', function ($query) use ($tagsId) {
+                    $query->whereIn('tag_id', $tagsId);
+                });
+            }
+            if (!empty($brandsId)) {
+                $products->whereIn('brand_id', $brandsId);
+            }
+
+            if (!empty($orderPrice)) {
+                if ($orderPrice == Product::ORDER_PRICE_LOW_TO_HIGH) {
+                    $products->orderBy('price');
+                } else {
+                    $products->orderBy('price', 'DESC');
+                }
+            }
+
+            $products = $products->paginate(self::PRODUCT_PAGINATE);
+            if ($products->isEmpty()) {
+                return response()->json([
+                    'status' => Response::HTTP_NOT_FOUND,
+                ]);
+            }
+            $productsHtml = view('frontend.products.components.list-product-filter', compact('products', 'categoryBySlug'))->render();
+            return response()->json([
+                'status' => 200,
+                'data' => $products,
+                'html' => $productsHtml
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error("Message: {$e->getMessage()}. Line: {$e->getLine()}");
+            return response()->json([
+                'status' => 500,
+                'data' => trans('messages.server_error')
+            ], 500);
+        }
+
     }
 }

@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services;
 
 use App\Models\User;
 use App\Traits\StorageImageTrait;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Role;
 
 class UserService

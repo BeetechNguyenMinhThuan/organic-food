@@ -33,15 +33,15 @@ class Common
     public static function checkOrderStatus($status){
         $html = "";
         if($status == Order::PENDING){
-            $html = '<span class="badge badge-dark-lighten">Pending</span>';
+            $html = '<span class="badge rounded-pill alert-dark badge-dark-lighten">Pending</span>';
         }elseif($status == Order::CANCELLED){
-            $html = '<span class="badge badge-danger-lighten">Cancelled</span>';
+            $html = '<span class="badge rounded-pill alert-danger badge-danger-lighten">Cancelled</span>';
         }elseif($status == Order::COMPLETED){
-            $html = '<span class="badge badge-success-lighten">Completed</span>';
+            $html = '<span class="badge rounded-pill alert-success badge-success-lighten">Completed</span>';
         }elseif($status == Order::DELIVERED){
-            $html = '<span class="badge badge-info-lighten">Delivered</span>';
+            $html = '<span class="badge rounded-pill alert-info badge-info-lighten">Delivered</span>';
         }elseif($status == Order::SHIPPED){
-            $html = '<span class="badge badge-warning-lighten">Shipped</span>';
+            $html = '<span class="badge rounded-pill alert-warning badge-warning-lighten">Shipped</span>';
         }
         return $html;
     }

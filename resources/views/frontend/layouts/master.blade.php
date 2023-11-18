@@ -71,9 +71,14 @@
 <!-- Template  JS -->
 <script src="{{asset('frontend/assets/js/main.js?v=5.3')}}"></script>
 <script src="{{asset('frontend/assets/js/shop.js?v=5.3')}}"></script>
-<script src="{{asset('frontend/common/js/common.js')}}"></script>
+{{--<script src="{{asset('frontend/common/js/common.js')}}"></script>--}}
+@include('common.common')
 <script type="module">
     // Show alert
+    @if($errors->any())
+    toastr.error('{{trans('messages.server_error')}}', {timeOut: 5000})
+    @endif
+
     @if(session('status_succeed'))
     toastr.success('{{session('status_succeed')}}', {timeOut: 5000})
     @elseif(session('status_failed'))

@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Services\Admin\BrandService;
-use App\Services\Admin\CategoryService;
-use App\Services\Admin\MenuService;
-use App\Services\Admin\ProductService;
-use App\Services\Admin\SliderService;
-use Illuminate\Http\Request;
+use App\Services\BrandService;
+use App\Services\CategoryService;
+use App\Services\MenuService;
+use App\Services\ProductService;
+use App\Services\SliderService;
 
 class BrandController extends Controller
 {

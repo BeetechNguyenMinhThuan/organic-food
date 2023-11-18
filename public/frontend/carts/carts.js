@@ -30,41 +30,6 @@ function cartUpdate(e) {
     });
 }
 
-function addShippingAddress() {
-    let shippingFirstName = $(".shipping_firstname").val();
-    let shippingLastName = $(".shipping_lastname").val();
-    let shippingPhone = $(".shipping_phone").val();
-    let shippingAddress = $(".shipping_address").val();
-    let url = $(".shipping-address-form").data("url");
-    let formData = new FormData();
-    formData.append("shipping_address", shippingAddress);
-    formData.append("shipping_firstname", shippingFirstName);
-    formData.append("shipping_lastname", shippingLastName);
-    formData.append("shipping_phone", shippingPhone);
-
-    $.ajax({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        url: url,
-        type: "POST",
-        data: formData,
-        dataType: "json",
-        contentType: false,
-        processData: false,
-        success: function (data) {
-            if (data.status === 200) {
-                $('#addShippingAddressModal').modal('hide');
-                $('.list-address').html(data.data);
-                toastr.success("Thêm địa chỉ giao hàng thành công", {
-                    timeOut: 500,
-                });
-            }
-        },
-        error: function (error) {
-        },
-    });
-}
 
 $(function () {
     datePicker('[data-picker="date-picker-shipping"]');
@@ -73,7 +38,6 @@ $(function () {
     $(document).on("click", ".cart-qty-up", cartUpdate);
     $(document).on("click", ".cart-qty-down", cartUpdate);
     $(document).on("change", ".cart-product-qty", cartUpdate);
-    $(document).on("click", ".addShippingAddress", addShippingAddress);
     $(document).on("click", ".shipping-address-item", function () {
         $(".shipping-address-item").removeClass("checked")
         $(this).addClass('checked')

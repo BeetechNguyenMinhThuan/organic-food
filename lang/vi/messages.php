@@ -1,6 +1,42 @@
 <?php
 
 return [
+    // ---------------------------- BACKEND ---------------------------- //
+
+    // Create Product
+    'create_succeed' => 'Thêm thành công',
+    'save' => 'Lưu',
+    'nothing_data' => 'Không có dữ liệu',
+    'server_error' => 'Đã có lỗi xảy ra. Vui lòng kiểm tra lại!',
+
+    // ---------------------------- FRONTEND ---------------------------- //
+    // Profile
+    'profile' => [
+        'hello' => "Xin chào <strong class='text-brand'>:name</strong>",
+        'dashboard' => "Bảng điều khiển",
+        'desc' => 'Từ bảng điều khiển tài khoản của bạn. bạn có thể dễ dàng kiểm tra và xem các đơn đặt hàng gần đây của mình,
+quản lý địa chỉ giao hàng và thanh toán cũng như chỉnh sửa chi tiết mật khẩu và tài khoản của bạn.',
+        'history_orders' => "Lịch sử mua hàng",
+        'my_address' => "Địa chỉ giao hàng",
+        'account_detail' => "Chi tiết tài khoản",
+        'receiver_name' => "Tên người nhận",
+        'phone_number' => "Số điện thoại",
+        'new_password' => "Nhập mật khẩu mới",
+        'confirm_password' => "Xác nhận mật khẩu",
+        'current_password' => "Nhập mật khẩu hiện tại",
+        'avatar' => "Ảnh đại diện",
+        'order_history' => [
+            'your_orders' => "Đơn hàng của bạn!",
+            'order_id' => "Order",
+            'date' => "Ngày",
+            'status' => "Trạng thái",
+            'total' => "Tổng tiền",
+            "action" => "Hành động",
+            'view' => "Xem",
+            'order_detail' => "Chi tiết đơn hàng",
+            'order_hash' => "Mã đơn hàng"
+        ]
+    ],
     // Common
     'common' => [
         'product' => 'Sản phẩm',
@@ -14,11 +50,25 @@ return [
         'save' => 'Lưu',
         'edit' => "Sửa",
         'add' => 'Thêm',
-        'add_to_cart' => 'Thêm vào giỏ hàng'
+        'add_to_cart' => 'Thêm vào giỏ hàng',
+        'low_to_high' => 'Giá thấp đến cao',
+        'high_to_low' => "Giá cao đến thấp",
+        'reset' => "Làm mới",
+        'action' => "Hành động",
+        'search' => 'Tìm kiếm'
+    ],
+
+    // Filter
+    'filter' => [
+        'filter' => "Lọc",
+        'empty' => 'Không tìm thấy sản phẩm',
+        'total_pro_filter' => 'Tìm thấy <strong class="text-brand">:quantity</strong>  sản phẩm cho bạn!',
+        'tags' => "Tags",
+        'price' => "Sắp xếp theo giá",
     ],
 
     // Home
-    'server_error' => 'Đã có lỗi xảy ra. Vui lòng thử lại sau!',
+
     'auth' => [
         'login' => 'Đăng nhập',
         'register' => 'Đăng ký',
@@ -30,19 +80,11 @@ return [
         'trending_products' => 'Sản phẩm nổi bật',
         'recently_added' => 'Thêm gần đây',
         'top_rated' => 'Đánh giá cao',
-        'stay_home' => 'Nhận hàng tại nhà của bạn từ cửa hàng của chúng tôi',
+        'stay_home' => 'Nhận hàng tại nhà của bạn <br/> từ cửa hàng của chúng tôi',
+        'daily_shopping' => 'Bắt đầu mua sắm hàng ngày của bạn với <span class="text-brand">OrganicFood</span>',
         'your_email' => 'Nhập email của bạn',
         'subscribe' => 'Đăng ký',
     ],
-
-    // Create Product
-    'create_succeed' => 'Thêm thành công',
-    'nothing_data' => 'Không có dữ liệu',
-    'save' => 'Lưu',
-    'nothing_data' => 'Không có dữ liệu',
-
-
-    // Frontend
     // ---- HOME -----
     'header' => [
         'all_categories' => "Danh mục",
@@ -63,7 +105,7 @@ return [
 
     // Cart
     'cart' => [
-        'cart_empty' => 'Your cart is empty!',
+        'cart_empty' => 'Giỏ hàng của bạn đang trống',
         'delete_all_product_cart_success' => "Xoá toàn bộ sản phẩm khỏi giỏ hàng thành công",
         'order_success' => "Đặt hàng thành công, cảm ơn bạn đã mua hàng!",
         'checkout' => 'Thanh toán',

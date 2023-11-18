@@ -1,30 +1,21 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services;
 
 use App\Http\Requests\CategoryRequest;
 use App\Jobs\SendMailCheckOut;
-use App\Models\Brand;
 use App\Models\Cart;
-use App\Models\CartDetail;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\UserAddress;
-use App\Services\Builder;
-use App\Services\Collection;
-use App\Services\LengthAwarePaginator;
-use App\Services\Model;
-use App\Services\UpdateCategoryRequest;
 use App\Traits\StorageImageTrait;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Str;
 
 class OrderService
 {
@@ -54,7 +45,7 @@ class OrderService
      */
     public function get()
     {
-        return $this->cart->query()
+        return $this->order->query()
             ->get();
     }
 

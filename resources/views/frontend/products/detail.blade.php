@@ -6,9 +6,10 @@
     <div class="page-header breadcrumb-wrap">
         <div class="container">
             <div class="breadcrumb">
-                <a href="index.html" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
-                <span></span> <a href="shop-grid-right.html">Vegetables & tubers</a> <span></span> Seeds of Change
-                Organic
+                <a href="/" rel="nofollow"><i class="fi-rs-home mr-5"></i>{{trans('messages.header.home')}}</a>
+                <span></span> <a
+                    href="{{route('products.listProduct',['slug'=>$product->category->slug])}}">{{$product->category->name}}</a>
+                <span></span>{{$product->name}} / {{$product->weight}}
             </div>
         </div>
     </div>
@@ -17,7 +18,9 @@
             <div class="col-xl-11 col-lg-12 m-auto">
                 <div class="row">
                     <div class="col-xl-9">
-                        <div class="product-detail accordion-detail">
+
+                        <div class="product-detail accordion-detail"
+                             data-check="{{route('products.check.favorite',$product->id)}}">
                             <div class="row mb-50 mt-30">
                                 <div class="col-md-6 col-sm-12 col-xs-12 mb-md-0 mb-sm-5">
                                     <div class="detail-gallery">
@@ -90,10 +93,12 @@
                                             <form action="{{ route('cart.add',['productId'=>$product->id])}}"
                                                   method="GET" class="d-flex">
                                                 <div class="detail-qty border radius">
-                                                    <a href="#" class="qty-down cart-qty-down"><i class="fi-rs-angle-small-down"></i></a>
+                                                    <a href="#" class="qty-down cart-qty-down"><i
+                                                            class="fi-rs-angle-small-down"></i></a>
                                                     <input type="text" name="quantity" class="qty-val" value="1"
                                                            min="1">
-                                                    <a href="#" class="qty-up cart-qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                                    <a href="#" class="qty-up cart-qty-up"><i
+                                                            class="fi-rs-angle-small-up"></i></a>
                                                 </div>
                                                 <div class="product-extra-link2">
                                                     <button
@@ -101,8 +106,25 @@
                                                         type="submit" class="button button-add-to-cart"><i
                                                             class="fi-rs-shopping-cart"></i>Add to cart
                                                     </button>
-                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                       href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                    @auth
+                                                        <a aria-label="Add To Wishlist"
+                                                           data-url="{{route('products.create.favorite',$product->id)}}"
+                                                           class="action-createFavorite action-btn hover-up"
+                                                           href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Add To Wishlist"
+                                                           data-url="{{route('products.remove.favorite',$product->id)}}"
+                                                           class="action-removeFavorite action-btn hover-up d-none"
+                                                           style="line-height: 45px"
+                                                           href="shop-wishlist.html">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" height="18px"
+                                                                 viewBox="0 0 512 512">
+                                                                <path
+                                                                    d="M119.4 44.1c23.3-3.9 46.8-1.9 68.6 5.3l49.8 77.5-75.4 75.4c-1.5 1.5-2.4 3.6-2.3 5.8s1 4.2 2.6 5.7l112 104c2.9 2.7 7.4 2.9 10.5 .3s3.8-7 1.7-10.4l-60.4-98.1 90.7-75.6c2.6-2.1 3.5-5.7 2.4-8.8L296.8 61.8c28.5-16.7 62.4-23.2 95.7-17.6C461.5 55.6 512 115.2 512 185.1v5.8c0 41.5-17.2 81.2-47.6 109.5L283.7 469.1c-7.5 7-17.4 10.9-27.7 10.9s-20.2-3.9-27.7-10.9L47.6 300.4C17.2 272.1 0 232.4 0 190.9v-5.8c0-69.9 50.5-129.5 119.4-141z"/>
+                                                            </svg>
+                                                        </a>
+
+                                                    @endauth
+
                                                     <a aria-label="Compare" class="action-btn hover-up"
                                                        href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                                 </div>
@@ -399,29 +421,40 @@
                                                                data-bs-toggle="modal"
                                                                data-bs-target="#quickViewModal{{$key}}"><i
                                                                     class="fi-rs-search"></i></a>
-                                                            <a aria-label="Add To Wishlist"
-                                                               class="action-btn small hover-up"
-                                                               href="shop-wishlist.html"
-                                                               tabindex="0"><i class="fi-rs-heart"></i></a>
                                                             <a aria-label="Compare" class="action-btn small hover-up"
                                                                href="shop-compare.html" tabindex="0"><i
                                                                     class="fi-rs-shuffle"></i></a>
                                                         </div>
                                                         <div
                                                             class="product-badges product-badges-position product-badges-mrg">
-                                                            <span class="hot">Hot</span>
+                                                            @if($item->sale_status)
+                                                                <span class="hot">Save {{$item->discount}}%</span>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                     <div class="product-content-wrap">
-                                                        <h2><a href="{{route('products.detail',$item->slug)}}"
-                                                               tabindex="0">{{$item->name}}</a></h2>
-                                                        <div class="rating-result" title="90%">
-                                                            <span> </span>
+                                                        <div class="product-category">
+                                                            <a href="shop-grid-right.html">{{optional($item->category)->name}}</a>
                                                         </div>
-                                                        <div class="product-price">
-                                                            <span>$238.85 </span>
-                                                            <span class="old-price">{!! $item->getPrice() !!}</span>
+                                                        <h2>
+                                                            <a href="{{route('products.detail',$item->slug)}}">{{$item->name}}
+                                                                / {{$item->weight}}</a>
+                                                        </h2>
+                                                        <div class="product-rate d-inline-block">
+                                                            <div class="product-rating" style="width: 80%"></div>
                                                         </div>
+                                                        <div class="product-price mt-10 mb-10">
+                                                            <span>{!!$item->formatPrice()!!}</span>
+                                                            @if($item->sale_status)
+                                                                <span
+                                                                    class="old-price">{!!$item->getBasePrice()!!}</span>
+                                                            @endif
+                                                        </div>
+                                                        <a href="shop-cart.html"
+                                                           data-url="{{ route('cart.add',['productId'=>$item->id])}}"
+                                                           class="btn add button-add-to-cart w-100 hover-up"><i
+                                                                class="fi-rs-shopping-cart mr-5"></i>{{trans('messages.common.add')}}
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -455,7 +488,7 @@
 
                         @endif
                         <div class="sidebar-widget widget-category-2 mb-30">
-                            <h5 class="section-title style-1 mb-30">Category</h5>
+                            <h5 class="section-title style-1 mb-30">{{trans('messages.header.all_categories')}}</h5>
                             <ul>
                                 @foreach($categories as $category)
                                     <li>
@@ -468,60 +501,7 @@
 
                             </ul>
                         </div>
-                        <!-- Fillter By Price -->
-                        <div class="sidebar-widget price_range range mb-30">
-                            <h5 class="section-title style-1 mb-30">Fill by price</h5>
-                            <div class="price-filter">
-                                <div class="price-filter-inner">
-                                    <div id="slider-range" class="mb-20"></div>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="caption">From: <strong id="slider-range-value1"
-                                                                           class="text-brand"></strong></div>
-                                        <div class="caption">To: <strong id="slider-range-value2"
-                                                                         class="text-brand"></strong></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list-group">
-                                <div class="list-group-item mb-10 mt-10">
-                                    <label class="fw-900">Color</label>
-                                    <div class="custome-checkbox">
-                                        <input class="form-check-input" type="checkbox" name="checkbox"
-                                               id="exampleCheckbox1" value=""/>
-                                        <label class="form-check-label"
-                                               for="exampleCheckbox1"><span>Red (56)</span></label>
-                                        <br/>
-                                        <input class="form-check-input" type="checkbox" name="checkbox"
-                                               id="exampleCheckbox2" value=""/>
-                                        <label class="form-check-label"
-                                               for="exampleCheckbox2"><span>Green (78)</span></label>
-                                        <br/>
-                                        <input class="form-check-input" type="checkbox" name="checkbox"
-                                               id="exampleCheckbox3" value=""/>
-                                        <label class="form-check-label"
-                                               for="exampleCheckbox3"><span>Blue (54)</span></label>
-                                    </div>
-                                    <label class="fw-900 mt-15">Item Condition</label>
-                                    <div class="custome-checkbox">
-                                        <input class="form-check-input" type="checkbox" name="checkbox"
-                                               id="exampleCheckbox11" value=""/>
-                                        <label class="form-check-label" for="exampleCheckbox11"><span>New (1506)</span></label>
-                                        <br/>
-                                        <input class="form-check-input" type="checkbox" name="checkbox"
-                                               id="exampleCheckbox21" value=""/>
-                                        <label class="form-check-label"
-                                               for="exampleCheckbox21"><span>Refurbished (27)</span></label>
-                                        <br/>
-                                        <input class="form-check-input" type="checkbox" name="checkbox"
-                                               id="exampleCheckbox31" value=""/>
-                                        <label class="form-check-label"
-                                               for="exampleCheckbox31"><span>Used (45)</span></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="shop-grid-right.html" class="btn btn-sm btn-default"><i
-                                    class="fi-rs-filter mr-5"></i> Fillter</a>
-                        </div>
+
                         <!-- Product sidebar Widget -->
                         <div class="banner-img wow fadeIn mb-lg-0 animated d-lg-block d-none">
                             <img src="{{asset('frontend/assets/imgs/banner/6.png')}}" alt=""/>

@@ -51,7 +51,6 @@ class UploadHelper
         $file = $request->file($fileName);
         $saveName = date('YmdHis') . '_' . sha1(Str::uuid()) . '.' . $file->getClientOriginalExtension();
         $fullPath = $uploadPath . $saveName;
-
         self::makeDirectoryByStorage($uploadPath);
 
         Storage::disk()->put($fullPath, file_get_contents($file));

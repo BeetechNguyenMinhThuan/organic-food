@@ -156,6 +156,7 @@
 <!-- demo app -->
 <!-- end demo js-->
 <script type="module" src="{{ asset('backend/common/js/common.js') }}"></script>
+@include('backend.common.common')
 {{--<script src="{{ asset('vendor/select2/select2.min.js') }}"></script>--}}
 <script src="https://cdn.tiny.cloud/1/o9bdykr38uld5i7zkhn4eqt5oap4d75v9kp7uv58fvs3aijf/tinymce/5/tinymce.min.js"
         referrerpolicy="origin"></script>

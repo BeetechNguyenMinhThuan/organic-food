@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -96,6 +97,16 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::post('/store', [BrandController::class, 'store'])->name('admin.brands.store');
         Route::post('/update/{id}', [BrandController::class, 'update'])->name('admin.brands.update');
         Route::delete('/destroy/{id}', [BrandController::class, 'destroy'])->name('admin.brands.destroy');
+    });
+
+    // Blogs
+    Route::prefix('blogs')->group(function () {
+        Route::get('/', [BlogController::class, 'index'])->name('admin.blogs.index');
+        Route::get('/create', [BlogController::class, 'create'])->name('admin.blogs.create');
+        Route::get('/edit/{id}', [BlogController::class, 'edit'])->name('admin.blogs.edit');
+        Route::post('/store', [BlogController::class, 'store'])->name('admin.blogs.store');
+        Route::put('/update/{id}', [BlogController::class, 'update'])->name('admin.blogs.update');
+        Route::delete('/destroy/{id}', [BlogController::class, 'destroy'])->name('admin.blogs.destroy');
     });
 
     // Orders

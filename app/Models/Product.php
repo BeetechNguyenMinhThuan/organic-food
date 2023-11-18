@@ -15,6 +15,9 @@ class Product extends Model
 
     protected $guarded = [];
 
+    const ORDER_PRICE_LOW_TO_HIGH = 1;
+    const ORDER_PRICE_HIGH_TO_LOW= 2;
+
     /**
      * Get Category of Product
      *

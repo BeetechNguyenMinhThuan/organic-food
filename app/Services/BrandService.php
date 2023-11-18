@@ -1,26 +1,38 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services;
 
-use App\Components\Recursive;
 use App\Http\Requests\CategoryRequest;
-use App\Models\Menu;
+use App\Models\Brand;
+use App\Services\Admin\Builder;
+use App\Services\Admin\Collection;
+use App\Services\Admin\LengthAwarePaginator;
+use App\Services\Admin\Model;
+use App\Services\Admin\UpdateCategoryRequest;
+use App\Traits\StorageImageTrait;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
-class MenuService
+class BrandService
 {
-    private Menu $menu;
+    use StorageImageTrait;
 
-    public function __construct(Menu $menu)
+    private $brand;
+
+    public function __construct(Brand $brand)
     {
-        $this->menu = $menu;
+        $this->brand = $brand;
     }
 
     const PAGINATE_CATEGORY = '15';
 
+
+    public function getModel()
+    {
+        return $this->brand;
+    }
     /**
      * Display a listing of Products
      *
@@ -28,26 +40,8 @@ class MenuService
      */
     public function get()
     {
-        return $this->menu->query()
-            ->with(['parent', 'children'])
-            ->select(['id', 'name', 'parent_id', 'slug', 'sort_key'])
+        return $this->brand->query()
             ->get();
-    }
-
-    public function getParent()
-    {
-        return $this->menu->query()
-            ->where('parent_id',0)
-            ->with(['children'])
-            ->select(['id', 'name', 'parent_id', 'slug', 'sort_key'])
-            ->get();
-    }
-
-    public function getMenu($parentId = "")
-    {
-        $data = $this->get();
-        $recursive = new Recursive($data);
-        return $recursive->categoryRecursive($parentId);
     }
 
     /**
@@ -57,9 +51,8 @@ class MenuService
      */
     public function getPaginate()
     {
-        return $this->menu->query()
+        return $this->brand->query()
             ->latest()
-            ->with(['parent', 'children'])
             ->paginate(self::PAGINATE_CATEGORY);
     }
 
@@ -68,23 +61,19 @@ class MenuService
      * @param CategoryRequest $request
      * @return bool
      */
-    public function insert($request)
+    public function insertBrand($request)
     {
-        DB::beginTransaction();
-        try {
-            $menuCreate = [
-                'name' => $request->name,
-                'slug' => Str::slug($request->name),
-                'parent_id' => $request->parent_id
-            ];
-            $this->menu->query()->create($menuCreate);
-            DB::commit();
-            return true;
-        } catch (Exception $e) {
-            DB::rollBack();
-            Log::error("Message: {$e->getMessage()}. Line: {$e->getLine()}");
-            return false;
+        $data = [
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'description' => $request->description,
+        ];
+        // Store avatar image
+        if ($request->hasFile('image')) {
+            $image = $request->image;
+            $data['image'] = $this->uploadFile($image, BRAND_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $image->getClientOriginalExtension());
         }
+        $this->brand->query()->create($data);
     }
 
     /**
@@ -94,7 +83,7 @@ class MenuService
      */
     public function findItem($id)
     {
-        return $this->menu->query()->findOrFail($id);
+        return $this->brand->query()->findOrFail($id);
     }
 
     /**
@@ -107,13 +96,13 @@ class MenuService
     {
         DB::beginTransaction();
         try {
-            $menuUpdate = [
+            $brandUpdate = [
                 'name' => $request->name,
                 'slug' => Str::slug($request->name),
                 'parent_id' => $request->parent_id
             ];
-            $menu = $this->findItem($id);
-            $menu->update($menuUpdate);
+            $brand = $this->findItem($id);
+            $brand->update($brandUpdate);
             DB::commit();
             return true;
         } catch (Exception $e) {
@@ -132,12 +121,11 @@ class MenuService
     {
         DB::beginTransaction();
         try {
-            $menu = $this->menu->query()->findOrFail($id);
-            if ($menu->children->count() > 0) {
-                $categoriesChildren = $menu->children->pluck('id')->toArray();
-                $this->menu->query()->whereIn('id', $categoriesChildren)->delete();
+            $brand = $this->brand->query()->findOrFail($id);
+            if (!empty($brand->image)) {
+                $this->deleteFile($brand->image);
             }
-            $menu->delete();
+            $brand->delete();
             DB::commit();
             return true;
         } catch (Exception $e) {

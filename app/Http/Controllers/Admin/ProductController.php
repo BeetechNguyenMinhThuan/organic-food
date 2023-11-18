@@ -4,15 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
-use App\Models\Product;
-use App\Services\Admin\CategoryService;
-use App\Services\Admin\ProductService;
-use App\Services\Admin\TagService;
-use App\Traits\StorageImageTrait;
-use Illuminate\Http\Request;
+use App\Services\CategoryService;
+use App\Services\ProductService;
+use App\Services\TagService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {

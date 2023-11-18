@@ -7,6 +7,8 @@ const SLIDER_DIR = 'sliders';
 const USER_DIR = 'users';
 const CATEGORY_DIR = 'categories';
 const BRAND_DIR = 'brands';
+
+const BLOG_DIR = 'blogs';
 const BAD_REQUEST = 400;
 define('NOTFOUND', 404);
 define('FORBIDDEN', 403);

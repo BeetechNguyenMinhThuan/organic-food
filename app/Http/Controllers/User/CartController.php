@@ -3,21 +3,29 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Services\Admin\BrandService;
-use App\Services\Admin\CategoryService;
-use App\Services\Admin\MenuService;
-use App\Services\Admin\ProductService;
-use App\Services\Admin\SliderService;
-use App\Services\Admin\TagService;
+use App\Services\AccountService;
+use App\Services\BrandService;
 use App\Services\CartService;
+use App\Services\CategoryService;
+use App\Services\MenuService;
+use App\Services\ProductService;
+use App\Services\SliderService;
+use App\Services\TagService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
     private CartService $cartService;
+    protected AccountService $accountService;
+    private CategoryService $categoryService;
+    protected ProductService $productService;
+    protected MenuService $menuService;
+    private SliderService $sliderService;
+    protected TagService $tagService;
+    private BrandService $brandService;
 
-    public function __construct(CartService $cartService, TagService $tagService, SliderService $sliderService, CategoryService $categoryService, ProductService $productService, MenuService $menuService, BrandService $brandService)
+    public function __construct(AccountService $accountService, CartService $cartService, TagService $tagService, SliderService $sliderService, CategoryService $categoryService, ProductService $productService, MenuService $menuService, BrandService $brandService)
     {
         $this->sliderService = $sliderService;
         $this->categoryService = $categoryService;
@@ -26,6 +34,7 @@ class CartController extends Controller
         $this->tagService = $tagService;
         $this->brandService = $brandService;
         $this->cartService = $cartService;
+        $this->accountService = $accountService;
 
     }
 
@@ -44,7 +53,7 @@ class CartController extends Controller
         $categories = $this->categoryService->getParent();
         $menus = $this->menuService->getParent();
         $carts = Session::get('carts');
-        $cartShippingAddress = $this->cartService->getShippingAddressUser();
+        $cartShippingAddress = $this->accountService->getShippingAddressUser();
 
         return view("frontend.carts.show", [
             'sliders' => $sliders,
@@ -75,10 +84,6 @@ class CartController extends Controller
         }
     }
 
-    public function addShippingAddress(Request $request)
-    {
-        return $this->cartService->addShippingAddress($request);
-    }
 
     public function checkoutCart(Request $request)
     {

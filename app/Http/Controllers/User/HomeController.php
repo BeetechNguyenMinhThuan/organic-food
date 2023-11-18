@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Services\Admin\CategoryService;
-use App\Services\Admin\MenuService;
-use App\Services\Admin\ProductService;
-use App\Services\Admin\SliderService;
-use Illuminate\Http\Request;
+use App\Services\CategoryService;
+use App\Services\MenuService;
+use App\Services\ProductService;
+use App\Services\SliderService;
 use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
@@ -56,5 +55,18 @@ class HomeController extends Controller
     public function changeLanguage($language){
         Session::put('website_language', $language);
         return redirect()->back();
+    }
+
+    public function wishlist(){
+        $sliders = $this->sliderService->get();
+        $categories = $this->categoryService->getParent();
+        $menus = $this->menuService->getParent();
+        $productsFavorite = $this->productService->getProductFavorite();;
+        return view('frontend.wishlist.index', [
+            'sliders' => $sliders,
+            'categories' => $categories,
+            'menus' => $menus,
+            'productsFavorite' => $productsFavorite
+        ]);
     }
 }

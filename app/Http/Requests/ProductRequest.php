@@ -29,7 +29,7 @@ class ProductRequest extends FormRequest
             'price' => 'required',
             'stock' => 'required|min:0|max:10000|integer',
             'expired_at' => ['date', 'after:' . now()],
-            'discount' => 'min:1|max:100|numeric',
+            'discount' => 'max:100',
             'avatar' => 'required|file|mimes:jpeg,jpg,png|max:3072',
             'category_id' => ['required', 'exists:categories,id'],
             'sku' => ['regex:/^[a-zA-Z0-9 ]+$/', 'required', 'min:10', 'max:20', 'unique:products'],

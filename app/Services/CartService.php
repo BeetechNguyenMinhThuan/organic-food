@@ -246,45 +246,6 @@ class CartService
         }
     }
 
-    public function addShippingAddress($request)
-    {
-        DB::beginTransaction();
-        try {
-            $userAddress = new UserAddress();
-            $userAddress->user_id = Auth::user()->id;
-            $userAddress->address = $request->shipping_address;
-            $userAddress->receiver_first_name = $request->shipping_firstname;
-            $userAddress->receiver_last_name = $request->shipping_lastname;
-            $userAddress->phone_number = $request->shipping_phone;
-            $userAddress->save();
-
-            $cartShippingAddress = $this->getShippingAddressUser();
-            $htmlListShippingAddressUser = view('frontend.carts.components.user-shipping-address', compact('cartShippingAddress'))->render();
-
-            DB::commit();
-            return response()->json([
-                'status' => 200,
-                'data' => $htmlListShippingAddressUser,
-            ], 200);
-        } catch (Exception $e) {
-            DB::rollBack();
-            Log::error("Message: {$e->getMessage()}. Line: {$e->getLine()}");
-            return response()->json([
-                'status' => 500,
-                'data' => trans('messages.server_error'),
-            ], 500);
-        }
-    }
-
-    public function getShippingAddressUser()
-    {
-        $userShippingAddress = [];
-        if (Auth::check()) {
-            $userShippingAddress = $this->userAddress::query()->where('user_id', Auth::user()->id)->get();
-        }
-        return $userShippingAddress;
-    }
-
     public function checkoutCart($request)
     {
         DB::beginTransaction();

@@ -1,33 +1,33 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services;
 
 use App\Http\Requests\CategoryRequest;
-use App\Models\Brand;
+use App\Models\Slider;
+use App\Services\Admin\Builder;
+use App\Services\Admin\Collection;
+use App\Services\Admin\LengthAwarePaginator;
+use App\Services\Admin\Model;
+use App\Services\Admin\UpdateCategoryRequest;
 use App\Traits\StorageImageTrait;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
-class BrandService
+class SliderService
 {
     use StorageImageTrait;
 
-    private $brand;
+    private $slider;
 
-    public function __construct(Brand $brand)
+    public function __construct(Slider $slider)
     {
-        $this->brand = $brand;
+        $this->slider = $slider;
     }
 
     const PAGINATE_CATEGORY = '15';
 
-
-    public function getModel()
-    {
-        return $this->brand;
-    }
     /**
      * Display a listing of Products
      *
@@ -35,7 +35,7 @@ class BrandService
      */
     public function get()
     {
-        return $this->brand->query()
+        return $this->slider->query()
             ->get();
     }
 
@@ -46,7 +46,7 @@ class BrandService
      */
     public function getPaginate()
     {
-        return $this->brand->query()
+        return $this->slider->query()
             ->latest()
             ->paginate(self::PAGINATE_CATEGORY);
     }
@@ -56,19 +56,18 @@ class BrandService
      * @param CategoryRequest $request
      * @return bool
      */
-    public function insertBrand($request)
+    public function insertSlider($request)
     {
         $data = [
             'name' => $request->name,
-            'slug' => Str::slug($request->name),
             'description' => $request->description,
         ];
         // Store avatar image
         if ($request->hasFile('image')) {
             $image = $request->image;
-            $data['image'] = $this->uploadFile($image, BRAND_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $image->getClientOriginalExtension());
+            $data['image'] = $this->uploadFile($image, SLIDER_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $image->getClientOriginalExtension());
         }
-        $this->brand->query()->create($data);
+        $this->slider->query()->create($data);
     }
 
     /**
@@ -78,7 +77,7 @@ class BrandService
      */
     public function findItem($id)
     {
-        return $this->brand->query()->findOrFail($id);
+        return $this->slider->query()->findOrFail($id);
     }
 
     /**
@@ -91,13 +90,13 @@ class BrandService
     {
         DB::beginTransaction();
         try {
-            $brandUpdate = [
+            $sliderUpdate = [
                 'name' => $request->name,
                 'slug' => Str::slug($request->name),
                 'parent_id' => $request->parent_id
             ];
-            $brand = $this->findItem($id);
-            $brand->update($brandUpdate);
+            $slider = $this->findItem($id);
+            $slider->update($sliderUpdate);
             DB::commit();
             return true;
         } catch (Exception $e) {
@@ -116,11 +115,11 @@ class BrandService
     {
         DB::beginTransaction();
         try {
-            $brand = $this->brand->query()->findOrFail($id);
-            if (!empty($brand->image)) {
-                $this->deleteFile($brand->image);
+            $slider = $this->slider->query()->findOrFail($id);
+            if (!empty($slider->image)){
+                $this->deleteFile($slider->image);
             }
-            $brand->delete();
+            $slider->delete();
             DB::commit();
             return true;
         } catch (Exception $e) {

@@ -48,7 +48,8 @@
                                            class="shipping-account form-check-input">
                                     <button class="nav-link" id="nav-tab-two" data-bs-toggle="tab"
                                             data-bs-target="#tab-two" style="padding-left: 0"
-                                            type="button" role="tab" aria-controls="tab-two" aria-selected="false">{{trans('messages.cart.pick_ship')}}
+                                            type="button" role="tab" aria-controls="tab-two"
+                                            aria-selected="false">{{trans('messages.cart.pick_ship')}}
                                     </button>
                                 </li>
                             </ul>
@@ -65,7 +66,8 @@
                                             <input class="form-control pick_store_date" type="text"
                                                    name="pick_store_date"
                                                    id="pick_store_date"
-                                                   data-picker="date-picker-shipping" placeholder="{{trans('messages.cart.pick_date')}}">
+                                                   data-picker="date-picker-shipping"
+                                                   placeholder="{{trans('messages.cart.pick_date')}}">
                                         </div>
                                         <div class="date col-lg-3">
                                             <input class="form-control shipping_hour pick_store_hour" type="text"
@@ -88,7 +90,8 @@
                                         <div class="col-lg-3">
                                             <input class="form-control pick_ship_date" type="text" name="pick_ship_date"
                                                    id="pick_ship_date"
-                                                   data-picker="date-picker-shipping" placeholder="{{trans('messages.cart.pick_ship')}}">
+                                                   data-picker="date-picker-shipping"
+                                                   placeholder="{{trans('messages.cart.pick_ship')}}">
                                         </div>
                                         <div class="date col-lg-3">
                                             <input class="form-control shipping_hour pick_ship_hour" type="text"
@@ -105,7 +108,8 @@
                                             </div>
                                             <div class="col-lg-3">
                                                 <p>{{trans('messages.cart.not_register')}} <a class="register_now"
-                                                                                       href="{{ route('user.register') }}">{{trans('messages.cart.register_now')}}</a></p>
+                                                                                              href="{{ route('user.register') }}">{{trans('messages.cart.register_now')}}</a>
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -119,7 +123,9 @@
                                         </div>
                                         <p class="text-center">{{trans('messages.cart.delivery_different')}} <a
                                                 href="javascript:void(0)"
-                                                data-bs-toggle="modal" data-bs-target="#addShippingAddressModal">{{trans('messages.cart.add_address_delivery')}}</a></p>
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#addShippingAddressModal">{{trans('messages.cart.add_address_delivery')}}</a>
+                                        </p>
                                         <div class="list-address">
                                             @include('frontend.carts.components.user-shipping-address')
                                         </div>
@@ -137,46 +143,41 @@
                                                                 aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form class="shipping-address-form mt-30"
-                                                              id="addShippingAddressForm"
-                                                              method="POST"
-                                                              data-url="{{route('cart.addShippingAddress')}}"
-                                                              enctype="multipart/form-data">
-                                                            @csrf
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="input-style mb-20">
-                                                                        <input class="shipping_firstname"
-                                                                               name="shipping_firstname"
-                                                                               placeholder="{{trans('messages.common.first_name')}}"
-                                                                               type="text">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="input-style mb-20">
-                                                                        <input class="shipping_lastname"
-                                                                               name="shipping_lastname"
-                                                                               placeholder="{{trans('messages.common.last_name')}}" type="text">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-12">
-                                                                    <div class="input-style mb-20">
-                                                                        <input class="shipping_phone"
-                                                                               name="shipping_phone"
-                                                                               placeholder="{{trans('messages.common.phone_number')}}"
-                                                                               type="text">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-12">
-                                                                    <div class="input-style mb-20">
-                                                                        <input class="shipping_address"
-                                                                               name="shipping_address"
-                                                                               placeholder="{{trans('messages.common.address')}}"
-                                                                               type="text">
-                                                                    </div>
+                                                        <div class="row shipping-address-form"
+                                                             data-url="{{route('account.addShippingAddress')}}">
+                                                            <div class="col-md-6">
+                                                                <div class="input-style mb-20">
+                                                                    <input class="shipping_firstname"
+                                                                           name="shipping_firstname"
+                                                                           placeholder="{{trans('messages.common.first_name')}}"
+                                                                           type="text">
                                                                 </div>
                                                             </div>
-                                                        </form>
+                                                            <div class="col-md-6">
+                                                                <div class="input-style mb-20">
+                                                                    <input class="shipping_lastname"
+                                                                           name="shipping_lastname"
+                                                                           placeholder="{{trans('messages.common.last_name')}}"
+                                                                           type="text">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="input-style mb-20">
+                                                                    <input class="shipping_phone"
+                                                                           name="shipping_phone"
+                                                                           placeholder="{{trans('messages.common.phone_number')}}"
+                                                                           type="text">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="input-style mb-20">
+                                                                    <input class="shipping_address"
+                                                                           name="shipping_address"
+                                                                           placeholder="{{trans('messages.common.address')}}"
+                                                                           type="text">
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"

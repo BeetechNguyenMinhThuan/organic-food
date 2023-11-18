@@ -1,15 +1,14 @@
 <?php
 
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\User\AccountController;
 use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\User\BlogController;
 use App\Http\Controllers\User\BrandController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\ProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
 use Rap2hpoutre\LaravelLogViewer\LogViewerController;
 use UniSharp\LaravelFilemanager\Lfm;
 
@@ -38,15 +37,16 @@ Route::get('/doLogout', [AuthController::class, 'doLogout'])->name('user.logout'
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products/{name}', [ProductController::class, 'detail'])->name('products.detail');
 Route::get('/products-categories/{slug}', [ProductController::class, 'listProduct'])->name('products.listProduct');
+Route::get('/products-categories/{categoryId}/filter', [ProductController::class, 'filterProductCategory'])->name('products.filterCategory');
 Route::get('/products', [ProductController::class, 'search'])->name('products.search');
 Route::get('/shop', [ProductController::class, 'shop'])->name('shop');
-Route::get('/blogs', [ProductController::class, 'shop'])->name('blogs');
 Route::get('/faq', [ProductController::class, 'shop'])->name('faq');
 Route::get('/about-us', [ProductController::class, 'shop'])->name('faq');
 Route::get('/privacy-policy', [ProductController::class, 'shop'])->name('faq');
 Route::get('/term-conditions', [ProductController::class, 'shop'])->name('faq');
 Route::get('/purchase-guide', [ProductController::class, 'shop'])->name('faq');
 Route::get('/faq', [ProductController::class, 'shop'])->name('faq');
+Route::get('/wishlist', [HomeController::class, 'wishlist'])->name('wishlist');
 
 // Page Contact
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
@@ -54,6 +54,23 @@ Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 // Brands
 Route::get('/brands', [BrandController::class, 'index'])->name('brands.index');
 Route::get('/brand/{slug}', [BrandController::class, 'detail'])->name('brands.detail');
+
+// Favorite Product
+Route::get("/favorite-product/{productId}", [ProductController::class, 'createFavoriteProduct'])->name('products.create.favorite');
+Route::delete("/remove-favorite-product/{productId}", [ProductController::class, 'removeFavoriteProduct'])->name('products.remove.favorite');
+Route::get("/check-favorite/{productId}", [ProductController::class, 'checkFavoriteProduct'])->name('products.check.favorite');
+
+// Blogs
+Route::get('/blogs', [BlogController::class, 'index'])->name('blogs');
+Route::get('/blogs/{slug}', [BlogController::class, 'detail'])->name('blogs.detail');
+
+// Account
+Route::middleware('CheckUserLogin')->group(function () {
+    Route::get('/account/profile', [AccountController::class, 'profile'])->name('account.profile');
+    Route::post("/add-shipping-address", [AccountController::class, 'addShippingAddress'])->name('account.addShippingAddress');
+    Route::delete("/delete-shipping-address/{id}", [AccountController::class, 'deleteShippingAddress'])->name('account.deleteShippingAddress');
+    Route::post("/update-account/", [AccountController::class, 'updateAccount'])->name('account.updateAccount');
+});
 
 
 // Cart
@@ -64,7 +81,6 @@ Route::delete("/delete-cart", [CartController::class, 'deleteCart'])->name('cart
 Route::get("/delete-all-cart", [CartController::class, 'deleteAllCart'])->name('cart.allDelete');
 Route::middleware('CheckUserLogin')->group(function () {
     Route::post("/checkout-Cart", [CartController::class, 'checkoutCart'])->name('cart.checkout');
-    Route::post("/add-shipping-address", [CartController::class, 'addShippingAddress'])->name('cart.addShippingAddress');
 });
 
 

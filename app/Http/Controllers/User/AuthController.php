@@ -4,15 +4,14 @@ namespace App\Http\Controllers\User;
 
 use App\Helpers\UploadHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AccountRequest;
 use App\Models\User;
-use App\Services\Admin\CategoryService;
-use App\Services\Admin\MenuService;
-use App\Services\Admin\ProductService;
-use App\Services\Admin\SliderService;
-use App\Traits\StorageImageTrait;
+use App\Services\CategoryService;
+use App\Services\MenuService;
+use App\Services\ProductService;
+use App\Services\SliderService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -74,18 +73,8 @@ class AuthController extends Controller
 
     }
 
-    public function doRegister(Request $request)
+    public function doRegister(AccountRequest $request)
     {
-//        dd($request->all());
-        // Kiểm tra và xác thực dữ liệu từ request
-        $request->validate([
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:1',
-            'confirm_password' => 'required|same:password',
-            'isReadTerm' => 'required',
-        ]);
 
         $isReadTerm = $request->input('isReadTerm');
         // Tạo một bản ghi người dùng mới

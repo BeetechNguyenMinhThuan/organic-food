@@ -13,7 +13,6 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -52,5 +51,12 @@ class User extends Authenticatable
     public function getFullNameAttribute()
     {
         return $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
+    }
+
+    public function favorites(){
+        return $this->belongsToMany(Product::class,'user_favorites','user_id','product_id');
+    }
+    public function addresses(){
+        return $this->hasMany(UserAddress::class);
     }
 }
