@@ -83,7 +83,17 @@ manage your shipping and billing addresses and edit your password and account de
         'stay_home' => 'Pick up at your home <br/> from our store',
         'daily_shopping' => 'Start your daily shopping with <span class="text-brand">OrganicFood</span>',
         'your_email' => 'Enter your email',
+        'your_password' => 'Enter your password',
         'subscribe' => 'Subscribe',
+        'remember_me' => 'Save login',
+        'dont_have_account' => "Don't have an account yet?",
+        'register_now' => "Register now",
+        'forgot_password' => "Forgot password?",
+        'have_account' => "Do you already have an account?",
+        'login_now' => "Log in now",
+        'password' => "Password",
+        'term_and_policy' => 'I agree to terms & Policy.',
+        'learn_more' => "Learn more",
     ],
     // ---- HOME -----
     'header' => [

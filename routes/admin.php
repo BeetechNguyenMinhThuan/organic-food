@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\OrderController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\WarehouseController;
 use Illuminate\Support\Facades\Route;
 use UniSharp\LaravelFilemanager\Lfm;
 
@@ -20,7 +22,6 @@ use UniSharp\LaravelFilemanager\Lfm;
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/doLogin', [AuthController::class, 'doLogin'])->name('doLogin');
 Route::get('/doLogout', [AuthController::class, 'doLogout'])->name('admin.doLogout');
-
 Route::middleware(['auth:admin'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard.index');
@@ -53,7 +54,7 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('admin.products.edit');
         Route::put('/update/{id}', [ProductController::class, 'update'])->name('admin.products.update');
         Route::delete('/destroy/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
-        Route::get('{id}/avatar',  [ProductController::class, 'getImage'])->name('admin.product.avatar');
+        Route::get('{id}/avatar', [ProductController::class, 'getImage'])->name('admin.product.avatar');
     });
 
     Route::prefix('settings')->group(function () {
@@ -113,6 +114,19 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::prefix('orders')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('admin.orders.index');
         Route::get('/detail/{id}', [OrderController::class, 'detail'])->name('admin.orders.detail');
+    });
+
+    //warehouse
+    Route::prefix('warehouse')->group(function () {
+        Route::get('/', [WarehouseController::class, 'index'])->name('admin.warehouse.index');
+        Route::get('/detail/{id}', [WarehouseController::class, 'detail'])->name('admin.warehouse.detail');
+    });
+
+    // Comment
+    Route::prefix('comments')->group(function () {
+        Route::get('/', [CommentController::class, 'index'])->name('admin.comment.index');
+        Route::get('/status-comment/{productId}/{commentId}', [CommentController::class, 'changeStatusComment'])->name('admin.comment.changeStatus');
+        Route::get('/admin-reply-comment/{productId}/{commentId}', [CommentController::class, 'adminReplyComment'])->name('admin.comment.adminReplyComment');
     });
 });
 

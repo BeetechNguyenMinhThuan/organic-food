@@ -34,12 +34,19 @@ class ProductController extends Controller
         $menus = $this->menuService->getParent();
         $product = $this->productService->findItem('slug', $name);
         $productRelated = $this->productService->getProductRelated($product->id, $product->category->id);
+        $productReview = $this->productService->getProductReview($product->id);
+        $avgRating = round($this->productService->avgRatingProductReview($product->id));
+        $eachAvgRating = $this->productService->avgEachRatingProductReview($product->id);
+
         return view('frontend.products.detail', [
             'product' => $product,
             'sliders' => $sliders,
             'categories' => $categories,
             'menus' => $menus,
-            'productRelated' => $productRelated
+            'productRelated' => $productRelated,
+            'productReview' => $productReview,
+            'avgRating' => $avgRating,
+            'eachAvgRating' => $eachAvgRating
         ]);
     }
 
@@ -116,4 +123,12 @@ class ProductController extends Controller
     {
         return $this->productService->filterProductCategory($request, $categoryId);
     }
+
+    //Comment
+    public function rateProduct(Request $request, $productId)
+    {
+        return $this->productService->ratingProduct($request, $productId);
+
+    }
+
 }

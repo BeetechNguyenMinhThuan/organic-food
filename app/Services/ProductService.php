@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\ProductReview;
 use App\Models\ProductTag;
 use App\Models\Tag;
 use App\Models\UserFavorite;
@@ -40,9 +41,10 @@ class ProductService
     private ProductTag $productTag;
     private UserFavorite $userFavorite;
     private Category $category;
+    private ProductReview $productReview;
 
 
-    public function __construct(Category $category, Product $product, ProductImage $productImage, Tag $tag, ProductTag $productTag, UserFavorite $userFavorite)
+    public function __construct(ProductReview $productReview, Category $category, Product $product, ProductImage $productImage, Tag $tag, ProductTag $productTag, UserFavorite $userFavorite)
     {
         $this->product = $product;
         $this->productImage = $productImage;
@@ -50,6 +52,7 @@ class ProductService
         $this->productTag = $productTag;
         $this->userFavorite = $userFavorite;
         $this->category = $category;
+        $this->productReview = $productReview;
     }
 
     public function getModel()
@@ -111,6 +114,7 @@ class ProductService
 
         return $query->paginate(self::PRODUCT_PAGINATE);
     }
+
     public function getRandom()
     {
         $query = $this->product::query()
@@ -458,7 +462,7 @@ class ProductService
     public function checkFavoriteProduct($productId)
     {
         try {
-            if(!Auth::check()){
+            if (!Auth::check()) {
                 return response()->json([
                     'status' => Response::HTTP_NOT_FOUND,
                 ]);
@@ -533,6 +537,107 @@ class ProductService
                 'data' => trans('messages.server_error')
             ], 500);
         }
+    }
 
+    public function ratingProduct($request, $productId)
+    {
+        DB::beginTransaction();
+        try {
+            if (empty($request->comment)) {
+                return response()->json([
+                    'status' => 500,
+                    'data' => "Vui lòng nhập bình luận"
+                ], 500);
+            }
+            $user = Auth::user();
+            $productReview = $this->productReview;
+            $productReview->product_id = $productId;
+            $productReview->user_id = $user->id;
+            $productReview->comment = $request->comment;
+            $productReview->rating = $request->ratingStar;
+            $productReview->save();
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'data' => true
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Message: {$e->getMessage()}. Line: {$e->getLine()}");
+            return response()->json([
+                'status' => 500,
+                'data' => trans('messages.server_error')
+            ], 500);
+        }
+    }
+
+    public function getProductReview($productId)
+    {
+        $productReview = $this->productReview::query()
+            ->with(['user', 'admin'])
+            ->where('product_id', $productId)
+            ->where('status', 1)
+            ->get();
+        return $productReview;
+    }
+
+    public function avgRatingProductReview($productId)
+    {
+        $productReview = $this->productReview::query()
+            ->where(['product_id' => $productId, 'status' => 1])
+            ->avg('rating');
+        return $productReview;
+    }
+
+    public function avgEachRatingProductReview($productId)
+    {
+        $ratingsCount = $this->productReview::selectRaw('rating, COUNT(*) as count')
+            ->groupBy('rating')
+            ->orderBy('rating', 'DESC')
+            ->where(['product_id' => $productId, 'status' => 1])
+            ->get();
+        $totalCount = $ratingsCount->sum('count');
+        $percentageData = $ratingsCount->map(function ($item) use ($totalCount) {
+            return [
+                'rating' => $item->rating,
+                'percent' => round(($item->count / $totalCount) * 100),
+            ];
+        });
+        return $percentageData;
+    }
+
+    public function getProductReviewPaginate()
+    {
+        $productReview = $this->productReview::query()
+            ->with(['user', 'product'])
+            ->whereNull('censorship_user_id')
+            ->orderBy('status', 'ASC')
+            ->paginate(self::PRODUCT_PAGINATE);
+        return $productReview;
+    }
+
+    public function changeStatusComment($productId, $commentId)
+    {
+        $productReview = $this->productReview::query()->where(['product_id' => $productId, 'id' => $commentId])->first();
+        if ($productReview) {
+            if ($productReview->status == 0) {
+                $productReview->status = 1;
+            } else {
+                $productReview->status = 0;
+            }
+            $productReview->save();
+            return true;
+        }
+        return false;
+    }
+
+    public function adminReplyComment($request, $productId, $commentId)
+    {
+        $productReview = new ProductReview();
+        $productReview->comment = $request->comment;
+        $productReview->parent_comment = $commentId;
+        $productReview->product_id = $productId;
+        $productReview->censorship_user_id = Auth::guard('admin')->user()->id;
+        $productReview->save();
     }
 }

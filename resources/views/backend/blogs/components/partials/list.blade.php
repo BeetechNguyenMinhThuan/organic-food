@@ -6,8 +6,8 @@
                     <div class="row mb-2">
                         <div class="col-sm-4">
                             <a
-                                href="{{route('admin.blogs.create')}}"
-                                class="btn btn-danger mb-2"
+                                    href="{{route('admin.blogs.create')}}"
+                                    class="btn btn-danger mb-2"
                             ><i class="mdi mdi-plus-circle mr-2"></i> Add
                                 Blog</a
                             >
@@ -17,8 +17,8 @@
 
                     <div class="table-responsive">
                         <table
-                            class="table table-centered w-100 dt-responsive nowrap"
-                            id=""
+                                class="table table-centered w-100 dt-responsive nowrap"
+                                id=""
                         >
                             <thead class="thead-light">
                             <tr>
@@ -33,22 +33,22 @@
                             @foreach($blogs as $index => $blog)
                                 <tr>
                                     <td>{{$index + $blogs->firstItem() }}</td>
-{{--                                    <td>--}}
-{{--                                        <img--}}
-{{--                                            src="{{ \App\Helpers\Common::getImage($blog->user->avatar) }}"--}}
-{{--                                            alt="contact-img"--}}
-{{--                                            title="contact-img"--}}
-{{--                                            class="rounded mr-3"--}}
-{{--                                            height="48"--}}
-{{--                                        />--}}
-{{--                                    </td>--}}
+                                    {{--                                    <td>--}}
+                                    {{--                                        <img--}}
+                                    {{--                                            src="{{ \App\Helpers\Common::getImage($blog->user->avatar) }}"--}}
+                                    {{--                                            alt="contact-img"--}}
+                                    {{--                                            title="contact-img"--}}
+                                    {{--                                            class="rounded mr-3"--}}
+                                    {{--                                            height="48"--}}
+                                    {{--                                        />--}}
+                                    {{--                                    </td>--}}
                                     <td>
                                         <img
-                                            src="{{ \App\Helpers\Common::getImage($blog->thumbnail) }}"
-                                            alt="contact-img"
-                                            title="contact-img"
-                                            class="rounded mr-3"
-                                            height="100"
+                                                src="{{ \App\Helpers\Common::getImage($blog->thumbnail) }}"
+                                                alt="contact-img"
+                                                title="contact-img"
+                                                class="rounded mr-3"
+                                                height="100"
                                         />
                                         <p>Title : {{$blog->title}}</p>
                                         <p>View : {{$blog->view_count}}</p>
@@ -76,6 +76,7 @@
                 <!-- end card-body-->
             </div>
             <!-- end card-->
+            {{$blogs->links()}}
         </div>
         <!-- end col -->
 

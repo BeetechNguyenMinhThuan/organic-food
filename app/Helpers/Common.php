@@ -30,21 +30,23 @@ class Common
      * @param $created_at
      * @return bool
      */
-    public static function checkOrderStatus($status){
+    public static function checkOrderStatus($status)
+    {
         $html = "";
-        if($status == Order::PENDING){
+        if ($status == Order::PENDING) {
             $html = '<span class="badge rounded-pill alert-dark badge-dark-lighten">Pending</span>';
-        }elseif($status == Order::CANCELLED){
+        } elseif ($status == Order::CANCELLED) {
             $html = '<span class="badge rounded-pill alert-danger badge-danger-lighten">Cancelled</span>';
-        }elseif($status == Order::COMPLETED){
+        } elseif ($status == Order::COMPLETED) {
             $html = '<span class="badge rounded-pill alert-success badge-success-lighten">Completed</span>';
-        }elseif($status == Order::DELIVERED){
+        } elseif ($status == Order::DELIVERED) {
             $html = '<span class="badge rounded-pill alert-info badge-info-lighten">Delivered</span>';
-        }elseif($status == Order::SHIPPED){
+        } elseif ($status == Order::SHIPPED) {
             $html = '<span class="badge rounded-pill alert-warning badge-warning-lighten">Shipped</span>';
         }
         return $html;
     }
+
     public static function checkProductNew($created_at)
     {
         $subDays = Carbon::now()->subDays(SUB_DAYS);
@@ -52,6 +54,23 @@ class Common
             return true;
         }
         return false;
+    }
+
+    public static function generateCode(){
+        $randomArray = array_map(function () {
+            return rand(0, 9); // Sinh ngẫu nhiên một số từ 0 đến 9
+        }, range(1, 4)); // Tạo một mảng có 4 phần tử
+        return $randomArray;
+    }
+    public static function generateSecurityCodeHTML($code)
+    {
+        $html = '<span class="security-code">';
+        $html .= "<b class='text-new'>$code[0]</b>";
+        $html .= "<b class='text-new'>$code[1]</b>";
+        $html .= "<b class='text-new'>$code[2]</b>";
+        $html .= "<b class='text-new'>$code[3]</b>";
+        $html .= "</span>";
+        return $html;
     }
 
     public static function getImage($img)

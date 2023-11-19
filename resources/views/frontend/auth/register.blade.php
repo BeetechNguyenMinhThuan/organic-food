@@ -64,15 +64,17 @@
                                 <div class="padding_eight_all bg-white">
                                     <div class="heading_s1">
                                         <h1 class="mb-5">{{trans('messages.auth.register')}}</h1>
-                                        <p class="mb-30">Already have an account? <a href="{{route('user.login')}}">Login</a>
+                                        <p class="mb-30">{{trans('messages.auth.have_account')}} <a
+                                                href="{{route('user.login')}}">{{trans('messages.auth.login_now')}}</a>
                                         </p>
                                     </div>
                                     <form method="post" action="{{route('user.doRegister')}}"
                                           enctype="multipart/form-data">
                                         @csrf
                                         <div class="form-group">
-                                            <label for="" class="font-weight-bold">First Name</label>
-                                            <input type="text" required="" value="{{old('first_name')}}" name="first_name" placeholder="First name"/>
+                                            <label for="" class="font-weight-bold">{{trans('messages.common.first_name')}}</label>
+                                            <input type="text" required="" value="{{old('first_name')}}"
+                                                   name="first_name" placeholder="{{trans('messages.common.first_name')}}"/>
                                             @error('first_name')
                                             <div class="text-danger mt-1">
                                                 {{ $message }}
@@ -81,8 +83,9 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="" class="font-weight-bold">Last Name</label>
-                                            <input type="text" required="" value="{{old('last_name')}}" name="last_name" placeholder="Last name"/>
+                                            <label for="" class="font-weight-bold">{{trans('messages.common.last_name')}}</label>
+                                            <input type="text" required="" value="{{old('last_name')}}" name="last_name"
+                                                   placeholder="{{trans('messages.common.last_name')}}"/>
                                             @error('last_name')
                                             <div class="text-danger mt-1">
                                                 {{ $message }}
@@ -91,7 +94,8 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="" class="font-weight-bold">Email</label>
-                                            <input type="text" required="" value="{{old('email')}}" name="email" placeholder="Email"/>
+                                            <input type="text" required="" value="{{old('email')}}" name="email"
+                                                   placeholder="Email"/>
                                             @error('email')
                                             <div class="text-danger mt-1">
                                                 {{ $message }}
@@ -99,8 +103,8 @@
                                             @enderror
                                         </div>
                                         <div class="form-group">
-                                            <label for="" class="font-weight-bold">Password</label>
-                                            <input required="" type="password" name="password" placeholder="Password"/>
+                                            <label for="" class="font-weight-bold">{{trans('messages.auth.password')}}</label>
+                                            <input required="" type="password" name="password" placeholder="{{trans('messages.auth.your_password')}}"/>
                                             @error('password')
                                             <div class="text-danger mt-1">
                                                 {{ $message }}
@@ -108,9 +112,9 @@
                                             @enderror
                                         </div>
                                         <div class="form-group">
-                                            <label for="" class="font-weight-bold">Confirm Password</label>
+                                            <label for="" class="font-weight-bold">{{trans('messages.profile.confirm_password')}}</label>
                                             <input required="" type="password" name="confirm_password"
-                                                   placeholder="Confirm password"/>
+                                                   placeholder="{{trans('messages.profile.confirm_password')}}"/>
                                             @error('confirm_password')
                                             <div class="text-danger mt-1">
                                                 {{ $message }}
@@ -118,7 +122,7 @@
                                             @enderror
                                         </div>
                                         <div class="form-group upload-avatar">
-                                            <label for="" class="font-weight-bold">Upload Avatar</label>
+                                            <label for="" class="font-weight-bold">{{trans('messages.profile.avatar')}}</label>
                                             <input type="file" name="avatar" id="image" accept="image/*"/>
                                             <div id="preview">
                                                 <div id="avatar"></div>
@@ -143,7 +147,7 @@
                                                 <div class="custome-checkbox">
                                                     <input class="form-check-input" type="checkbox" name="isReadTerm"
                                                            id="exampleCheckbox12" value="1"/>
-                                                    <label class="form-check-label" for="exampleCheckbox12"><span>I agree to terms &amp; Policy.</span></label>
+                                                    <label class="form-check-label" for="exampleCheckbox12"><span>{{trans('messages.auth.term_and_policy')}}</span></label>
                                                     @error('isReadTerm')
                                                     <div class="text-danger mt-1">
                                                         {{ $message }}
@@ -152,12 +156,12 @@
                                                 </div>
                                             </div>
                                             <a href="page-privacy-policy.html"><i
-                                                    class="fi-rs-book-alt mr-5 text-muted"></i>Lean more</a>
+                                                    class="fi-rs-book-alt mr-5 text-muted"></i>{{trans('messages.auth.learn_more')}}</a>
                                         </div>
                                         <div class="form-group mb-30">
                                             <button type="submit"
                                                     class="btn btn-fill-out btn-block hover-up font-weight-bold"
-                                            >Submit &amp; Register
+                                            >{{trans('messages.auth.register')}}
                                             </button>
                                         </div>
                                         {{--                                        <p class="font-xs text-muted"><strong>Note:</strong>Your personal data will be--}}

@@ -32,6 +32,10 @@ Route::get('/register', [AuthController::class, 'register'])->name('user.registe
 Route::post('/doLogin', [AuthController::class, 'doLogin'])->name('user.doLogin');
 Route::post('/doRegister', [AuthController::class, 'doRegister'])->name('user.doRegister');
 Route::get('/doLogout', [AuthController::class, 'doLogout'])->name('user.logout');
+Route::get('forgot-password',[AuthController::class,'forgotPassword'])->name('user.forgotPassword');
+Route::post('do-forgot-password',[AuthController::class,'doForgotPassword'])->name('user.doForgotPassword');
+Route::get('reset-password',[AuthController::class,'resetPassword'])->name('user.resetPassword');
+Route::post('do-reset-password',[AuthController::class,'doResetPassword'])->name('user.doResetPassword');
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -64,12 +68,16 @@ Route::get("/check-favorite/{productId}", [ProductController::class, 'checkFavor
 Route::get('/blogs', [BlogController::class, 'index'])->name('blogs');
 Route::get('/blogs/{slug}', [BlogController::class, 'detail'])->name('blogs.detail');
 
-// Account
 Route::middleware('CheckUserLogin')->group(function () {
+
+    // Account
     Route::get('/account/profile', [AccountController::class, 'profile'])->name('account.profile');
     Route::post("/add-shipping-address", [AccountController::class, 'addShippingAddress'])->name('account.addShippingAddress');
     Route::delete("/delete-shipping-address/{id}", [AccountController::class, 'deleteShippingAddress'])->name('account.deleteShippingAddress');
     Route::post("/update-account/", [AccountController::class, 'updateAccount'])->name('account.updateAccount');
+
+    // Rate Product
+    Route::post('/rate-product/{productId}',[ProductController::class, 'rateProduct'])->name('products.rate');
 });
 
 

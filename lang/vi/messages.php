@@ -83,7 +83,17 @@ quản lý địa chỉ giao hàng và thanh toán cũng như chỉnh sửa chi 
         'stay_home' => 'Nhận hàng tại nhà của bạn <br/> từ cửa hàng của chúng tôi',
         'daily_shopping' => 'Bắt đầu mua sắm hàng ngày của bạn với <span class="text-brand">OrganicFood</span>',
         'your_email' => 'Nhập email của bạn',
+        'your_password' => 'Nhập mật khẩu của bạn',
         'subscribe' => 'Đăng ký',
+        'remember_me' => 'Lưu đăng nhập',
+        'dont_have_account' => "Bạn chưa có tài khoản?",
+        'register_now' => "Đăng ký ngay",
+        'forgot_password' => "Quên mật khẩu?",
+        'have_account' => "Bạn đã có tài khoản?",
+        'login_now' => "Đăng nhập ngay",
+        'password' => "Mật khẩu",
+        'term_and_policy' => 'Tôi đồng ý với các điều khoản & Chính sách.',
+        'learn_more' => "Đọc thêm",
     ],
     // ---- HOME -----
     'header' => [
