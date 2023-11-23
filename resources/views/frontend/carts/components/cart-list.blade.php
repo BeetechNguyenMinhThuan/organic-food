@@ -97,9 +97,9 @@
                                 <h6 class="text-muted">{{trans('messages.cart.apply_coupon')}}</h6>
                             </td>
                             <td class="d-flex">
-                                <input class="font-medium mr-15 coupon" name="coupon_name"
+                                <input class="font-medium mr-15 coupon discount_name" name="discount_name"
                                        placeholder="{{trans('messages.cart.enter_coupon')}}">
-                                <button class="btn checkCoupon"><i class="fi-rs-label"></i></button>
+                                <button data-url="{{route('cart.checkDiscountCode')}}" type="button" class="btn checkDiscount"><i class="fi-rs-label"></i></button>
                             </td>
                         </tr>
 
@@ -122,12 +122,13 @@
                             </td>
                             <td class="cart_total_amount">
                                 <h4 class="text-brand text-end">{{number_format($totalPrice)}} <sup>₫</sup></h4>
+                                <input type="hidden" value="{{$totalPrice}}" class="totalPriceBase">
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-                <button type="submit" class="btn mb-20 w-100">{{trans('messages.cart.checkout')}}<i
+                <button name="redirect" type="submit" class="btn mb-20 w-100">{{trans('messages.cart.checkout')}}<i
                         class="fi-rs-sign-out ml-15"></i></button>
             </div>
         </div>

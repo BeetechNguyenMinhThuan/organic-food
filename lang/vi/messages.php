@@ -5,9 +5,11 @@ return [
 
     // Create Product
     'create_succeed' => 'Thêm thành công',
+    'update_succeed' => 'Sửa thành công',
     'save' => 'Lưu',
     'nothing_data' => 'Không có dữ liệu',
     'server_error' => 'Đã có lỗi xảy ra. Vui lòng kiểm tra lại!',
+    'require_input' => "Vui lòng nhập đầy đủ thông tin!",
 
     // ---------------------------- FRONTEND ---------------------------- //
     // Profile
@@ -139,7 +141,8 @@ quản lý địa chỉ giao hàng và thanh toán cũng như chỉnh sửa chi 
         'sub_total' => 'Tổng phụ',
         'apply_coupon' => 'Thêm mã giảm giá',
         'enter_coupon' => 'Nhập mã giảm giá',
-        'total' => "Tổng tiền"
+        'total' => "Tổng tiền",
+        'add_to_cart' => "Đặt hàng"
     ]
 
 ];

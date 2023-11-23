@@ -29,6 +29,7 @@ export function datePicker(selector) {
             format: formatDate,
             language: 'vi',
             todayHighlight: true,
+            startDate: new Date(),
             autoClose: true
         }).on('changeDate', function (ev) {
             $(this).datepicker('hide');

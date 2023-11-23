@@ -30,11 +30,39 @@ function cartUpdate(e) {
     });
 }
 
+function applyDiscountCode() {
+    let discountName = $('.discount_name').val();
+    let totalPriceBase = $('.totalPriceBase').val();
+    let urlCheckDiscountName = $(this).data('url');
+    if (discountName) {
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            type: "GET",
+            url: urlCheckDiscountName,
+            dataType: "json",
+            data: {name: discountName},
+            success: function (data) {
+                if (data.status === 200) {
+                    $(".cart-product-list").html(data.cartList);
+                    $(".header-cart-list").html(data.cartListDropdown);
+                    toastr.success("Cập nhật giỏ hàng thành công", {
+                        timeOut: 500,
+                    });
+                }
+            },
+            error: function (error) {
+                toastr.success("Xảy ra lỗi, vui lòng thử lại", {timeOut: 500});
+            },
+        });
+    }
+}
 
 $(function () {
     datePicker('[data-picker="date-picker-shipping"]');
     timePicker(".shipping_hour");
-
+    $(document).on("click", ".checkDiscount", applyDiscountCode)
     $(document).on("click", ".cart-qty-up", cartUpdate);
     $(document).on("click", ".cart-qty-down", cartUpdate);
     $(document).on("change", ".cart-product-qty", cartUpdate);

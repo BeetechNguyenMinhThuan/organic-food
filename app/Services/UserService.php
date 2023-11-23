@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Admin;
 use App\Models\User;
 use App\Traits\StorageImageTrait;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -20,11 +21,13 @@ class UserService
     const PAGINATE = 15;
     private User $user;
     private Role $role;
+    private Admin $admin;
 
-    public function __construct(User $user, Role $role)
+    public function __construct(Admin $admin, User $user, Role $role)
     {
         $this->user = $user;
         $this->role = $role;
+        $this->admin = $admin;
     }
 
     /**
@@ -212,6 +215,6 @@ class UserService
 
     public function getRole()
     {
-        return $this->role->where('guard_name', 'web')->get();
+        return $this->role->get();
     }
 }

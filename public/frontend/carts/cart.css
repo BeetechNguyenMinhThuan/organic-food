@@ -40,6 +40,7 @@
 .checked{
     background-color: #fff !important;
     border: 1px dashed #0fb346;
+    color: black!important;
 }
 
 

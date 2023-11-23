@@ -29,7 +29,7 @@
                                         @csrf
                                         <input hidden name="token" value="{{request()->get('token')}}">
                                         <div class="form-group">
-                                            <input type="text" required="" name="password" placeholder="Password *"/>
+                                            <input type="password" required="" name="password" placeholder="Password *"/>
                                             @error('password')
                                             <div class="text-danger mt-1">
                                                 {{ $message }}
@@ -37,7 +37,7 @@
                                             @enderror
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" required="" name="confirm_password"
+                                            <input type="password" required="" name="confirm_password"
                                                    placeholder="Confirm you password *"/>
                                             @error('confirm_password')
                                             <div class="text-danger mt-1">

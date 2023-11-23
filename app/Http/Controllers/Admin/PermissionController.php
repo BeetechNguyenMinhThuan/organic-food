@@ -49,7 +49,7 @@ class PermissionController extends Controller
             ]);
             DB::commit();
             return redirect()->route('admin.permissions.index')->with([
-                'status_succeed' => trans('messages.create_category_succeed')
+                'status_succeed' => trans('messages.create_succeed')
             ]);
         } catch (\Exception $e) {
             DB::rollBack();

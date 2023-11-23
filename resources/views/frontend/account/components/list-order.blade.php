@@ -65,3 +65,6 @@
     @endforeach
     </tbody>
 </table>
+<div class="pagination-area mt-20 mb-20">
+    {!! $orders->appends($_GET)->links('vendor.pagination.default') !!}
+</div>

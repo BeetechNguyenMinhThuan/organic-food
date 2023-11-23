@@ -10,6 +10,7 @@ use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\UserAddress;
 use App\Traits\StorageImageTrait;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -47,6 +48,11 @@ class OrderService
     {
         return $this->order->query()
             ->get();
+    }
+
+    public function getModel()
+    {
+        return $this->order;
     }
 
     /**
@@ -354,5 +360,20 @@ class OrderService
             Log::error("Message: {$e->getMessage()}. Line: {$e->getLine()}");
             return false;
         }
+    }
+
+    /**
+     * Export Order PDF
+     *
+     * @return Response
+     */
+    public function exportToPDF($id)
+    {
+        $order = $this->findItem($id);
+        $pdf = Pdf::loadView('common.pdf.orders.order-detail', [
+            'order' => $order,
+        ]);
+        $nameFile = "orders_" . Carbon::now()->timestamp . ".pdf";
+        return $pdf->download($nameFile);
     }
 }

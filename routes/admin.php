@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\AccountAdminController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -84,13 +86,22 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::delete('/destroy/{id}', [PermissionController::class, 'destroy'])->name('admin.permissions.destroy');
     });
 
-    Route::prefix('users')->group(function () {
+    Route::prefix('users')->middleware(['can:module users'])->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('admin.users.index');
         Route::get('/create', [UserController::class, 'create'])->name('admin.users.create');
         Route::post('/store', [UserController::class, 'store'])->name('admin.users.store');
         Route::get('/edit/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
         Route::put('/update/{id}', [UserController::class, 'update'])->name('admin.users.update');
         Route::delete('/destroy/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    });
+
+    Route::prefix('admins-account')->middleware(['can:module users'])->group(function () {
+        Route::get('/', [AccountAdminController::class, 'index'])->name('admin.account-admins.index');
+        Route::get('/create', [AccountAdminController::class, 'create'])->name('admin.account-admins.create');
+        Route::post('/store', [AccountAdminController::class, 'store'])->name('admin.account-admins.store');
+        Route::get('/edit/{id}', [AccountAdminController::class, 'edit'])->name('admin.account-admins.edit');
+        Route::put('/update/{id}', [AccountAdminController::class, 'update'])->name('admin.account-admins.update');
+        Route::delete('/destroy/{id}', [AccountAdminController::class, 'destroy'])->name('admin.account-admins.destroy');
     });
 
     Route::prefix('brands')->group(function () {
@@ -110,16 +121,29 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::delete('/destroy/{id}', [BlogController::class, 'destroy'])->name('admin.blogs.destroy');
     });
 
+    // Discounts
+    Route::prefix('discounts')->group(function () {
+        Route::get('/', [DiscountController::class, 'index'])->name('admin.discounts.index');
+        Route::get('/create', [DiscountController::class, 'create'])->name('admin.discounts.create');
+        Route::get('/edit/{id}', [DiscountController::class, 'edit'])->name('admin.discounts.edit');
+        Route::post('/store', [DiscountController::class, 'store'])->name('admin.discounts.store');
+        Route::put('/update/{id}', [DiscountController::class, 'update'])->name('admin.discounts.update');
+        Route::delete('/destroy/{id}', [DiscountController::class, 'destroy'])->name('admin.discounts.destroy');
+    });
+
     // Orders
     Route::prefix('orders')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('admin.orders.index');
         Route::get('/detail/{id}', [OrderController::class, 'detail'])->name('admin.orders.detail');
+        Route::get('update-status-confirm/{id}', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
+        Route::get('/export-pdf/{id}', [OrderController::class, 'exportToPDF'])->name('admin.orders.exportPDF');
     });
 
     //warehouse
     Route::prefix('warehouse')->group(function () {
         Route::get('/', [WarehouseController::class, 'index'])->name('admin.warehouse.index');
-        Route::get('/detail/{id}', [WarehouseController::class, 'detail'])->name('admin.warehouse.detail');
+        Route::get('/edit/{id}', [WarehouseController::class, 'edit'])->name('admin.warehouse.edit');
+        Route::put('/update/{id}', [WarehouseController::class, 'update'])->name('admin.warehouse.update');
     });
 
     // Comment
@@ -127,6 +151,7 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::get('/', [CommentController::class, 'index'])->name('admin.comment.index');
         Route::get('/status-comment/{productId}/{commentId}', [CommentController::class, 'changeStatusComment'])->name('admin.comment.changeStatus');
         Route::get('/admin-reply-comment/{productId}/{commentId}', [CommentController::class, 'adminReplyComment'])->name('admin.comment.adminReplyComment');
+        Route::delete('/delete-comment/{productId}/{commentId}', [CommentController::class, 'deleteComment'])->name('admin.comment.deleteComment');
     });
 });
 

@@ -2,7 +2,7 @@
     <!-- LOGO -->
     <a href="{{route('admin.dashboard.index')}}" class="logo text-center logo-light">
                     <span class="logo-lg">
-                        <img src="{{asset('backend/assets/images/logo.png')}}" alt="" height="16">
+                        <img src="{{ asset('frontend/assets/imgs/home/logo-vip.png') }}" alt="" height="90px">
                     </span>
         <span class="logo-sm">
                         <img src="{{asset('backend/assets/images/logo_sm.png')}}" alt="" height="16">
@@ -47,19 +47,20 @@
                     </li>
                 </ul>
             </li>
-
-            <li class="side-nav-item">
-                <a href="javascript: void(0);" class="side-nav-link">
-                    <i class="uil-store"></i>
-                    <span> Categories </span>
-                    <span class="menu-arrow"></span>
-                </a>
-                <ul class="side-nav-second-level" aria-expanded="false">
-                    <li>
-                        <a href="{{route('admin.categories.index')}}">List Category</a>
-                    </li>
-                </ul>
-            </li>
+            @can('module category')
+                <li class="side-nav-item">
+                    <a href="javascript: void(0);" class="side-nav-link">
+                        <i class="uil-store"></i>
+                        <span> Categories </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <ul class="side-nav-second-level" aria-expanded="false">
+                        <li>
+                            <a href="{{route('admin.categories.index')}}">List Category</a>
+                        </li>
+                    </ul>
+                </li>
+            @endcan
 
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
@@ -112,6 +113,19 @@
                     </li>
                     <li>
                         <a href="{{route('admin.products.create')}}">Add Product</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="javascript: void(0);" class="side-nav-link">
+                    <i class="uil-store"></i>
+                    <span> Discounts </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <ul class="side-nav-second-level" aria-expanded="false">
+                    <li>
+                        <a href="{{route('admin.discounts.index')}}">List discount</a>
                     </li>
                 </ul>
             </li>
@@ -183,21 +197,23 @@
                 </ul>
             </li>
 
-            <li class="side-nav-item">
-                <a href="javascript: void(0);" class="side-nav-link">
-                    <i class="uil-store"></i>
-                    <span> Users </span>
-                    <span class="menu-arrow"></span>
-                </a>
-                <ul class="side-nav-second-level" aria-expanded="false">
-                    <li>
-                        <a href="{{route('admin.users.index')}}">List User</a>
-                    </li>
-                    <li>
-                        <a href="{{route('admin.users.create')}}">Add User</a>
-                    </li>
-                </ul>
-            </li>
+            @can('module users')
+                <li class="side-nav-item">
+                    <a href="javascript: void(0);" class="side-nav-link">
+                        <i class="uil-store"></i>
+                        <span> Users </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <ul class="side-nav-second-level" aria-expanded="false">
+                        <li>
+                            <a href="{{route('admin.account-admins.index')}}">List Admin</a>
+                        </li>
+                        <li>
+                            <a href="{{route('admin.users.index')}}">List User</a>
+                        </li>
+                    </ul>
+                </li>
+            @endcan
 
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
@@ -208,6 +224,19 @@
                 <ul class="side-nav-second-level" aria-expanded="false">
                     <li>
                         <a href="{{route('admin.orders.index')}}">List Order</a>
+                    </li>
+
+                </ul>
+            </li>
+            <li class="side-nav-item">
+                <a href="javascript: void(0);" class="side-nav-link">
+                    <i class="uil-store"></i>
+                    <span> Warehouse </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <ul class="side-nav-second-level" aria-expanded="false">
+                    <li>
+                        <a href="{{route('admin.warehouse.index')}}">List Warehouse</a>
                     </li>
 
                 </ul>

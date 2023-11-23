@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +29,10 @@ class UserController extends Controller
         ]);
     }
 
+    public function listAdmin(){
+        $admins = Admin::query()->paginate(15);
+        return view('backend.users.list-admin',compact('admins'));
+    }
     /**
      * Show the form for creating a new resource.
      */

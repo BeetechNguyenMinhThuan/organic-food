@@ -85,11 +85,20 @@
                                     </td>
                                     <td>
                                         {!! \App\Helpers\Common::checkOrderStatus($order->order_status) !!}
-
                                     </td>
                                     <td>
-                                        <a href="{{route('admin.orders.detail',['id' => $order->id])}}" class="action-icon"> <i
+                                        <a href="{{route('admin.orders.detail',['id' => $order->id])}}"
+                                           class="action-icon"> <i
                                                 class="mdi mdi-eye"></i></a>
+                                        <a href="{{route('admin.orders.updateStatus',['id'=>$order->id])}}">
+                                            @if($order->order_status == \App\Models\Order::PENDING)
+                                                <i style="font-size: 20px;cursor: pointer"
+                                                   class="text-success dripicons-checkmark"></i>
+                                            @else
+                                                <i style="font-size: 20px;cursor: pointer"
+                                                   class="text-warning dripicons-clockwise"></i>
+                                            @endif
+                                        </a>
                                     </td>
                                 </tr>
 

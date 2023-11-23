@@ -211,7 +211,7 @@
                                              class="rounded-circle">
                                     </span>
                 <span>
-                                        <span class="account-user-name">{{auth()->guard('admin')->name}}</span>
+                                        <span class="account-user-name">{{auth()->guard('admin')->user()->fullname}}</span>
                                         <span class="account-position">Founder</span>
                                     </span>
             </a>

@@ -60,4 +60,12 @@ class CommentController extends Controller
             ]);
         }
     }
+
+    public function deleteComment($productId, $commentId){
+        $commentDelete = $this->productService->deleteComment($productId, $commentId);
+        if ($commentDelete) {
+            return response()->json(['status' => 200, 'message' => "Success"]);
+        }
+        return response()->json(['status' => 500, 'message' => "Fail"], 500);
+    }
 }

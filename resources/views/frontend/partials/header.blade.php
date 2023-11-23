@@ -73,7 +73,7 @@
         <div class="container">
             <div class="header-wrap">
                 <div class="logo logo-width-1">
-                    <a href="{{ route('home') }}"><img src="{{ asset('frontend/assets/imgs/theme/logo.svg') }}"
+                    <a href="{{ route('home') }}"><img src="{{ asset('frontend/assets/imgs/home/logo-vip.png') }}"
                                                        alt="logo"/></a>
                 </div>
                 <div class="header-right">
@@ -92,15 +92,15 @@
                     </div>
                     <div class="header-action-right">
                         <div class="header-action-2">
-                            <div class="header-action-icon-2">
-                                <a href="shop-compare.html">
-                                    <img class="svgInject" alt="Nest"
-                                         src="{{ asset('frontend/assets/imgs/theme/icons/icon-compare.svg') }}"/>
-                                    <span class="pro-count blue">3</span>
-                                </a>
-                                <a href="shop-compare.html"><span
-                                        class="lable ml-0">{{ trans('messages.header.compare') }}</span></a>
-                            </div>
+{{--                            <div class="header-action-icon-2">--}}
+{{--                                <a href="shop-compare.html">--}}
+{{--                                    <img class="svgInject" alt="Nest"--}}
+{{--                                         src="{{ asset('frontend/assets/imgs/theme/icons/icon-compare.svg') }}"/>--}}
+{{--                                    <span class="pro-count blue">3</span>--}}
+{{--                                </a>--}}
+{{--                                <a href="shop-compare.html"><span--}}
+{{--                                        class="lable ml-0">{{ trans('messages.header.compare') }}</span></a>--}}
+{{--                            </div>--}}
                             <div class="header-action-icon-2">
                                 <a href="{{route('wishlist')}}">
                                     <img class="svgInject" alt="Nest"
@@ -132,11 +132,11 @@
                                                         class="fi fi-rs-user mr-10"></i>{{ trans('messages.header.account') }}
                                                 </a>
                                             </li>
-                                            <li>
-                                                <a href="page-account.html"><i
-                                                        class="fi fi-rs-location-alt mr-10"></i>{{ trans('messages.header.order_tracking') }}
-                                                </a>
-                                            </li>
+{{--                                            <li>--}}
+{{--                                                <a href="page-account.html"><i--}}
+{{--                                                        class="fi fi-rs-location-alt mr-10"></i>{{ trans('messages.header.order_tracking') }}--}}
+{{--                                                </a>--}}
+{{--                                            </li>--}}
                                             {{-- <li>
                                                 <a href="page-account.html"><i class="fi fi-rs-label mr-10"></i>My
                                                     Voucher</a>

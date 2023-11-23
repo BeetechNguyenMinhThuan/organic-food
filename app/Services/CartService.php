@@ -8,6 +8,7 @@ use App\Jobs\SendMailCheckOut;
 use App\Models\Brand;
 use App\Models\Cart;
 use App\Models\CartDetail;
+use App\Models\Discount;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
@@ -15,6 +16,7 @@ use App\Models\UserAddress;
 use App\Traits\StorageImageTrait;
 use Carbon\Carbon;
 use Exception;
+use http\Env\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -32,8 +34,9 @@ class CartService
     private CartDetail $cartDetail;
     private Order $order;
     private OrderDetail $orderDetail;
+    private Discount $discount;
 
-    public function __construct(Cart $cart, Product $product, UserAddress $userAddress, CartDetail $cartDetail, Order $order, OrderDetail $orderDetail)
+    public function __construct(Discount $discount, Cart $cart, Product $product, UserAddress $userAddress, CartDetail $cartDetail, Order $order, OrderDetail $orderDetail)
     {
         $this->cart = $cart;
         $this->userAddress = $userAddress;
@@ -41,6 +44,7 @@ class CartService
         $this->order = $order;
         $this->orderDetail = $orderDetail;
         $this->cartDetail = $cartDetail;
+        $this->discount = $discount;
     }
 
     const PAGINATE_CATEGORY = '15';
@@ -246,124 +250,22 @@ class CartService
         }
     }
 
-    public function checkoutCart($request)
+    public function checkDiscountCode($request)
     {
-        DB::beginTransaction();
-        try {
-            $carts = Session::get('carts');
-            $userId = Auth::user()->id;
-//            dd($request->all(), $carts);
-
-
-            $totalPrice = 0;
-            $basePrice = 0;
-
-            // Init Order
-            $cart = new Cart();
-            $cart->user_id = $userId;
-            $cart->payment_method = $request->payment_method ?? 1;
-            $cart->delivery_method = $request->delivery_method;
-            $cart->discount_id = $request->discount_id ?? 1;
-            $cart->user_address_id = $request->user_address_id;
-            $cart->user_comment = $request->get('note-shipping');
-            if ($request->delivery_method == Order::PICK_STORE) {
-                $cart->shipping_date = Carbon::createFromFormat('d/m/Y', $request->pick_store_date)->format('Y-m-d');
-                $cart->shipping_hours = $request->pick_store_hour;
-            } elseif ($request->delivery_method == Order::PICK_SHIP) {
-                $cart->shipping_date = Carbon::createFromFormat('d/m/Y', $request->pick_ship_date)->format('Y-m-d');
-                $cart->shipping_hours = $request->pick_ship_hour;
-            }
-            $cart->save();
-
-
-            // Init Order
-            $order = new Order();
-            $order->cart_id = $cart->id;
-            $order->user_id = $userId;
-            $order->payment_method = $cart->payment_method ?? 1;
-            $order->delivery_method = $cart->delivery_method;
-            $order->discount_id = $cart->discount_id ?? 1;
-            $order->user_address_id = $cart->user_address_id;
-            $order->user_comment = $cart->user_comment;
-            $order->shipping_date = $cart->shipping_date;
-            $order->shipping_hours = $cart->shipping_hours;
-            $order->order_status = ORDER::PENDING;
-            $order->save();
-            $hashOrderId = ORDER_PREFIX . str_pad($order->id, 3, '0', STR_PAD_LEFT);
-            $order->hash_order_id = $hashOrderId;
-            $order->save();
-
-
-            // Insert Cart Detail
-            $dataCartDetail = [];
-            foreach ($carts as $cartItem) {
-                $product = $cartItem['product'];
-                $quantity = $cartItem['quantity'];
-                $priceOfProduct = $product->getPrice();
-                $subTotal = $priceOfProduct * $quantity;
-                $totalPrice = $subTotal + ($product->ship_fee ?? 0);
-
-                $dataCartDetail[] = [
-                    'cart_id' => $cart->id,
-                    'product_id' => $product->id,
-                    'price' => $priceOfProduct,
-                    'quantity' => $quantity,
-                    'sub_total' => $priceOfProduct * $quantity,
-                    'total_price' => $totalPrice,
-                    'user_address_id' => $request->user_address_id
-                ];
-
-            }
-            $this->cartDetail::query()->insert($dataCartDetail);
-
-            // Insert Order Detail
-            $dataOrderDetail = [];
-            foreach ($carts as $cartItem) {
-                $product = $cartItem['product'];
-                $quantity = $cartItem['quantity'];
-                $priceOfProduct = $product->getPrice();
-                $subTotal = $priceOfProduct * $quantity;
-                $totalPrice = $subTotal + ($product->ship_fee ?? 0);
-
-                $dataOrderDetail[] = [
-                    'order_id' => $order->id,
-                    'product_id' => $product->id,
-                    'price' => $priceOfProduct,
-                    'quantity' => $quantity,
-                    'sub_total' => $priceOfProduct * $quantity,
-                    'total_price' => $totalPrice,
-                    'user_address_id' => $request->user_address_id
-                ];
-
-            }
-            $this->orderDetail::query()->insert($dataOrderDetail);
-
-            // Update Cart
-            $cartDetailById = $this->cartDetail::query()->where('cart_id', $cart->id);
-            $totalBasePrice = $cartDetailById->sum('price');
-            $totalSubPrice = $cartDetailById->sum('sub_total');
-            $totalPrice = $cartDetailById->sum('total_price');
-            $cart->price = $totalBasePrice;
-            $cart->sub_total = $totalSubPrice;
-            $cart->total_price = $totalPrice;
-            $cart->save();
-
-            // Update Order
-            $order->sub_total = $cart->sub_total;
-            $order->total_price = $cart->total_price;
-            $order->save();
-
-            Session::forget('carts');
-
-            #Send Mail
-            SendMailCheckOut::dispatch(Auth::user())->delay(now()->addSeconds(3));
-            DB::commit();
-            return true;
-
-        } catch (Exception $e) {
-            DB::rollBack();
-            Log::error("Message: {$e->getMessage()}. Line: {$e->getLine()}");
-            return false;
+        $discountName = $request->name;
+        $discount = $this->discount::query()->where('name', $discountName)->first();
+        if ($discount) {
+            Session::put('discount_id', $discount->id);
+            $cartDropdownComponent = view('frontend.carts.components.cart-header-dropdown', compact('carts'))->render();
+            return response()->json([
+                'status' => 200,
+                'cartList' => $cartListComponent,
+                'cartListDropdown' => $cartDropdownComponent
+            ], 200);
         }
+        return response()->json([
+            'status' => 500,
+            'data' => trans('messages.server_error'),
+        ], 500);
     }
 }

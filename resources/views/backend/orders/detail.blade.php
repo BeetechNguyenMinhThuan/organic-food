@@ -17,6 +17,12 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-12">
+            <a href="{{route('admin.orders.exportPDF',['id'=>$order->id])}}" class="btn btn-light mb-2">Xuất PDF hoá đơn</a>
+        </div>
+    </div>
+    <div class="row">
+
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-body">
@@ -110,34 +116,39 @@
                              src="{{asset('/storage/' . $order->user->avatar)}}" alt="">
                         <h5 class="pl-2">{{$order->user->fullname}}</h5>
                     </div>
-                    <p>Email: {{$order->user->email}}</p>
+                    <p class="mb-0">Email: {{$order->user->email}}</p>
 
                     <address class="mb-0 font-14 address-lg">
                         Address: {{$order->user->address}}</br>
                         <abbr title="Phone">Phone: {{$order->user->phone}} <br/>
                     </address>
+                    @if($order->user_comment)
+                        <div class="note_shipping">
+                            <strong> Ghi chú:</strong>
+                            <span>{{$order->user_comment}}</span>
+                        </div>
+                    @endif
+
                 </div>
             </div>
         </div> <!-- end col -->
-        <div class="col-lg-3">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="header-title mb-3">Thông tin vận chuyển hàng</h4>
-                    <div class="info-user mb-2 d-flex align-items-center">
-                        <strong class="pr-1">Tên người nhận: </strong>
-                        <h5 class="">{{$order->userAddress->fullname}}</h5>
+        @if($order->user_address_id)
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title mb-3">Thông tin vận chuyển hàng</h4>
+                        <div class="info-user mb-2 d-flex align-items-center">
+                            <strong class="pr-1">Tên người nhận: </strong>
+                            <h5 class="">{{$order->userAddress->fullname}}</h5>
+                        </div>
+                        <address class="mb-0 font-14 address-lg">
+                            <strong>Address:</strong> {{$order->userAddress->address}}</br>
+                            <abbr title="Phone"><strong>Phone:</strong> {{$order->userAddress->phone_number}} <br/>
+                        </address>
                     </div>
-                    <div class="note_shipping">
-                        <strong> Ghi chú:</strong>
-                        <span>{{$order->user_comment}}</span>
-                    </div>
-                    <address class="mb-0 font-14 address-lg">
-                        <strong>Address:</strong> {{$order->userAddress->address}}</br>
-                        <abbr title="Phone"><strong>Phone:</strong> {{$order->userAddress->phone_number}} <br/>
-                    </address>
                 </div>
-            </div>
-        </div> <!-- end col -->
+            </div> <!-- end col -->
+        @endif
 
         <div class="col-lg-3">
             <div class="card">
@@ -146,13 +157,39 @@
 
                     <ul class="list-unstyled mb-0">
                         <li>
-                            <p class="mb-2"><span
-                                    class="font-weight-bold mr-2">Payment Type:</span> {{$order->paymentMethod->name}}
+                            <p class="mb-2">
+                                @if($order->paymentMethod->image)
+                                    <span
+                                            class="font-weight-bold mr-2">Phương thức thanh toán:</span><img
+                                            height="20px"
+                                            src="{{asset($order->paymentMethod->image)}}"
+                                            alt="">
+                                @else
+                                    <span
+                                            class="font-weight-bold mr-2">Phương thức thanh toán:</span> {{$order->paymentMethod->name}}
+                                @endif
                             </p>
-                            <p class="mb-2"><span class="font-weight-bold mr-2">Payment Type:</span>
-                                {{$order->delivery_method === \App\Models\Order::PICK_STORE ? "Đến lấy tại cửa hàng" : "Giao hàng"}}
+                            <p class="mb-2"><span class="font-weight-bold mr-2">Hình thức nhận hàng:</span>
+                                {{$order->formatDeliveryMethod()}}
                             </p>
                         </li>
+                        @if($order->payment)
+                            <li>
+                                <p class="mb-2"><span
+                                            class="font-weight-bold mr-2">Ngân hàng:</span> {{$order->payment->bank_code}}
+                                </p>
+                            </li>
+                            <li>
+                                <p class="mb-2"><span
+                                            class="font-weight-bold mr-2">Mã thanh toán</span> {{$order->payment->transaction_code}}
+                                </p>
+                            </li>
+                            <li>
+                                <p class="mb-2"><span
+                                            class="font-weight-bold mr-2">Thời gian mua: </span> {{\Carbon\Carbon::parse($order->payment->created_at)->format('d/m/Y H:i:s')}}
+                                </p>
+                            </li>
+                        @endif
                     </ul>
 
                 </div>

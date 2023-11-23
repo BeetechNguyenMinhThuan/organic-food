@@ -3,16 +3,25 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
 {
+    private ProductService $productService;
+
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $products = $this->productService->get();
+        return view('backend.warehouse.index',compact('products'));
     }
 
     /**
@@ -44,7 +53,8 @@ class WarehouseController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $product = $this->productService->findItem('id',$id);
+        return view('backend.warehouse.edit', compact('product'));
     }
 
     /**
@@ -52,7 +62,11 @@ class WarehouseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $product = $this->productService->findItem('id',$id);
+        $product->name = $request->name;
+        $product->stock = $request->stock;
+        $product->save();
+        return redirect()->route('admin.warehouse.index')->with(['status_succeed' => trans('messages.create_succeed')]);
     }
 
     /**

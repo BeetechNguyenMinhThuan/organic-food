@@ -640,4 +640,17 @@ class ProductService
         $productReview->censorship_user_id = Auth::guard('admin')->user()->id;
         $productReview->save();
     }
+
+    public function deleteComment($productId, $commentId){
+        DB::beginTransaction();
+        try {
+            $this->productReview::query()->where(['product_id' => $productId,'id'=>$commentId])->first()->delete();
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Message: {$e->getMessage()}. Line: {$e->getLine()}");
+            return false;
+        }
+    }
 }

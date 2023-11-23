@@ -1,6 +1,4 @@
-<form method="POST" action="{{ $action }}" enctype="multipart/form-data"
-      data-plugin="dropzone" data-previews-container="#file-previews"
-      data-upload-preview-template="#uploadPreviewTemplate">
+<form method="POST" action="{{ $action }}" enctype="multipart/form-data">
     @if(isset($method))
         @method($method)
     @endif

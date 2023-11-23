@@ -38,7 +38,7 @@ class RoleController extends Controller
     public function create()
     {
         $permissions = $this->permission->get();
-        return view('backend.roles.create',[
+        return view('backend.roles.create', [
             'permissions' => $permissions
         ]);
     }
@@ -52,17 +52,16 @@ class RoleController extends Controller
         try {
             $role = $this->role->create([
                 'name' => $request->name,
-                'guard_name' => 'web'
             ]);
 
             $permissions = $request->permissions;
-            if(!empty($permissions)){
+            if (!empty($permissions)) {
                 $role->syncPermissions($permissions);
             }
 
             DB::commit();
             return redirect()->route('admin.roles.index')->with([
-                'status_succeed' => trans('messages.create_category_succeed')
+                'status_succeed' => trans('messages.create_succeed')
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -103,15 +102,12 @@ class RoleController extends Controller
         try {
             $role = $this->role->findOrFail($id);
             $permissions = $request->permissions;
-            $role->update([
-                'name' => $request->name,
-            ]);
-            if(!empty($permissions)){
-                $role->syncPermissions($permissions);
-            }
+            $role->name = $request->name;
+            $role->save();
+            $role->syncPermissions($permissions);
             DB::commit();
             return redirect()->route('admin.roles.index')->with([
-                'status_succeed' => trans('messages.create_category_succeed')
+                'status_succeed' => trans('messages.update_succeed')
             ]);
         } catch (\Exception $e) {
             DB::rollBack();

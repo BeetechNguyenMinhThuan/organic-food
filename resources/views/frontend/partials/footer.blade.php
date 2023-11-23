@@ -107,7 +107,7 @@
                          data-wow-delay="0">
                         <div class="logo mb-30">
                             <a href="index.html" class="mb-15"><img
-                                    src="{{asset('frontend/assets/imgs/theme/logo.svg')}}" alt="logo"/></a>
+                                    src="{{ asset('frontend/assets/imgs/home/logo-vip.png') }}" height="170px" alt="logo"/></a>
                             <p class="font-lg text-heading">Awesome grocery store website template</p>
                         </div>
                         <ul class="contact-infor">

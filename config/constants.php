@@ -10,6 +10,9 @@ const BRAND_DIR = 'brands';
 
 const BLOG_DIR = 'blogs';
 const BAD_REQUEST = 400;
+define('VNP_TMN_CODE',env("VNP_TMN_CODE"));
+define('VNP_HASH_SECRET',env("VNP_HASH_SECRET"));
+define('VNP_URL',env("VNP_URL"));
 define('NOTFOUND', 404);
 define('FORBIDDEN', 403);
 define('ORDER_PREFIX', "#OD");

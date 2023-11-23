@@ -26,6 +26,8 @@ class HomeController extends Controller
 
     public function index()
     {
+        Session::forget('carts');
+
         $sliders = $this->sliderService->get();
         $categories = $this->categoryService->getParent();
         $menus = $this->menuService->getParent();

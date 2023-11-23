@@ -15,6 +15,10 @@ class Blog extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class,'user_id');
+    }
 
     public function handleStatus()
     {

@@ -13,6 +13,8 @@ use App\Services\ProductService;
 use App\Services\SliderService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AccountController extends Controller
 {
@@ -35,7 +37,7 @@ class AccountController extends Controller
         $categories = $this->categoryService->getParent();
         $menus = $this->menuService->getParent();
         $blogs = $this->blogService->getPaginate();
-        $orders = $this->orderService->getPaginate();
+        $orders = $this->orderService->getModel()::query()->where('user_id', Auth::user()->id)->paginate(15);
         $user = Auth::user();
         $addressDelivery = $user->addresses;
         return view('frontend.account.profile', [
@@ -68,5 +70,27 @@ class AccountController extends Controller
         }
         return redirect()->back()->with(['status_failed' => "Cập nhập tài khoản thất bại"]);
 
+    }
+
+    public function myOrder(Request $request)
+    {
+        try {
+            $orders = $this->orderService->getModel()::query()->where('user_id', Auth::user()->id);
+            if ($request->order_search) {
+                $orders->where('hash_order_id', $request->order_search);
+            }
+            $orders = $orders->paginate(15);
+
+            $listOrder = view('frontend.account.components.list-order', compact('orders'))->render();
+            return response()->json([
+                'status' => 200,
+                'html' => $listOrder,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'data' => trans('messages.server_error'),
+            ], 500);
+        }
     }
 }

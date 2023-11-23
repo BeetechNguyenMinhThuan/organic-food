@@ -139,7 +139,8 @@ manage your shipping and billing addresses and edit your password and account de
         'sub_total' => 'Subtotal',
         'apply_coupon' => 'Add discount code',
         'enter_coupon' => 'Enter discount code',
-        'total' => "Total amount"
+        'total' => "Total amount",
+        'add_to_cart' => "Add to cart",
     ]
 
 ];

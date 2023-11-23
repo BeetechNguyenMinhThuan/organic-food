@@ -70,9 +70,9 @@
                                         <div class="product-detail-rating">
                                             <div class="product-rate-cover text-end">
                                                 <div class="product-rate d-inline-block">
-                                                    <div class="product-rating" style="width: 90%"></div>
+                                                    <div class="product-rating" style="width: {{$avgRating * 20}}%"></div>
                                                 </div>
-                                                <span class="font-small ml-5 text-muted"> (32 reviews)</span>
+                                                <span class="font-small ml-5 text-muted"> ({{$productReview->count()}} reviews)</span>
                                             </div>
                                         </div>
                                         <div class="clearfix product-price-cover">
@@ -108,7 +108,7 @@
                                                     <button
                                                         data-url="{{ route('cart.add',['productId'=>$product->id])}}"
                                                         type="submit" class="button button-add-to-cart"><i
-                                                            class="fi-rs-shopping-cart"></i>Add to cart
+                                                            class="fi-rs-shopping-cart"></i>{{trans('messages.cart.add_to_cart')}}
                                                     </button>
                                                     @auth
                                                         <a aria-label="Add To Wishlist"
@@ -129,8 +129,8 @@
 
                                                     @endauth
 
-                                                    <a aria-label="Compare" class="action-btn hover-up"
-                                                       href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+{{--                                                    <a aria-label="Compare" class="action-btn hover-up"--}}
+{{--                                                       href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>--}}
                                                 </div>
                                             </form>
                                         </div>
@@ -165,7 +165,7 @@
                                         <li class="nav-item">
                                             <a class="nav-link active" id="Reviews-tab" data-bs-toggle="tab"
                                                href="#Reviews">Reviews
-                                                (3)</a>
+                                                ({{$productReview->count()}})</a>
                                         </li>
                                     </ul>
                                     <div class="tab-content shop_info_tab entry-main-content">
@@ -369,9 +369,9 @@
                                                                data-bs-toggle="modal"
                                                                data-bs-target="#quickViewModal{{$key}}"><i
                                                                     class="fi-rs-search"></i></a>
-                                                            <a aria-label="Compare" class="action-btn small hover-up"
-                                                               href="shop-compare.html" tabindex="0"><i
-                                                                    class="fi-rs-shuffle"></i></a>
+{{--                                                            <a aria-label="Compare" class="action-btn small hover-up"--}}
+{{--                                                               href="shop-compare.html" tabindex="0"><i--}}
+{{--                                                                    class="fi-rs-shuffle"></i></a>--}}
                                                         </div>
                                                         <div
                                                             class="product-badges product-badges-position product-badges-mrg">

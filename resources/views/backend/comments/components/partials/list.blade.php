@@ -51,7 +51,8 @@
                                             <form
                                                 action="{{route('admin.comment.adminReplyComment',['productId' => $comment->product_id,'commentId' => $comment->id])}}"
                                                 method="GET" class="reply-comment">
-                                                <textarea required class="d-block mb-1 mt-2 form-control" name="comment" id=""
+                                                <textarea required class="d-block mb-1 mt-2 form-control" name="comment"
+                                                          id=""
                                                           cols="40"
                                                           rows="2"></textarea>
                                                 <button type="submit" class="btn btn-secondary">Trả lời</button>
@@ -70,7 +71,7 @@
                                            class="action-icon">
                                             <i class="mdi mdi-square-edit-outline"></i
                                             ></a>
-                                        <a data-url="{{route('admin.blogs.destroy',['id'=>$comment->id])}}"
+                                        <a data-url="{{route('admin.comment.deleteComment',['productId'=>$comment->product->id,'commentId'=>$comment->id])}}"
                                            href="javascript:void(0);" class="action-icon action_delete">
                                             <i class="mdi mdi-delete"></i
                                             ></a>

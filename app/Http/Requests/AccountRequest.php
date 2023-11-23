@@ -27,14 +27,13 @@ class AccountRequest extends FormRequest
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . auth()->id(),
-            'phone' => 'required|string|max:20',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'current_password' => ['nullable', 'min:1', 'string', Rule::requiredIf(function () {
                 return !empty($this->new_password);
             }),
                 new PasswordMatch],
-            'new_password' => 'nullable|string|min:1|different:current_password',
-            'confirm_password' => 'nullable|string|same:new_password',
+            'password' => 'nullable|string|min:1|different:current_password',
+            'confirm_password' => 'nullable|string|same:password',
         ];
 
         return $rules;

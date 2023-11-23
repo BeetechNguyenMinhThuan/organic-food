@@ -23,7 +23,7 @@
     </div>
     @include('frontend.alerts.alert')
     @if (!empty($carts))
-        <form method="POST" class="checkOutCartForm" action="{{route('cart.checkout')}}">
+        <form method="POST" class="checkOutCartForm" action="{{route('payment.checkout')}}">
             @csrf
             <div class="container mb-80 cart-pick-payment">
                 <div class="row">
@@ -195,6 +195,37 @@
 
 
                                 <!--End product-grid-4-->
+                            </div>
+                            <div class="payment-method ship-note row">
+                                <div class="header-bar">
+                                    <h5>Chọn phương thức thanh toán</h5>
+                                </div>
+                                <div class="col-md-12 message-note">
+                                    <ul class="links d-flex flex-column gap-3" id="myTab" role="tablist">
+                                        @foreach($paymentMethod as $method)
+                                            <li class="nav-item d-flex tab-store align-items-center"
+                                                role="presentation">
+                                                <p>
+                                                    <label style="color: #253D4E">
+                                                        <input
+                                                            type="radio" name="payment_method"
+                                                            value="{{$method->id}}"
+                                                            class="form-check-input">
+                                                        @if($method->image)
+                                                            <img height="20px"
+                                                                 src="{{asset($method->image)}}"
+                                                                 alt="">
+                                                        @endif
+                                                        {{$method->description}}
+                                                    </label>
+                                                </p>
+                                            </li>
+
+                                        @endforeach
+                                        </li>
+                                    </ul>
+
+                                </div>
                             </div>
                             <div class="ship-note row">
                                 <div class="header-bar">

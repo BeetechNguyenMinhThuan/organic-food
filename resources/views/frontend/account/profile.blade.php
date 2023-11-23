@@ -83,13 +83,13 @@
                                                 class="fi-rs-shopping-bag mr-10"></i>{{trans('messages.profile.history_orders')}}
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="track-orders-tab" data-bs-toggle="tab"
-                                           href="#track-orders" role="tab" aria-controls="track-orders"
-                                           aria-selected="false"><i
-                                                class="fi-rs-shopping-cart-check mr-10"></i>{{trans('messages.header.order_tracking')}}
-                                        </a>
-                                    </li>
+                                    {{--                                    <li class="nav-item">--}}
+                                    {{--                                        <a class="nav-link" id="track-orders-tab" data-bs-toggle="tab"--}}
+                                    {{--                                           href="#track-orders" role="tab" aria-controls="track-orders"--}}
+                                    {{--                                           aria-selected="false"><i--}}
+                                    {{--                                                class="fi-rs-shopping-cart-check mr-10"></i>{{trans('messages.header.order_tracking')}}--}}
+                                    {{--                                        </a>--}}
+                                    {{--                                    </li>--}}
                                     <li class="nav-item">
                                         <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address"
                                            role="tab" aria-controls="address" aria-selected="true"><i
@@ -130,10 +130,19 @@
                                     <div class="card">
                                         <div class="card-header">
                                             <h3 class="mb-0">{{trans('messages.profile.order_history.your_orders')}}</h3>
+                                            <form action="" method="GET" class="mt-3">
+                                                <div class="d-flex">
+                                                    <input class="order_search" name="order_code"
+                                                           placeholder="Tìm kiếm theo mã đơn hàng" type="text">
+                                                    <button type="button" data-url="{{route('account.myOrder')}}"
+                                                            class="btn btn-primary searchOrder">Tìm kiếm
+                                                    </button>
+                                                </div>
+                                            </form>
                                         </div>
                                         <div class="card-body">
                                             <div
-                                                class="table-responsive shopping-summery list-profile-address-shipping">
+                                                class="table-responsive shopping-summery list-profile-orders">
                                                 @include('frontend.account.components.list-order')
                                             </div>
 

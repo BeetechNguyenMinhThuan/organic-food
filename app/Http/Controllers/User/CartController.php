@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\PaymentMethod;
 use App\Services\AccountService;
 use App\Services\BrandService;
 use App\Services\CartService;
@@ -54,13 +55,14 @@ class CartController extends Controller
         $menus = $this->menuService->getParent();
         $carts = Session::get('carts');
         $cartShippingAddress = $this->accountService->getShippingAddressUser();
-
+        $paymentMethod = PaymentMethod::query()->get();
         return view("frontend.carts.show", [
             'sliders' => $sliders,
             'categories' => $categories,
             'menus' => $menus,
             'carts' => $carts,
-            'cartShippingAddress' => $cartShippingAddress
+            'cartShippingAddress' => $cartShippingAddress,
+            'paymentMethod' => $paymentMethod
         ]);
     }
 
@@ -83,15 +85,9 @@ class CartController extends Controller
             ]);
         }
     }
+    public function checkDiscountCode(Request $request){
+        return $this->cartService->checkDiscountCode($request);
 
-
-    public function checkoutCart(Request $request)
-    {
-        $cart = $this->cartService->checkoutCart($request);
-        if ($cart) {
-            return redirect()->route('cart.show')->with([
-                'success' => trans('messages.cart.order_success')
-            ]);
-        }
     }
+
 }
