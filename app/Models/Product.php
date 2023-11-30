@@ -122,6 +122,7 @@ class Product extends Model
         }
     }
 
+
     /**
      * Get orders of product
      *

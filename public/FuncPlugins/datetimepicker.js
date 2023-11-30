@@ -38,6 +38,20 @@ export function datePicker(selector) {
         return false;
 }
 
+export function datePickerAll(selector) {
+    if ($(selector).length) {
+        $(selector).datepicker({
+            format: formatDate,
+            language: 'vi',
+            todayHighlight: true,
+            autoClose: true
+        }).on('changeDate', function (ev) {
+            $(this).datepicker('hide');
+        });
+    } else
+        return false;
+}
+
 export function datePickerMultiple(selector, multidateNum = 3) {
     // giới hạn lại số năm
     let limitYearStart = moment().subtract(20, 'years').format(formatDate.toUpperCase());
@@ -72,7 +86,7 @@ export function monthPicker(selector) {
             minViewMode: "months",
             format: formatMonth,
             weekStart: 1,
-            language: language,
+            language: 'vi',
             todayHighlight: true,
             autoClose: true
         }).on('changeDate', function (ev) {

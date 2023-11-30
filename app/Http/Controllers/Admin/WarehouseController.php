@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class WarehouseController extends Controller
 {
@@ -21,7 +22,7 @@ class WarehouseController extends Controller
     public function index()
     {
         $products = $this->productService->get();
-        return view('backend.warehouse.index',compact('products'));
+        return view('backend.warehouse.index', compact('products'));
     }
 
     /**
@@ -53,7 +54,7 @@ class WarehouseController extends Controller
      */
     public function edit(string $id)
     {
-        $product = $this->productService->findItem('id',$id);
+        $product = $this->productService->findItem('id', $id);
         return view('backend.warehouse.edit', compact('product'));
     }
 
@@ -62,7 +63,7 @@ class WarehouseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $product = $this->productService->findItem('id',$id);
+        $product = $this->productService->findItem('id', $id);
         $product->name = $request->name;
         $product->stock = $request->stock;
         $product->save();
@@ -75,5 +76,40 @@ class WarehouseController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function exportToCSV()
+    {
+        $products = $this->productService->get();
+        if ($products->isEmpty()) {
+            return redirect()->back()->with(['status_failed' => trans('messages.server_error')]);
+        }
+
+        $csvFileName = 'products.csv';
+        $csvHeader = [
+            'Tên sản phẩm',
+            'Thương hiệu',
+            'Số lượng'
+        ];
+
+        $csvData = [];
+        $csvData[] = implode(',', $csvHeader);
+
+        foreach ($products as $product) {
+            $rowData = [
+                $product->name,
+                $product->brand->name ?? "",
+                $product->stock
+            ];
+            $csvData[] = implode(',', $rowData);
+        }
+
+        $content = implode("\n", $csvData);
+
+        // Lưu file CSV với encoding UTF-8
+        Storage::put($csvFileName, "\xEF\xBB\xBF" . $content); // Thêm BOM để đảm bảo encoding UTF-8
+
+        $csvFilePath = Storage::path($csvFileName);
+        return response()->download($csvFilePath)->deleteFileAfterSend(true);
     }
 }

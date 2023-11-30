@@ -241,6 +241,23 @@
 
                 </ul>
             </li>
+
+            <li class="side-nav-item">
+                <a href="javascript: void(0);" class="side-nav-link">
+                    <i class="uil-store"></i>
+                    <span> Statistics </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <ul class="side-nav-second-level" aria-expanded="false">
+                    <li>
+                        <a href="{{route('admin.statistic.product')}}">Sản phẩm</a>
+                    </li>
+
+                    <li>
+                        <a href="{{route('admin.statistic.order')}}">Đơn hàng</a>
+                    </li>
+                </ul>
+            </li>
         </ul>
         <!-- End Sidebar -->
         <div class="clearfix"></div>

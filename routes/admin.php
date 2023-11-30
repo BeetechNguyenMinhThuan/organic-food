@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\StatisticController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WarehouseController;
 use Illuminate\Support\Facades\Route;
@@ -144,6 +145,7 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::get('/', [WarehouseController::class, 'index'])->name('admin.warehouse.index');
         Route::get('/edit/{id}', [WarehouseController::class, 'edit'])->name('admin.warehouse.edit');
         Route::put('/update/{id}', [WarehouseController::class, 'update'])->name('admin.warehouse.update');
+        Route::get('/exportToCsv', [WarehouseController::class, 'exportToCSV'])->name('admin.warehouse.exportCSV');
     });
 
     // Comment
@@ -152,6 +154,13 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::get('/status-comment/{productId}/{commentId}', [CommentController::class, 'changeStatusComment'])->name('admin.comment.changeStatus');
         Route::get('/admin-reply-comment/{productId}/{commentId}', [CommentController::class, 'adminReplyComment'])->name('admin.comment.adminReplyComment');
         Route::delete('/delete-comment/{productId}/{commentId}', [CommentController::class, 'deleteComment'])->name('admin.comment.deleteComment');
+    });
+
+    // Comment
+    Route::prefix('statistic')->group(function () {
+        Route::get('/products', [StatisticController::class, 'statisticProduct'])->name('admin.statistic.product');
+        Route::get('/products/showCustomer', [StatisticController::class, 'showCustomer'])->name('admin.statistic.product.showCustomer');
+        Route::get('/orders', [StatisticController::class, 'statisticOrder'])->name('admin.statistic.order');
     });
 });
 

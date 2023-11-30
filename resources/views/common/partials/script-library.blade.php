@@ -26,3 +26,7 @@
 @if (isset($clockpicker) && $clockpicker)
     <script src="{{asset('plugins/clockpicker-seconds/src/clockpicker.js')}}"></script>
 @endif
+
+@if (isset($highcharts) && $highcharts)
+    <script src="{{asset('plugins/highcharts/highcharts.js')}}"></script>
+@endif

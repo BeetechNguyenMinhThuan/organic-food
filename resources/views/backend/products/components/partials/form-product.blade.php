@@ -98,14 +98,14 @@
                             </div>
 
                             <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label class="col-form-label">Category</label>
                                     <select name="category_id" class="form-control select2-base" data-toggle="select2">
                                         {!! $htmlOption !!}
                                     </select>
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     @php
                                         $choose_tags = old('tags') ? old('tags') : (isset($product->tags )?$product->tags->pluck('id')->toArray():[]);
                                     @endphp
@@ -115,6 +115,19 @@
                                         @foreach($tags as $tag)
                                             <option
                                                 value="{{$tag->name}}" {{ in_array($tag->id, $choose_tags) ?'selected':'' }} >{{$tag->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    @php
+                                        $choose_brands = old('brand_id') ? old('brand_id') : (isset($product->brand_id )? $product->brand_id : "");
+                                    @endphp
+                                    <label class="col-form-label">Brands</label>
+                                    <select name="brand_id" class="form-control select2-base" data-toggle="select2">
+                                        @foreach($brands as $brand)
+                                            <option
+                                                value="{{$brand->id}}" {{ ($brand->id == $choose_brands) ?'selected':'' }} >{{$brand->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>

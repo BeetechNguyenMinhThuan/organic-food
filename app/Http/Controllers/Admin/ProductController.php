@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
+use App\Services\BrandService;
 use App\Services\CategoryService;
 use App\Services\ProductService;
 use App\Services\TagService;
@@ -15,12 +16,14 @@ class ProductController extends Controller
     private CategoryService $categoryService;
     private ProductService $productService;
     private TagService $tagService;
+    private BrandService $brandService;
 
-    public function __construct(ProductService $productService, CategoryService $categoryService, TagService $tagService)
+    public function __construct(BrandService $brandService, ProductService $productService, CategoryService $categoryService, TagService $tagService)
     {
         $this->categoryService = $categoryService;
         $this->productService = $productService;
         $this->tagService = $tagService;
+        $this->brandService = $brandService;
     }
 
     /**
@@ -41,9 +44,11 @@ class ProductController extends Controller
     {
         $htmlOption = $this->categoryService->getCategory();
         $tags = $this->tagService->getTags();
+        $brands = $this->brandService->get();
         return view('backend.products.create', [
             'htmlOption' => $htmlOption,
-            'tags' => $tags
+            'tags' => $tags,
+            'brands' => $brands
         ]);
     }
 
@@ -83,11 +88,13 @@ class ProductController extends Controller
     {
         $tags = $this->tagService->getTags();
         $product = $this->productService->findItem('id',$id);
+        $brands = $this->brandService->get();
         $htmlOption = $this->categoryService->getCategory($product->category_id);
         return view('backend.products.edit', [
             'htmlOption' => $htmlOption,
             'tags' => $tags,
-            'product' => $product
+            'product' => $product,
+            'brands' => $brands
         ]);
     }
 

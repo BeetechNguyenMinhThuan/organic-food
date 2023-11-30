@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="{{ asset('backend/common/css/admin.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
-
+    @yield('css_library')
     @yield('addCss')
 
 </head>
@@ -168,6 +168,7 @@
     toastr.error('{{session('status_failed')}}', {timeOut: 5000})
     @endif
 </script>
+@yield('js_library')
 @yield('addJs')
 </body>
 </html>

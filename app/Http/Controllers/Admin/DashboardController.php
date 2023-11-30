@@ -12,6 +12,7 @@ use App\Services\OrderService;
 use App\Services\ProductService;
 use App\Services\SliderService;
 use App\Services\TagService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -26,7 +27,7 @@ class DashboardController extends Controller
     private BrandService $brandService;
     private OrderService $orderService;
 
-    public function __construct(OrderService $orderService, AccountService $accountService, CartService $cartService, TagService $tagService, SliderService $sliderService, CategoryService $categoryService, ProductService $productService, MenuService $menuService, BrandService $brandService)
+    public function __construct(UserService $userService, OrderService $orderService, AccountService $accountService, CartService $cartService, TagService $tagService, SliderService $sliderService, CategoryService $categoryService, ProductService $productService, MenuService $menuService, BrandService $brandService)
     {
         $this->sliderService = $sliderService;
         $this->categoryService = $categoryService;
@@ -37,6 +38,7 @@ class DashboardController extends Controller
         $this->cartService = $cartService;
         $this->accountService = $accountService;
         $this->orderService = $orderService;
+        $this->userService = $userService;
 
     }
 
@@ -46,11 +48,13 @@ class DashboardController extends Controller
         $orders = $this->orderService->get();
         $categories = $this->categoryService->get();
         $order = $this->orderService->getModel();
-        return view('backend.dashboard', [
+        $users = $this->userService->statisticsUser();
+        return view('backend.dashboards.dashboard', [
             'products' => $products,
             'orders' => $orders,
             'categories' => $categories,
-            'order' => $order
+            'order' => $order,
+            'users' => $users
         ]);
     }
 }

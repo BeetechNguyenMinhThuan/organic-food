@@ -6,7 +6,19 @@
                     <div class="row mb-2">
                         <!-- end col-->
                     </div>
-
+                    <div class="col-sm-8">
+                        <div class="">
+                            <button
+                                type="button"
+                                class="btn btn-success mb-2 mr-1"
+                            >
+                                <i class="mdi mdi-settings"></i>
+                            </button>
+                            <a href="{{route('admin.warehouse.exportCSV')}}" type="button" class="btn btn-light mb-2">
+                                Xuất hàng
+                            </a>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table
                             class="table table-centered w-100 dt-responsive nowrap"
@@ -15,7 +27,9 @@
                             <thead class="thead-light">
                             <tr>
                                 <th>#</th>
+                                <th>Image</th>
                                 <th>Name</th>
+                                <th>Brand</th>
                                 <th>Quantity</th>
                                 <th style="width: 85px">Action</th>
                             </tr>
@@ -24,16 +38,17 @@
                             @foreach($products as $index => $product)
                                 <tr>
                                     <td>{{$index + $products->firstItem() }}</td>
-                                    {{--                                    <td>--}}
-                                    {{--                                        <img--}}
-                                    {{--                                            src="{{ \App\Helpers\Common::getImage($blog->user->avatar) }}"--}}
-                                    {{--                                            alt="contact-img"--}}
-                                    {{--                                            title="contact-img"--}}
-                                    {{--                                            class="rounded mr-3"--}}
-                                    {{--                                            height="48"--}}
-                                    {{--                                        />--}}
-                                    {{--                                    </td>--}}
+                                    <td>
+                                        <img
+                                            src="{{ \App\Helpers\Common::getImage($product->avatar) }}"
+                                            alt="contact-img"
+                                            title="contact-img"
+                                            class="rounded mr-3"
+                                            height="48"
+                                        />
+                                    </td>
                                     <td>{{$product->name}}</td>
+                                    <td>{{$product->brand->name ?? ""}}</td>
                                     <td>{{$product->stock}}</td>
                                     <td class="table-action">
                                         <a href="javascript:void(0);" class="action-icon">

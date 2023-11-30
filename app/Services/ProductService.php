@@ -3,25 +3,13 @@
 namespace App\Services;
 
 use App\Models\Category;
+use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductReview;
 use App\Models\ProductTag;
 use App\Models\Tag;
 use App\Models\UserFavorite;
-use App\Services\Admin\BinaryFileResponse;
-use App\Services\Admin\Builder;
-use App\Services\Admin\Carbon;
-use App\Services\Admin\Collection;
-use App\Services\Admin\Excel;
-use App\Services\Admin\ImageService;
-use App\Services\Admin\Model;
-use App\Services\Admin\Pdf;
-use App\Services\Admin\ProductAttributesModel;
-use App\Services\Admin\ProductExport;
-use App\Services\Admin\ProductInformationModel;
-use App\Services\Admin\ProductsModel;
-use App\Services\Admin\UpdateProductRequest;
 use App\Traits\StorageImageTrait;
 use Illuminate\Http\Client\Request;
 use Illuminate\Http\Response;
@@ -29,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class ProductService
 {
@@ -59,6 +48,26 @@ class ProductService
     {
         return $this->product;
     }
+
+    public function getProductSold($request){
+        $product = Product::query()
+            ->leftJoin('order_details','order_details.product_id','products.id')
+            ->leftJoin('orders', 'orders.id', 'order_details.order_id')
+            ->select('products.id','products.avatar','products.name','order_details.product_id',DB::raw('sum(quantity) as total_sold' ))
+            ->groupBy('order_details.product_id','products.name','products.id');
+        if(!empty($request->start_at)){
+            $startAt = Carbon::createFromFormat('d/m/Y',$request->start_at)->format('Y-m-d');
+            $product->where(DB::raw('date(order_details.created_at)'),'>=' , $startAt);
+        }
+        if(!empty($request->end_at)){
+            $startAt = Carbon::createFromFormat('d/m/Y',$request->end_at)->format('Y-m-d');
+            $product->where(DB::raw('date(order_details.created_at)'),'<=' , $startAt);
+        }
+
+        $product = $product->paginate(self::PRODUCT_PAGINATE);
+        return $product;
+    }
+
 
     public function search(Request $request)
     {
@@ -194,6 +203,7 @@ class ProductService
             'category_id' => $request->category_id,
             'description' => $request->description,
             'price' => $request->price,
+            'brand_id' => $request->brand_id,
             'user_id' => auth()->id(),
             'discount' => $request->discount,
             'weight' => $request->weight,
@@ -275,6 +285,7 @@ class ProductService
             'stock' => $request->stock,
             'expired_at' => $request->expired_at,
             'category_id' => $request->category_id,
+            'brand_id' => $request->brand_id,
             'description' => $request->description,
             'price' => $request->price,
             'discount' => $request->discount,

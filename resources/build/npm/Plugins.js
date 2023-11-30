@@ -74,6 +74,12 @@ const Plugins = [
         from: 'node_modules/clockpicker-seconds',
         to: 'public/plugins/clockpicker-seconds'
     },
+
+    //highchart
+    {
+        from: 'node_modules/highcharts/',
+        to: 'public/plugins/highcharts',
+    }
 ]
 
 export default Plugins

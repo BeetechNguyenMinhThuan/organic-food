@@ -219,7 +219,9 @@ class PaymentService
                 'quantity' => $quantity,
                 'sub_total' => $priceOfProduct * $quantity,
                 'total_price' => $totalPrice,
-                'user_address_id' => $cart->user_address_id
+                'user_address_id' => $cart->user_address_id,
+                'created_at' => now(),
+                'updated_at' => now()
             ];
 
         }

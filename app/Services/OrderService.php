@@ -39,6 +39,58 @@ class OrderService
 
     const PAGINATE_CATEGORY = '15';
 
+    public function statisticOrdersRevenue($request){
+        $orders = Order::query()
+            ->select(DB::raw('DATE_FORMAT(orders.created_at, "%d/%m/%Y") as month, SUM(total_price) as total_price'))
+//            ->join('order_details', 'order_details.order_id','orders.id')
+            ->whereYear('created_at', date('Y'))
+            ->whereMonth('created_at',date('m'))
+            ->groupBy(DB::raw('DATE_FORMAT(orders.created_at, "%d/%m/%Y")'))
+            ->orderBy('month', 'ASC');
+
+        if (!empty($request->revenue_start_at)) {
+            $startAt = Carbon::createFromFormat('d/m/Y', $request->revenue_start_at)->format('d/m/Y');
+            $orders->where(DB::raw('DATE_FORMAT(orders.created_at, "%d/%m/%Y")'), '>=', $startAt);
+        }
+        if (!empty($request->revenue_end_at)) {
+            $startAt = Carbon::createFromFormat('d/m/Y', $request->revenue_end_at)->format('d/m/Y');
+            $orders->where(DB::raw('DATE_FORMAT(orders.created_at, "%d/%m/%Y")'), '<=', $startAt);
+        }
+        $orders = $orders->get()->toArray();
+
+        $arrOrder = [];
+        foreach ($orders as $data) {
+            $arrOrder[$data['month']] = (int) $data['total_price'];
+        }
+        return $arrOrder;
+    }
+
+    public function statisticOrder($request)
+    {
+        $orders = Order::query()
+            ->select(DB::raw('DATE_FORMAT(orders.created_at, "%m/%Y") as month, count(*) as count'))
+//            ->join('order_details', 'order_details.order_id','orders.id')
+            ->whereYear('created_at', date('Y'))
+            ->groupBy(DB::raw('DATE_FORMAT(orders.created_at, "%m/%Y")'))
+            ->orderBy('month', 'ASC');
+
+        if (!empty($request->start_at)) {
+            $startAt = Carbon::createFromFormat('m/Y', $request->start_at)->format('Y-m');
+            $orders->where(DB::raw('DATE_FORMAT(orders.created_at, "%Y-%m")'), '>=', $startAt);
+        }
+        if (!empty($request->end_at)) {
+            $startAt = Carbon::createFromFormat('m/Y', $request->end_at)->format('Y-m');
+            $orders->where(DB::raw('DATE_FORMAT(orders.created_at, "%Y-%m")'), '<=', $startAt);
+        }
+        $orders = $orders->get()->toArray();
+
+        $arrOrder = [];
+        foreach ($orders as $data) {
+            $arrOrder[$data['month']] = $data['count'];
+        }
+        return $arrOrder;
+    }
+
     /**
      * Display a listing of Products
      *

@@ -33,8 +33,22 @@ class UserService
     /**
      * Display a listing of Users
      *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return array
      */
+    public function statisticsUser(){
+        $users =  User::query()->select(DB::raw('DATE_FORMAT(created_at, "%m/%Y") as month,count(*) as count'))
+            ->whereYear('created_at',date('Y'))
+            ->groupBy(DB::raw('DATE_FORMAT(created_at, "%m/%Y")'))
+            ->orderBy('month','ASC')
+            ->get()
+            ->toArray();
+
+        $arrUser = [];
+        foreach ($users as $data) {
+            $arrUser[$data['month']] = $data['count'];
+        }
+        return $arrUser;
+    }
     public function get()
     {
         $query = $this->user::query()
