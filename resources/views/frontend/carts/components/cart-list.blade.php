@@ -92,16 +92,16 @@
                                 <div class="divider-2 mt-10 mb-10"></div>
                             </td>
                         </tr>
-                        <tr>
-                            <td class="cart_total_label">
-                                <h6 class="text-muted">{{trans('messages.cart.apply_coupon')}}</h6>
-                            </td>
-                            <td class="d-flex">
-                                <input class="font-medium mr-15 coupon discount_name" name="discount_name"
-                                       placeholder="{{trans('messages.cart.enter_coupon')}}">
-                                <button data-url="{{route('cart.checkDiscountCode')}}" type="button" class="btn checkDiscount"><i class="fi-rs-label"></i></button>
-                            </td>
-                        </tr>
+{{--                        <tr>--}}
+{{--                            <td class="cart_total_label">--}}
+{{--                                <h6 class="text-muted">{{trans('messages.cart.apply_coupon')}}</h6>--}}
+{{--                            </td>--}}
+{{--                            <td class="d-flex">--}}
+{{--                                <input class="font-medium mr-15 coupon discount_name" name="discount_name"--}}
+{{--                                       placeholder="{{trans('messages.cart.enter_coupon')}}">--}}
+{{--                                <button data-url="{{route('cart.checkDiscountCode')}}" type="button" class="btn checkDiscount"><i class="fi-rs-label"></i></button>--}}
+{{--                            </td>--}}
+{{--                        </tr>--}}
 
                         {{--                                <tr>--}}
                         {{--                                    <td class="cart_total_label">--}}

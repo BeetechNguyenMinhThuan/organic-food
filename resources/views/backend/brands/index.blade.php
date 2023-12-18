@@ -31,9 +31,9 @@
                     <div class="row mb-2">
                         <div class="col-sm-4">
                             <a
-                                data-toggle="modal" data-target="#modalAddBrand"
-                                href="javascript:void(0);"
-                                class="btn btn-danger mb-2"
+                                    data-toggle="modal" data-target="#modalAddBrand"
+                                    href="javascript:void(0);"
+                                    class="btn btn-danger mb-2"
                             ><i class="mdi mdi-plus-circle mr-2"></i> Add
                                 Brand</a
                             >
@@ -123,11 +123,11 @@
                                     <td>{{$brand->description}}</td>
                                     <td>
                                         <img
-                                            src="{{ \App\Helpers\Common::getImage($brand->image) }}"
-                                            alt="contact-img"
-                                            title="contact-img"
-                                            class="rounded mr-3"
-                                            height="48"
+                                                src="{{ \App\Helpers\Common::getImage($brand->image) }}"
+                                                alt="contact-img"
+                                                title="contact-img"
+                                                class="rounded mr-3"
+                                                height="48"
                                         />
                                     </td>
 
@@ -135,17 +135,24 @@
                                         <a href="javascript:void(0);" class="action-icon">
                                             <i class="mdi mdi-eye"></i
                                             ></a>
-                                        <a href="javascript:void(0);" class="action-icon">
+                                        <a href="javascript:void(0);" class="action-icon" data-toggle="modal"
+                                           data-target="{{"#modalBrandManager".$brand->id}}">
                                             <i class="mdi mdi-square-edit-outline"></i
                                             ></a>
                                         <a
-                                            data-url="{{route('admin.brands.destroy',['id'=>$brand->id])}}
+                                                data-url="{{route('admin.brands.destroy',['id'=>$brand->id])}}
                                                             "
-                                            href="javascript:void(0);" class="action-icon
+                                                href="javascript:void(0);" class="action-icon
                                                             action_delete">
                                             <i class="mdi mdi-delete"></i
                                             ></a>
                                     </td>
+                                    @include('backend.brands.modal',[
+                                         'idModal' => 'modalBrandManager'.$brand->id,
+                                         'brand'=>$brand,
+                                         'route' => route('admin.brands.update',['id'=>$brand->id]),
+                                         'title'=> "Edit Brand"
+                                     ])
                                 </tr>
                             @endforeach
                             </tbody>

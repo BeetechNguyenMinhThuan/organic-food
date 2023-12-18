@@ -8,12 +8,6 @@
                     </div>
                     <div class="col-sm-8">
                         <div class="">
-                            <button
-                                type="button"
-                                class="btn btn-success mb-2 mr-1"
-                            >
-                                <i class="mdi mdi-settings"></i>
-                            </button>
                             <a href="{{route('admin.warehouse.exportCSV')}}" type="button" class="btn btn-light mb-2">
                                 Xuất hàng
                             </a>

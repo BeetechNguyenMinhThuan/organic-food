@@ -94,22 +94,17 @@ class BrandService
      */
     public function update($request, $id)
     {
-        DB::beginTransaction();
-        try {
-            $brandUpdate = [
-                'name' => $request->name,
-                'slug' => Str::slug($request->name),
-                'parent_id' => $request->parent_id
-            ];
-            $brand = $this->findItem($id);
-            $brand->update($brandUpdate);
-            DB::commit();
-            return true;
-        } catch (Exception $e) {
-            DB::rollBack();
-            Log::error("Message: {$e->getMessage()}. Line: {$e->getLine()}");
-            return false;
+        $data = [
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'description' => $request->description,
+        ];
+        // Store avatar image
+        if ($request->hasFile('image')) {
+            $image = $request->image;
+            $data['image'] = $this->uploadFile($image, BRAND_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $image->getClientOriginalExtension());
         }
+        $this->brand->query()->find($id)->update($data);
     }
 
     /**

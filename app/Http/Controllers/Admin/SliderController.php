@@ -80,7 +80,20 @@ class SliderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $this->sliderSerivce->updateSlider($request, $id);
+            DB::commit();
+            return redirect()->route('admin.sliders.index')->with([
+                'status_succeed' => trans('messages.create_category_succeed')
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Message: {$e->getMessage()}. Line: {$e->getLine()}");
+            return redirect()->route('admin.sliders.index')->with([
+                'status_failed' => trans('messages.server_error')
+            ]);
+        }
     }
 
     /**

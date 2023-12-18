@@ -157,27 +157,6 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="invoice-bottom">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div>
-                                        <h3 class="invoice-title-1">Important Note</h3>
-                                        <ul class="important-notes-list-1">
-                                            <li>All amounts shown on this invoice are in US dollars</li>
-                                            <li>finance charge of 1.5% will be made on unpaid balances after 30 days.
-                                            </li>
-                                            <li>Once order done, money can't refund</li>
-                                            <li>Delivery might delay due to some external dependency</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-offsite">
-                                    <div class="text-end">
-                                        <p class="mb-0 text-13">Thank you for your business</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -12,22 +12,7 @@
                                 Products</a
                             >
                         </div>
-                        <div class="col-sm-8">
-                            <div class="text-sm-right">
-                                <button
-                                    type="button"
-                                    class="btn btn-success mb-2 mr-1"
-                                >
-                                    <i class="mdi mdi-settings"></i>
-                                </button>
-                                <button type="button" class="btn btn-light mb-2 mr-1">
-                                    Import
-                                </button>
-                                <button type="button" class="btn btn-light mb-2">
-                                    Export
-                                </button>
-                            </div>
-                        </div>
+
                         <!-- end col-->
                     </div>
 
@@ -57,7 +42,7 @@
                                 <th>Added Date</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
-                                <th>Status</th>
+                                <th>Sale Status</th>
                                 <th style="width: 85px">Action</th>
                             </tr>
                             </thead>
@@ -108,11 +93,10 @@
 
                                     <td>{{$product->stock}}</td>
                                     <td>
-                                        @if($product->status == 1)
-                                            <span class="badge badge-success">Active</span>
+                                        @if($product->sale_status == 1)
+                                            <span class="badge badge-success">Giảm giá</span>
                                         @else
-                                            <span class="badge badge-danger">Inactive</span>
-
+                                            <span class="badge badge-danger">Không giảm giá</span>
                                         @endif
                                     </td>
 

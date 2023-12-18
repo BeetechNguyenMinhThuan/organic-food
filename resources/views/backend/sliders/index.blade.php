@@ -136,7 +136,8 @@
                                         <a href="javascript:void(0);" class="action-icon">
                                             <i class="mdi mdi-eye"></i
                                             ></a>
-                                        <a href="javascript:void(0);" class="action-icon">
+                                        <a href="javascript:void(0);" class="action-icon" data-toggle="modal"
+                                           data-target="{{"#modalSliderManager".$slider->id}}">
                                             <i class="mdi mdi-square-edit-outline"></i
                                             ></a>
                                         <a data-url="{{route('admin.sliders.destroy',['id'=>$slider->id])}}"
@@ -144,6 +145,12 @@
                                             <i class="mdi mdi-delete"></i
                                             ></a>
                                     </td>
+                                    @include('backend.sliders.modal',[
+                                        'idModal' => 'modalSliderManager'.$slider->id,
+                                        'slider'=>$slider,
+                                        'route' => route('admin.sliders.update',['id'=>$slider->id]),
+                                        'title'=> "Edit Slider"
+                                    ])
                                 </tr>
                             @endforeach
                             </tbody>

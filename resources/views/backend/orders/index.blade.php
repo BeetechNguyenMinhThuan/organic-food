@@ -42,11 +42,6 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="col-lg-4">
-                            <div class="text-lg-right">
-                                <button type="button" class="btn btn-light mb-2">Export</button>
-                            </div>
-                        </div><!-- end col-->
                     </div>
 
                     <div class="table-responsive">

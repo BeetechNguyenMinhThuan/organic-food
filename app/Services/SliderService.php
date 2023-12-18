@@ -86,24 +86,18 @@ class SliderService
      * @param UpdateCategoryRequest $request
      * @return bool
      */
-    public function update($request, $id)
+    public function updateSlider($request, $id)
     {
-        DB::beginTransaction();
-        try {
-            $sliderUpdate = [
-                'name' => $request->name,
-                'slug' => Str::slug($request->name),
-                'parent_id' => $request->parent_id
-            ];
-            $slider = $this->findItem($id);
-            $slider->update($sliderUpdate);
-            DB::commit();
-            return true;
-        } catch (Exception $e) {
-            DB::rollBack();
-            Log::error("Message: {$e->getMessage()}. Line: {$e->getLine()}");
-            return false;
+        $data = [
+            'name' => $request->name,
+            'description' => $request->description,
+        ];
+        // Store avatar image
+        if ($request->hasFile('image')) {
+            $image = $request->image;
+            $data['image'] = $this->uploadFile($image, SLIDER_DIR . '/' . auth()->id() . '/' . Str::random(30) . "." . $image->getClientOriginalExtension());
         }
+        $this->slider->query()->find($id)->update($data);
     }
 
     /**
@@ -116,7 +110,7 @@ class SliderService
         DB::beginTransaction();
         try {
             $slider = $this->slider->query()->findOrFail($id);
-            if (!empty($slider->image)){
+            if (!empty($slider->image)) {
                 $this->deleteFile($slider->image);
             }
             $slider->delete();

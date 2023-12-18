@@ -96,7 +96,7 @@
                                                 height="48"
                                             /><span>{{$product->name}}</span>
                                         </td>
-                                        <td>{{$product->total_sold}}</td>
+                                    <td>{{$product->total_sold}}</td>
                                         <td class="table-action">
                                             <a data-toggle="modal" data-target="#primary-header-modal"
                                                data-product-id="{{$product->id}}" href="javascript:void(0);"

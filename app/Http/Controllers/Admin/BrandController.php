@@ -80,7 +80,20 @@ class BrandController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $this->brandService->update($request,$id);
+            DB::commit();
+            return redirect()->route('admin.brands.index')->with([
+                'status_succeed' => trans('messages.create_category_succeed')
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Message: {$e->getMessage()}. Line: {$e->getLine()}");
+            return redirect()->route('admin.brands.index')->with([
+                'status_failed' => trans('messages.server_error')
+            ]);
+        }
     }
 
     /**

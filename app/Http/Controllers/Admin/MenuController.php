@@ -78,7 +78,15 @@ class MenuController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $menuInsert = $this->menuService->update($request,$id);
+        if ($menuInsert) {
+            return redirect()->route('admin.menus.index')->with([
+                'status_succeed' => trans('messages.create_menu_succeed')
+            ]);
+        }
+        return redirect()->route('admin.menus.index')->with([
+            'status_failed' => trans('messages.server_error')
+        ]);
     }
 
     /**

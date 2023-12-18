@@ -98,13 +98,21 @@
                                         <a href="javascript:void(0);" class="action-icon">
                                             <i class="mdi mdi-eye"></i
                                             ></a>
-                                        <a href="javascript:void(0);" class="action-icon">
+                                        <a href="javascript:void(0);" class="action-icon" data-toggle="modal"
+                                           data-target="{{"#modalMenuManager".$menu->id}}">
                                             <i class="mdi mdi-square-edit-outline"></i
-                                            ></a>
+                                            >
+                                        </a>
                                         <a data-url="{{route('admin.menus.destroy',['id'=>$menu->id])}}"
                                            href="javascript:void(0);" class="action-icon action_delete">
                                             <i class="mdi mdi-delete"></i
                                             ></a>
+                                        @include('backend.menus.modal',[
+                                          'idModal' => 'modalMenuManager'.$menu->id,
+                                          'menu'=>$menu,
+                                          'route' => route('admin.menus.update',['id'=>$menu->id]),
+                                          'title'=> "Edit Menu"
+                                      ])
                                     </td>
                                 </tr>
                             @endforeach

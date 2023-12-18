@@ -177,9 +177,6 @@
                             <div class="form-group col-md-6">
                                 <label class="col-form-label">Ảnh chi tiết</label>
                                 <div class="">
-                                    <img class="img-product d-flex" style="margin: 0 auto" height="250px"
-                                         src=""
-                                         alt=""/>
                                     <div class="input-group mt-2">
                                         <div class="custom-file">
                                             <input name="image_path[]" type="file" id="inputGroupFile05"
