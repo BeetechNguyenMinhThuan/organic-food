@@ -1,7 +1,7 @@
 <section class="section-padding pb-5 mb-20">
     <div class="container">
         <div class="section-title wow animate__animated animate__fadeIn">
-            <h3 class="">Daily Best Sells</h3>
+            <h3 class="">{{trans('messages.auth.daily_best_sells')}}</h3>
         </div>
         <div class="row">
             <div class="col-lg-3 d-none d-lg-flex wow animate__animated animate__fadeIn">
@@ -61,7 +61,7 @@
                                             <a href="shop-cart.html"
                                                data-url="{{ route('cart.add',['productId'=>$product->id])}}"
                                                class="btn w-100 hover-up button-add-to-cart"><i
-                                                    class="fi-rs-shopping-cart mr-5"></i>Add To Cart</a>
+                                                    class="fi-rs-shopping-cart mr-5"></i>{{trans('messages.common.add')}}</a>
                                         </div>
                                     </div>
                                 @endforeach

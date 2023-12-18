@@ -4,7 +4,7 @@
 <section class="product-tabs section-padding position-relative">
     <div class="container">
         <div class="section-title style-2 wow animate__animated animate__fadeIn">
-            <h3>Popular Products</h3>
+            <h3>{{trans('messages.auth.popular_products')}}</h3>
             <ul class="nav nav-tabs links" id="myTab" role="tablist">
                 @foreach( $categoriesList as $key => $category)
                     <li class="nav-item" role="presentation">

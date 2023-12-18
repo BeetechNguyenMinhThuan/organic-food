@@ -77,7 +77,7 @@ quản lý địa chỉ giao hàng và thanh toán cũng như chỉnh sửa chi 
         'logout' => 'Đăng xuất',
         'featured_categories' => 'Danh mục nổi bật',
         'popular_products' => 'Sản phẩm phổ biến',
-        'daily_best_sells' => 'Giảm giá hàng ngày',
+        'daily_best_sells' => 'Sản phẩm bán chạy',
         'Top Selling' => "Bán chạy nhất",
         'trending_products' => 'Sản phẩm nổi bật',
         'recently_added' => 'Thêm gần đây',
