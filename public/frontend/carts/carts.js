@@ -25,7 +25,7 @@ function cartUpdate(e) {
             }
         },
         error: function (error) {
-            toastr.success("Xảy ra lỗi, vui lòng thử lại", {timeOut: 500});
+            toastr.error(error.responseJSON.data, {timeOut: 500});
         },
     });
 }

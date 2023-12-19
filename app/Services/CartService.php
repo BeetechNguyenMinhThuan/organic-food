@@ -91,6 +91,13 @@ class CartService
                 ], 500);
             }
             $product = $this->product->findOrFail($productId);
+            if ($product->stock <= 0 || $product->stock < $quantity){
+                return response()->json([
+                    'code' => 500,
+                    'data' => 'Sản phẩm đã hết hàng',
+                ], 500);
+            }
+
             $carts = Session::get('carts');
 
             if (isset($carts[$productId])) {
@@ -101,6 +108,10 @@ class CartService
                     'quantity' => $quantity
                 ];
             }
+            // Update stock product
+            $product->stock = $product->stock - $quantity;
+            $product->save();
+
             Session::put('carts', $carts);
             $carts = Session::get('carts');
             $cartDropdownComponent = view('frontend.carts.components.cart-header-dropdown', compact('carts'))->render();
@@ -124,13 +135,31 @@ class CartService
         try {
             $quantity = $request->quantity;
             $productId = $request->productId;
+            $product = $this->product->findOrFail($productId);
 
             if ($productId && $quantity) {
                 $carts = Session::get('carts');
 
                 if (isset($carts[$productId])) {
+                    $quantityChange = $quantity - $carts[$productId]['quantity'];
+                    if ($product->stock < $quantityChange){
+                        return response()->json([
+                            'status' => 500,
+                            'data' => 'Sản phẩm đã hết hàng',
+                        ], 500);
+                    }
                     $carts[$productId]['quantity'] = $quantity;
                     Session::put('carts', $carts);
+                    // Update stock product
+                    $product->stock = $product->stock - $quantityChange;
+                    $product->save();
+
+                    if ($product->stock <= 0){
+                        return response()->json([
+                            'status' => 500,
+                            'data' => 'Sản phẩm đã hết hàng',
+                        ], 500);
+                    }
 
                     $carts = Session::get('carts');
                     $cartListComponent = view('frontend.carts.components.cart-list', compact('carts'))->render();
@@ -156,9 +185,14 @@ class CartService
     {
         try {
             $productId = $request->productId;
+            $product = $this->product->findOrFail($productId);
             if ($productId) {
                 $carts = Session::get('carts');
                 if (isset($carts[$productId])) {
+                    // Update stock product
+                    $product->stock = $product->stock + $carts[$productId]['quantity'];
+                    $product->save();
+
                     unset($carts[$productId]);
                     Session::put('carts', $carts);
                     $carts = Session::get('carts');
@@ -183,6 +217,12 @@ class CartService
     public function deleteAllCart()
     {
         $carts = Session::get('carts');
+        foreach ($carts as $productId => $cart){
+            $product = $this->product->findOrFail($productId);
+            // Update stock product
+            $product->stock = $product->stock + $cart['quantity'];
+            $product->save();
+        }
         if (!empty($carts)) {
             Session::forget('carts');
             return true;
