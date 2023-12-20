@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\UserActivity;
 use App\Traits\StorageImageTrait;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -30,16 +31,27 @@ class UserService
         $this->admin = $admin;
     }
 
+
+    public function activityLogUser()
+    {
+        $data = UserActivity::query()->selectRaw('browser, COUNT(*) as count')
+            ->groupBy('browser')
+            ->get()->toArray();
+        return $data;
+
+    }
+
     /**
      * Display a listing of Users
      *
      * @return array
      */
-    public function statisticsUser(){
-        $users =  User::query()->select(DB::raw('DATE_FORMAT(created_at, "%m/%Y") as month,count(*) as count'))
-            ->whereYear('created_at',date('Y'))
+    public function statisticsUser()
+    {
+        $users = User::query()->select(DB::raw('DATE_FORMAT(created_at, "%m/%Y") as month,count(*) as count'))
+            ->whereYear('created_at', date('Y'))
             ->groupBy(DB::raw('DATE_FORMAT(created_at, "%m/%Y")'))
-            ->orderBy('month','ASC')
+            ->orderBy('month', 'ASC')
             ->get()
             ->toArray();
 
@@ -49,6 +61,7 @@ class UserService
         }
         return $arrUser;
     }
+
     public function get()
     {
         $query = $this->user::query()

@@ -38,7 +38,7 @@
                                         <div class="post-thumb">
                                             <a href="{{route('blogs.detail',['slug' => $blog->slug])}}">
                                                 <img class="border-radius-15"
-                                                     src="{{\App\Helpers\Common::getImage($blog->thumbnail)}}" alt=""/>
+                                                     src="{{asset('storage/'.$blog->thumbnail)}}" alt=""/>
                                             </a>
                                         </div>
                                         <div class="entry-content-2">

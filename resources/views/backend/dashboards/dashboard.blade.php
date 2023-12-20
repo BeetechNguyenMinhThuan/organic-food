@@ -67,6 +67,16 @@
                 <div id="statistics-user"></div>
             </div>
         </div>
+        <div class="col-xl-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title">Số lần truy cập trình duyệt</h4>
+                    <div id="pieChartUserAgent" class="apex-charts" data-colors="#39afd1,#ffbc00,#313a46,#ff5b5b,#10c469"></div>
+                </div>
+                <!-- end card body-->
+            </div>
+            <!-- end card -->
+        </div>
     </section>
 @endsection
 @section('js_library')
@@ -75,5 +85,7 @@
     ])
 @stop
 @section('addJs')
+{{--    <script src="{{asset('backend/assets/js/pages/demo.apex-pie.js')}}"></script>--}}
+
     @include('backend.dashboards.components.script.script')
 @endsection

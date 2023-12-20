@@ -22,9 +22,9 @@ class BrandController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $brands = $this->brandService->getPaginate();
+        $brands = $this->brandService->getPaginate($request);
         return view('backend.brands.index', [
             'brands' => $brands
         ]);

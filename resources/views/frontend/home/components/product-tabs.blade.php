@@ -35,7 +35,7 @@
                                         <div class="product-img product-img-zoom">
                                             <a href="{{route('products.detail',['name'=>$product->slug])}}">
                                                 <img class="default-img"
-                                                     src="{{\App\Helpers\Common::getImage($product->avatar)}}" alt=""/>
+                                                     src="{{asset('storage/'.$product->avatar)}}" alt=""/>
                                             </a>
                                         </div>
                                         <div class="product-action-1">

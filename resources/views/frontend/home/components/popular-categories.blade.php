@@ -12,7 +12,7 @@
                 @foreach($categories as $category)
                     <div class="card-2 bg-9 wow animate__animated animate__fadeInUp" data-wow-delay=".1s">
                         <figure class="img-hover-scale overflow-hidden">
-                            <a href="{{route('products.listProduct',['slug'=>$category->slug])}}"><img src="{{\App\Helpers\Common::getImage($category->avatar)}}" alt=""/></a>
+                            <a href="{{route('products.listProduct',['slug'=>$category->slug])}}"><img src="{{asset('storage/'.$category->avatar)}}" alt=""/></a>
                         </figure>
                         <h6><a href="{{route('products.listProduct',['slug'=>$category->slug])}}">{{$category->name}}</a></h6>
                         <span>{{$category->products()->count()}} item</span>

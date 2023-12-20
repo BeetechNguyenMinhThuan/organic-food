@@ -55,7 +55,8 @@ manage your shipping and billing addresses and edit your password and account de
         'high_to_low' => "Price high to low",
         'reset' => "Refresh",
         'action' => "Action",
-        'search' => 'Search'
+        'search' => 'Search',
+        'brand_list' => 'Brand list',
     ],
 
     // Filter

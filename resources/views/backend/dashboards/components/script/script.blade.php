@@ -1,5 +1,6 @@
 <script type="text/javascript">
-    $(function () {
+
+    function initStatisticUser() {
         let userData = {!! json_encode($users) !!}
         Highcharts.chart('statistics-user', {
 
@@ -11,7 +12,7 @@
 
             yAxis: {
                 title: {
-                    text: 'Number of Users'
+                    text: 'Số lượng người dùng'
                 }
             },
 
@@ -26,7 +27,7 @@
             },
 
             series: [{
-                name:'Người dùng',
+                name: 'Người dùng',
                 data: Object.values(userData)
             }],
 
@@ -46,7 +47,35 @@
             }
 
         });
+    }
 
+    function initUserAgent() {
+        let activityUser = {!! json_encode($activityUsers) !!};
+        const browsers = activityUser.map(d => d.browser);
+        const counts = activityUser.map(d => d.count);
+
+        let options = {
+            chart: {
+                type: 'donut'
+            },
+            plotOptions: {
+                pie: {
+                    customScale: 0.8,
+                    expandOnClick: false
+                }
+            },
+            series: counts,
+            labels: browsers
+        }
+
+        let chart = new ApexCharts(document.querySelector("#pieChartUserAgent"), options);
+        chart.render();
+    }
+
+
+    $(function () {
+        initStatisticUser()
+        initUserAgent();
     })
 
 </script>

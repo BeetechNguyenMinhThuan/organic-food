@@ -161,6 +161,7 @@ return [
          */
         Intervention\Image\ImageServiceProvider::class,
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+        \Torann\GeoIP\GeoIPServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -186,6 +187,7 @@ return [
         // 'Example' => App\Facades\Example::class,
         'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
     ])->toArray(),
 
 ];

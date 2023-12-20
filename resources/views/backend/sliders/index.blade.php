@@ -74,7 +74,7 @@
                                                 <div class="">
                                                     <img class="img-product d-flex" style="margin: 0 auto"
                                                          height="250px"
-                                                         src="{{isset($slider) ? \App\Helpers\Common::getImage($slider->image) : asset('backend/assets/images/upload.svg')}}"
+                                                         src="{{isset($slider) ? asset('storage/'.$slider->image) : asset('backend/assets/images/upload.svg')}}"
                                                          alt=""/>
                                                     <div class="form-group mt-2">
                                                         <div class="custom-file">
@@ -124,7 +124,7 @@
                                     <td>{{$slider->description}}</td>
                                     <td>
                                         <img
-                                            src="{{ \App\Helpers\Common::getImage($slider->image) }}"
+                                            src="{{ asset('storage/'.$slider->image) }}"
                                             alt="contact-img"
                                             title="contact-img"
                                             class="rounded mr-3"

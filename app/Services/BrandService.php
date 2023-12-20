@@ -33,6 +33,7 @@ class BrandService
     {
         return $this->brand;
     }
+
     /**
      * Display a listing of Products
      *
@@ -49,11 +50,14 @@ class BrandService
      *
      * @return LengthAwarePaginator
      */
-    public function getPaginate()
+    public function getPaginate($request)
     {
-        return $this->brand->query()
-            ->latest()
-            ->paginate(self::PAGINATE_CATEGORY);
+        $data = $this->brand->query()
+            ->latest();
+        if ($request->search) {
+            $data->where('name','LIKE', "%$request->search%");
+        }
+        return $data->paginate(self::PAGINATE_CATEGORY);
     }
 
     /**

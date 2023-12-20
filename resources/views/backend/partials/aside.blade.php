@@ -27,36 +27,21 @@
             <li class="side-nav-title side-nav-item">Navigation</li>
 
             <li class="side-nav-item">
-                <a href="javascript: void(0);" class="side-nav-link">
+                <a href="{{route('admin.dashboard.index')}}" class="side-nav-link">
                     <i class="uil-home-alt"></i>
-                    <span class="badge badge-success float-right">4</span>
-                    <span> Dashboards </span>
+                    <span> Trang quản trị </span>
                 </a>
-                <ul class="side-nav-second-level" aria-expanded="false">
-                    <li>
-                        <a href="dashboard-analytics.html">Analytics</a>
-                    </li>
-                    <li>
-                        <a href="dashboard-crm.html">CRM</a>
-                    </li>
-                    <li>
-                        <a href="index.html">Ecommerce</a>
-                    </li>
-                    <li>
-                        <a href="dashboard-projects.html">Projects</a>
-                    </li>
-                </ul>
             </li>
             @can('module category')
                 <li class="side-nav-item">
                     <a href="javascript: void(0);" class="side-nav-link">
                         <i class="uil-store"></i>
-                        <span> Categories </span>
+                        <span> Danh mục </span>
                         <span class="menu-arrow"></span>
                     </a>
                     <ul class="side-nav-second-level" aria-expanded="false">
                         <li>
-                            <a href="{{route('admin.categories.index')}}">List Category</a>
+                            <a href="{{route('admin.categories.index')}}">Danh sách danh mục</a>
                         </li>
                     </ul>
                 </li>
@@ -70,7 +55,7 @@
                 </a>
                 <ul class="side-nav-second-level" aria-expanded="false">
                     <li>
-                        <a href="{{route('admin.menus.index')}}">List Menu</a>
+                        <a href="{{route('admin.menus.index')}}">Danh sách Menu</a>
                     </li>
                 </ul>
             </li>
@@ -83,7 +68,7 @@
                 </a>
                 <ul class="side-nav-second-level" aria-expanded="false">
                     <li>
-                        <a href="{{route('admin.sliders.index')}}">List Slider</a>
+                        <a href="{{route('admin.sliders.index')}}">Danh sách Slider</a>
                     </li>
                 </ul>
             </li>
@@ -91,12 +76,12 @@
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
                     <i class="uil-store"></i>
-                    <span> Brands </span>
+                    <span> Thương hiệu </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <ul class="side-nav-second-level" aria-expanded="false">
                     <li>
-                        <a href="{{route('admin.brands.index')}}">List Brand</a>
+                        <a href="{{route('admin.brands.index')}}">Danh sách thương hiệu</a>
                     </li>
                 </ul>
             </li>
@@ -104,15 +89,15 @@
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
                     <i class="uil-store"></i>
-                    <span> Products </span>
+                    <span> Sản phẩm </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <ul class="side-nav-second-level" aria-expanded="false">
                     <li>
-                        <a href="{{route('admin.products.index')}}">List Product</a>
+                        <a href="{{route('admin.products.index')}}">Danh sách sản phẩm</a>
                     </li>
                     <li>
-                        <a href="{{route('admin.products.create')}}">Add Product</a>
+                        <a href="{{route('admin.products.create')}}">Thêm sản phẩm</a>
                     </li>
                 </ul>
             </li>
@@ -120,12 +105,12 @@
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
                     <i class="uil-store"></i>
-                    <span> Discounts </span>
+                    <span> Giảm giá </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <ul class="side-nav-second-level" aria-expanded="false">
                     <li>
-                        <a href="{{route('admin.discounts.index')}}">List discount</a>
+                        <a href="{{route('admin.discounts.index')}}">Danh sách giảm giá</a>
                     </li>
                 </ul>
             </li>
@@ -133,15 +118,15 @@
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
                     <i class="uil-store"></i>
-                    <span> Settings </span>
+                    <span> Cài đặt </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <ul class="side-nav-second-level" aria-expanded="false">
                     <li>
-                        <a href="{{route('admin.settings.index')}}">List Setting</a>
+                        <a href="{{route('admin.settings.index')}}">Danh sách cài đặt</a>
                     </li>
                     <li>
-                        <a href="{{route('admin.settings.create')}}">Add Setting</a>
+                        <a href="{{route('admin.settings.create')}}">Thêm cài đặt</a>
                     </li>
                 </ul>
             </li>
@@ -149,15 +134,15 @@
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
                     <i class="uil-store"></i>
-                    <span> Blogs </span>
+                    <span> Bài viết </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <ul class="side-nav-second-level" aria-expanded="false">
                     <li>
-                        <a href="{{route('admin.blogs.create')}}">Add Blog</a>
+                        <a href="{{route('admin.blogs.create')}}">Thêm bài viết</a>
                     </li>
                     <li>
-                        <a href="{{route('admin.blogs.index')}}">List Blog</a>
+                        <a href="{{route('admin.blogs.index')}}">danh sách bài viết</a>
                     </li>
                 </ul>
             </li>
@@ -165,12 +150,12 @@
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
                     <i class="uil-store"></i>
-                    <span> Comments </span>
+                    <span> Bình luận </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <ul class="side-nav-second-level" aria-expanded="false">
                     <li>
-                        <a href="{{route('admin.comment.index')}}">List comment</a>
+                        <a href="{{route('admin.comment.index')}}">Danh sách bình luận</a>
                     </li>
                 </ul>
             </li>
@@ -178,21 +163,21 @@
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
                     <i class="uil-store"></i>
-                    <span> Roles</span>
+                    <span> Quyền và vai trò</span>
                     <span class="menu-arrow"></span>
                 </a>
                 <ul class="side-nav-second-level" aria-expanded="false">
                     <li>
-                        <a href="{{route('admin.roles.index')}}">List Roles</a>
+                        <a href="{{route('admin.roles.index')}}">Danh sách vai trò</a>
                     </li>
                     <li>
-                        <a href="{{route('admin.roles.create')}}">Add Role</a>
+                        <a href="{{route('admin.roles.create')}}">Thêm vai trò</a>
                     </li>
                     <li>
-                        <a href="{{route('admin.permissions.index')}}">List Permission</a>
+                        <a href="{{route('admin.permissions.index')}}">Danh sách quyền</a>
                     </li>
                     <li>
-                        <a href="{{route('admin.permissions.create')}}">Add Permission</a>
+                        <a href="{{route('admin.permissions.create')}}">Thêm quyền</a>
                     </li>
                 </ul>
             </li>
@@ -201,15 +186,15 @@
                 <li class="side-nav-item">
                     <a href="javascript: void(0);" class="side-nav-link">
                         <i class="uil-store"></i>
-                        <span> Users </span>
+                        <span> Người dùng </span>
                         <span class="menu-arrow"></span>
                     </a>
                     <ul class="side-nav-second-level" aria-expanded="false">
                         <li>
-                            <a href="{{route('admin.account-admins.index')}}">List Admin</a>
+                            <a href="{{route('admin.account-admins.index')}}">Danh sách Admin</a>
                         </li>
                         <li>
-                            <a href="{{route('admin.users.index')}}">List User</a>
+                            <a href="{{route('admin.users.index')}}">Danh sách khách hàng</a>
                         </li>
                     </ul>
                 </li>
@@ -218,12 +203,12 @@
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
                     <i class="uil-store"></i>
-                    <span> Orders </span>
+                    <span> Hoá đơn </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <ul class="side-nav-second-level" aria-expanded="false">
                     <li>
-                        <a href="{{route('admin.orders.index')}}">List Order</a>
+                        <a href="{{route('admin.orders.index')}}">Danh sách hoá đơn</a>
                     </li>
 
                 </ul>
@@ -231,12 +216,12 @@
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
                     <i class="uil-store"></i>
-                    <span> Warehouse </span>
+                    <span> Kho hàng </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <ul class="side-nav-second-level" aria-expanded="false">
                     <li>
-                        <a href="{{route('admin.warehouse.index')}}">List Warehouse</a>
+                        <a href="{{route('admin.warehouse.index')}}">Danh sách kho hàng</a>
                     </li>
 
                 </ul>
@@ -245,7 +230,7 @@
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
                     <i class="uil-store"></i>
-                    <span> Statistics </span>
+                    <span> Thống kê </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <ul class="side-nav-second-level" aria-expanded="false">
@@ -255,6 +240,10 @@
 
                     <li>
                         <a href="{{route('admin.statistic.order')}}">Đơn hàng</a>
+                    </li>
+
+                    <li>
+                        <a href="{{route('admin.statistic.activityUser')}}">Lịch sử truy cập</a>
                     </li>
                 </ul>
             </li>

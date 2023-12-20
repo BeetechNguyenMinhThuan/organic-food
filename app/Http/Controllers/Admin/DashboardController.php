@@ -49,12 +49,14 @@ class DashboardController extends Controller
         $categories = $this->categoryService->get();
         $order = $this->orderService->getModel();
         $users = $this->userService->statisticsUser();
+        $activityUsers = $this->userService->activityLogUser();
         return view('backend.dashboards.dashboard', [
             'products' => $products,
             'orders' => $orders,
             'categories' => $categories,
             'order' => $order,
-            'users' => $users
+            'users' => $users,
+            'activityUsers' => $activityUsers
         ]);
     }
 }
