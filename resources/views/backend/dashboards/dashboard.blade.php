@@ -16,7 +16,7 @@
                     <span class="icon icon-sm rounded-circle bg-primary-light"><i
                             class="text-primary material-icons md-monetization_on"></i></span>
                     <div class="text">
-                        <h3 class="mb-1 card-title">Total Price</h3>
+                        <h3 class="mb-1 card-title">Tổng thu nhập</h3>
                         <h4>{!! \App\Helpers\Common::getFormatNumberPrice($order->sum('total_price')) !!}</h4>
                     </div>
                 </article>
@@ -28,7 +28,7 @@
                     <span class="icon icon-sm rounded-circle bg-success-light"><i
                             class="text-success material-icons md-local_shipping"></i></span>
                     <div class="text">
-                        <h3 class="mb-1 card-title">Orders</h3>
+                        <h3 class="mb-1 card-title">Hoá đơn</h3>
                         <h4>{{$order->count()}}</h4>
                     </div>
                 </article>
@@ -40,9 +40,21 @@
                     <span class="icon icon-sm rounded-circle bg-warning-light"><i
                             class="text-warning material-icons md-qr_code"></i></span>
                     <div class="text">
-                        <h3 class="mb-1 card-title">Products</h3>
+                        <h3 class="mb-1 card-title">Sản phẩm</h3>
                         <h4 class="d-inline">{{$products->count()}}</h4>
-                        <h4 class="d-inline text-sm"> In {{$categories->count()}} Categories </h4>
+                        <h4 class="d-inline text-sm"> trong {{$categories->count()}} Danh mục </h4>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="card card-body mb-4">
+                <article class="icontext">
+                    <span class="icon icon-sm rounded-circle bg-warning-light"><i
+                            class="text-warning material-icons md-qr_code"></i></span>
+                    <div class="text">
+                        <h3 class="mb-1 card-title">Khách hàng </h3>
+                        <h4 class="d-inline">{{$customers}}</h4>
                     </div>
                 </article>
             </div>
@@ -67,7 +79,7 @@
                 <div id="statistics-user"></div>
             </div>
         </div>
-        <div class="col-xl-6">
+        <div class="col-xl-6 mt-3">
             <div class="card">
                 <div class="card-body">
                     <h4 class="header-title">Số lần truy cập trình duyệt</h4>

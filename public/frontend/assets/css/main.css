@@ -6811,6 +6811,7 @@ h6.post-title {
 
 .vendor-wrap .vendor-img-action-wrap {
     padding: 25px 25px 0 25px;
+    height: calc(100% - 255px);
 }
 
 .vendor-wrap .vendor-img-action-wrap img {

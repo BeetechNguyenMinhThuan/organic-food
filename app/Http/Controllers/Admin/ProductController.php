@@ -62,7 +62,7 @@ class ProductController extends Controller
             $this->productService->createProduct($request);
             DB::commit();
             return redirect()->route('admin.products.create')->with([
-                'status_succeed' => trans('messages.create_product_succeed')
+                'status_succeed' => trans('messages.create_succeed')
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
