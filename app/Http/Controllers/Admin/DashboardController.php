@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Services\AccountService;
 use App\Services\BrandService;
 use App\Services\CartService;
@@ -26,6 +27,7 @@ class DashboardController extends Controller
     protected TagService $tagService;
     private BrandService $brandService;
     private OrderService $orderService;
+    private UserService $userService;
 
     public function __construct(UserService $userService, OrderService $orderService, AccountService $accountService, CartService $cartService, TagService $tagService, SliderService $sliderService, CategoryService $categoryService, ProductService $productService, MenuService $menuService, BrandService $brandService)
     {
@@ -48,13 +50,17 @@ class DashboardController extends Controller
         $orders = $this->orderService->get();
         $categories = $this->categoryService->get();
         $order = $this->orderService->getModel();
+        $customers = User::query()->count();
         $users = $this->userService->statisticsUser();
+        $activityUsers = $this->userService->activityLogUser();
         return view('backend.dashboards.dashboard', [
             'products' => $products,
             'orders' => $orders,
             'categories' => $categories,
             'order' => $order,
-            'users' => $users
+            'users' => $users,
+            'customers' => $customers,
+            'activityUsers' => $activityUsers
         ]);
     }
 }

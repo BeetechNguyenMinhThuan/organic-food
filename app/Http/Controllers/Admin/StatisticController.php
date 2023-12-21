@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\User;
+use App\Models\UserActivity;
 use App\Services\AccountService;
 use App\Services\BrandService;
 use App\Services\CartService;
@@ -50,6 +51,12 @@ class StatisticController extends Controller
     {
         $products = $this->productService->getProductSold($request);
         return view('backend.statistics.products.product', compact('products'));
+    }
+
+    public function statisticActivityUser(Request $request)
+    {
+        $data = UserActivity::query()->paginate(15);
+        return view('backend.statistics.activity_logs.index',compact('data'));
     }
 
     public function showCustomer(Request $request)

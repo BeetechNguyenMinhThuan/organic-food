@@ -14,13 +14,13 @@
     <div class="page-content pt-50">
         <div class="container">
             <div class="archive-header-2 text-center">
-                <h1 class="display-2 mb-50">Brands List</h1>
+                <h1 class="display-2 mb-50">{{trans('messages.common.brand_list')}}</h1>
                 <div class="row">
                     <div class="col-lg-5 mx-auto">
                         <div class="sidebar-widget-2 widget_search mb-50">
                             <div class="search-form">
-                                <form action="#">
-                                    <input type="text" placeholder="Search brands (by name or ID)..."/>
+                                <form action="" method="GET">
+                                    <input name="search" type="text" placeholder="Search brands (by name or ID)..."/>
                                     <button type="submit"><i class="fi-rs-search"></i></button>
                                 </form>
                             </div>
@@ -34,46 +34,6 @@
                         <div class="totall-product">
                             <p>We have <strong class="text-brand">{{!empty($brands) ? count($brands) : 0}}</strong>
                                 vendors now</p>
-                        </div>
-                        <div class="sort-by-product-area">
-                            <div class="sort-by-cover mr-10">
-                                <div class="sort-by-product-wrap">
-                                    <div class="sort-by">
-                                        <span><i class="fi-rs-apps"></i>Show:</span>
-                                    </div>
-                                    <div class="sort-by-dropdown-wrap">
-                                        <span> 50 <i class="fi-rs-angle-small-down"></i></span>
-                                    </div>
-                                </div>
-                                <div class="sort-by-dropdown">
-                                    <ul>
-                                        <li><a class="active" href="#">50</a></li>
-                                        <li><a href="#">100</a></li>
-                                        <li><a href="#">150</a></li>
-                                        <li><a href="#">200</a></li>
-                                        <li><a href="#">All</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="sort-by-cover">
-                                <div class="sort-by-product-wrap">
-                                    <div class="sort-by">
-                                        <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
-                                    </div>
-                                    <div class="sort-by-dropdown-wrap">
-                                        <span> Featured <i class="fi-rs-angle-small-down"></i></span>
-                                    </div>
-                                </div>
-                                <div class="sort-by-dropdown">
-                                    <ul>
-                                        <li><a class="active" href="#">Mall</a></li>
-                                        <li><a href="#">Featured</a></li>
-                                        <li><a href="#">Preferred</a></li>
-                                        <li><a href="#">Total items</a></li>
-                                        <li><a href="#">Avg. Rating</a></li>
-                                    </ul>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

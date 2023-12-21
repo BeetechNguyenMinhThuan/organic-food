@@ -8,6 +8,7 @@ use App\Services\CategoryService;
 use App\Services\MenuService;
 use App\Services\ProductService;
 use App\Services\SliderService;
+use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
@@ -20,12 +21,12 @@ class BrandController extends Controller
         $this->brandService = $brandService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $sliders = $this->sliderService->get();
         $categories = $this->categoryService->getParent();
         $menus = $this->menuService->getParent();
-        $brands = $this->brandService->getPaginate();
+        $brands = $this->brandService->getPaginate($request);
         return view('frontend.brands.index', [
             'sliders' => $sliders,
             'categories' => $categories,

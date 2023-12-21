@@ -161,6 +161,7 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::get('/products', [StatisticController::class, 'statisticProduct'])->name('admin.statistic.product');
         Route::get('/products/showCustomer', [StatisticController::class, 'showCustomer'])->name('admin.statistic.product.showCustomer');
         Route::get('/orders', [StatisticController::class, 'statisticOrder'])->name('admin.statistic.order');
+        Route::get('/activity-logs', [StatisticController::class, 'statisticActivityUser'])->name('admin.statistic.activityUser');
     });
 });
 

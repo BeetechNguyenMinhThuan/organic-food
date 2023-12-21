@@ -9,7 +9,7 @@
                     <div class="banner-text">
                         <h2 class="mb-100">Bring nature into your home</h2>
                         <a href="shop-grid-right.html" class="btn btn-xs">Shop Now <i
-                                class="fi-rs-arrow-small-right"></i></a>
+                                    class="fi-rs-arrow-small-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -27,14 +27,14 @@
                                             <div class="product-img product-img-zoom">
                                                 <a href="{{route('products.detail',$product->slug)}}">
                                                     <img class="default-img"
-                                                         src="{{\App\Helpers\Common::getImage($product->avatar)}}"
+                                                         src="{{asset('storage/'.$product->avatar)}}"
                                                          alt=""/>
                                                 </a>
                                             </div>
                                             <div class="product-action-1">
                                                 <a aria-label="Quick view" class="action-btn small hover-up"
                                                    data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i
-                                                        class="fi-rs-eye"></i></a>
+                                                            class="fi-rs-eye"></i></a>
                                                 <a aria-label="Add To Wishlist" class="action-btn small hover-up"
                                                    href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                                 <a aria-label="Compare" class="action-btn small hover-up"
@@ -61,7 +61,8 @@
                                             <a href="shop-cart.html"
                                                data-url="{{ route('cart.add',['productId'=>$product->id])}}"
                                                class="btn w-100 hover-up button-add-to-cart"><i
-                                                    class="fi-rs-shopping-cart mr-5"></i>{{trans('messages.common.add')}}</a>
+                                                        class="fi-rs-shopping-cart mr-5"></i>{{trans('messages.common.add')}}
+                                            </a>
                                         </div>
                                     </div>
                                 @endforeach

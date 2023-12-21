@@ -57,7 +57,8 @@ quản lý địa chỉ giao hàng và thanh toán cũng như chỉnh sửa chi 
         'high_to_low' => "Giá cao đến thấp",
         'reset' => "Làm mới",
         'action' => "Hành động",
-        'search' => 'Tìm kiếm'
+        'search' => 'Tìm kiếm',
+        'brand_list' => 'Thương hiệu'
     ],
 
     // Filter

@@ -39,7 +39,9 @@ Route::get('reset-password', [AuthController::class, 'resetPassword'])->name('us
 Route::post('do-reset-password', [AuthController::class, 'doResetPassword'])->name('user.doResetPassword');
 
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::middleware('trackUserActivity')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+});
 Route::get('/products/{name}', [ProductController::class, 'detail'])->name('products.detail');
 Route::get('/products-categories/{slug}', [ProductController::class, 'listProduct'])->name('products.listProduct');
 Route::get('/products-categories/{categoryId}/filter', [ProductController::class, 'filterProductCategory'])->name('products.filterCategory');
@@ -89,7 +91,7 @@ Route::get("/show-cart", [CartController::class, 'showCart'])->name('cart.show')
 Route::put("/update-cart", [CartController::class, 'updateCart'])->name('cart.update');
 Route::delete("/delete-cart", [CartController::class, 'deleteCart'])->name('cart.delete');
 Route::get("/delete-all-cart", [CartController::class, 'deleteAllCart'])->name('cart.allDelete');
-Route::get('/checkDiscountCode',[CartController::class, 'checkDiscountCode'])->name('cart.checkDiscountCode');
+Route::get('/checkDiscountCode', [CartController::class, 'checkDiscountCode'])->name('cart.checkDiscountCode');
 
 
 //Payment

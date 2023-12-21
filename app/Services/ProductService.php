@@ -23,7 +23,7 @@ class ProductService
 {
     use StorageImageTrait;
 
-    const PRODUCT_PAGINATE = 15;
+    const PRODUCT_PAGINATE = 30;
     private Product $product;
     private ProductImage $productImage;
     private Tag $tag;
