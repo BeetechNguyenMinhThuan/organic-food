@@ -121,7 +121,7 @@ class ProductService
 //        });
 
 
-        return $query->paginate(self::PRODUCT_PAGINATE);
+        return $query->get();
     }
 
     public function getRandom()
