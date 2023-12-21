@@ -58,7 +58,9 @@ quản lý địa chỉ giao hàng và thanh toán cũng như chỉnh sửa chi 
         'reset' => "Làm mới",
         'action' => "Hành động",
         'search' => 'Tìm kiếm',
-        'brand_list' => 'Thương hiệu'
+        'brand_list' => 'Thương hiệu',
+        'blog' => 'Bài viết',
+        'Recips_Articles' => 'Danh sách bài viết'
     ],
 
     // Filter

@@ -19,8 +19,6 @@
                             <a aria-label="Quick view" class="action-btn small hover-up"
                                data-bs-toggle="modal" data-bs-target="#quickViewModal{{$key}}"> <i
                                     class="fi-rs-eye"></i></a>
-                            <a aria-label="Compare" class="action-btn small hover-up"
-                               href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                         </div>
                         <div class="product-badges product-badges-position product-badges-mrg">
                             @if($product->sale_status)

@@ -39,8 +39,6 @@
                                             </a>
                                         </div>
                                         <div class="product-action-1">
-                                            <a aria-label="Compare" class="action-btn" href="shop-compare.html"><i
-                                                    class="fi-rs-shuffle"></i></a>
                                             <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal"
                                                data-bs-target="#quickViewModal{{$key}}"><i class="fi-rs-eye"></i></a>
                                         </div>

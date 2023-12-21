@@ -57,6 +57,10 @@ manage your shipping and billing addresses and edit your password and account de
         'action' => "Action",
         'search' => 'Search',
         'brand_list' => 'Brand list',
+        'blog' => 'Blog & News',
+        'Recips_Articles' => 'Recips Articles'
+
+
     ],
 
     // Filter
