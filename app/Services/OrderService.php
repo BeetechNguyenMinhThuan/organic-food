@@ -39,31 +39,41 @@ class OrderService
 
     const PAGINATE_CATEGORY = '15';
 
-    public function statisticOrdersRevenue($request){
+    public function statisticOrdersRevenue($request)
+    {
         $orders = Order::query()
             ->select(DB::raw('DATE_FORMAT(orders.created_at, "%d/%m/%Y") as month, SUM(total_price) as total_price'))
-//            ->join('order_details', 'order_details.order_id','orders.id')
-            ->whereYear('created_at', date('Y'))
-            ->whereMonth('created_at',date('m'))
+            ->whereBetween('created_at', [
+                Carbon::createFromFormat('d/m/Y', $request->revenue_start_at ?? date('d/m/Y'))->startOfDay(),
+                Carbon::createFromFormat('d/m/Y', $request->revenue_end_at ?? date('d/m/Y'))->endOfDay(),
+            ])
             ->groupBy(DB::raw('DATE_FORMAT(orders.created_at, "%d/%m/%Y")'))
-            ->orderBy('month', 'ASC');
-
-        if (!empty($request->revenue_start_at)) {
-            $startAt = Carbon::createFromFormat('d/m/Y', $request->revenue_start_at)->format('d/m/Y');
-            $orders->where(DB::raw('DATE_FORMAT(orders.created_at, "%d/%m/%Y")'), '>=', $startAt);
-        }
-        if (!empty($request->revenue_end_at)) {
-            $startAt = Carbon::createFromFormat('d/m/Y', $request->revenue_end_at)->format('d/m/Y');
-            $orders->where(DB::raw('DATE_FORMAT(orders.created_at, "%d/%m/%Y")'), '<=', $startAt);
-        }
-        $orders = $orders->get()->toArray();
+            ->orderByRaw('DATE_FORMAT(orders.created_at, "%d/%m/%Y") ASC')
+            ->get()
+            ->toArray();
 
         $arrOrder = [];
         foreach ($orders as $data) {
-            $arrOrder[$data['month']] = (int) $data['total_price'];
+            $arrOrder[$data['month']] = (int)$data['total_price'];
         }
-        return $arrOrder;
+        $intermediateArray = [];
+
+        foreach ($arrOrder as $key => $value) {
+            $dateParts = explode('/', $key);
+            $month = intval($dateParts[1]);
+            $intermediateArray[$month][$key] = $value;
+        }
+
+        ksort($intermediateArray);
+
+        $sortedArray = [];
+        foreach ($intermediateArray as $monthData) {
+            $sortedArray += $monthData;
+        }
+
+        return $sortedArray;
     }
+
 
     public function statisticOrder($request)
     {

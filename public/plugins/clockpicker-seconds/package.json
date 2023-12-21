@@ -1,13 +1,50 @@
 {
-  "name": "clockpicker-seconds",
-  "description": "A clock-style timepicker for Bootstrap (or jQuery)",
-  "version": "0.0.7",
+  "_from": "clockpicker-seconds@^0.0.7",
+  "_id": "clockpicker-seconds@0.0.7",
+  "_inBundle": false,
+  "_integrity": "sha512-z57JEt/W4ObvMVbdpwO2pTEIyHfBaC2DE/+fU5bUMoHy1E1Ekx9zmGSgwzKnyCoFKzvfE9SXQT3FrrDct0bZPw==",
+  "_location": "/clockpicker-seconds",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "clockpicker-seconds@^0.0.7",
+    "name": "clockpicker-seconds",
+    "escapedName": "clockpicker-seconds",
+    "rawSpec": "^0.0.7",
+    "saveSpec": null,
+    "fetchSpec": "^0.0.7"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/clockpicker-seconds/-/clockpicker-seconds-0.0.7.tgz",
+  "_shasum": "536e5dbea9dc424ee61cbce6a828719d56c14261",
+  "_spec": "clockpicker-seconds@^0.0.7",
+  "_where": "D:\\laragon\\laragon\\www\\organic-food",
   "author": {
     "name": "Wang Shenwei",
     "email": "wangshenwei@qq.com",
     "url": "http://wangshenwei.com/"
   },
+  "bugs": {
+    "url": "https://github.com/weareoutman/clockpicker/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": "Package no longer supported.",
+  "description": "A clock-style timepicker for Bootstrap (or jQuery)",
+  "devDependencies": {
+    "gulp": "~3.8.7",
+    "gulp-concat": "~2.3.4",
+    "gulp-minify-css": "~0.3.1",
+    "gulp-qunit": "^0.3.3",
+    "gulp-rename": "~1.2.0",
+    "gulp-replace": "^0.4.0",
+    "gulp-uglify": "~0.3.1"
+  },
   "homepage": "http://srowhani.github.io/clockpicker/",
+  "name": "clockpicker-seconds",
   "repository": {
     "type": "git",
     "url": "git://github.com/weareoutman/clockpicker.git"
@@ -15,14 +52,5 @@
   "scripts": {
     "test": "gulp test"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "gulp": "~3.8.7",
-    "gulp-uglify": "~0.3.1",
-    "gulp-minify-css": "~0.3.1",
-    "gulp-rename": "~1.2.0",
-    "gulp-concat": "~2.3.4",
-    "gulp-qunit": "^0.3.3",
-    "gulp-replace": "^0.4.0"
-  }
+  "version": "0.0.7"
 }

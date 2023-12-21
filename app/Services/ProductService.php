@@ -420,7 +420,10 @@ class ProductService
     public function getProductFavorite()
     {
         $user = Auth::user();
-        return $user->favorites;
+        if (!empty($user->favorites)) {
+            return $user->favorites;
+        }
+        return [];
     }
 
     public function createFavoriteProduct($productId)

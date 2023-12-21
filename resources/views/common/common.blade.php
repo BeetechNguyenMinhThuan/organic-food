@@ -100,6 +100,11 @@
                     btnRemoveFavorite.addClass('d-none');
                     toastr.success('Xoá sản phẩm yêu thích thành công', {timeOut: 2000})
                     $('.action-createFavorite').removeClass('d-none')
+                    let currentURL = window.location.href;
+                    console.log(currentURL)
+                    if (currentURL.indexOf("/wishlist") !== -1) {
+                        location.reload();
+                    }
                 }
             },
             error: function (err) {
